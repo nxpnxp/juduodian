@@ -28,9 +28,12 @@
      	.title i{
      		text-align: left;
      	}   	
-     	.layui-colla-title span{color:red;margin-left: 10px;}
-     	
      	.layui-carousel img{ width: 100%;height: 150px;}
+     	.nrow{
+     		width: 90%;margin: 0 auto;
+     		line-height:25px;padding:10px 0;
+     		border-bottom: 1px dashed #ccc;
+     	}
      </style>
 </head>
 <body>
@@ -50,7 +53,7 @@
 	  </div>
 	</div> 
 	
-	<div class="layui-row">
+	<div class="layui-row nrow">
 	    <div class="layui-col-xs9">
 	      <div>{$dian.title}</div>
 	      <div>{$dian.description}</div>
@@ -59,11 +62,11 @@
 	      二维码
 	    </div>
 	</div>
-	<div class="layui-row">
+	<div class="layui-row nrow">
 		地址：{$dian.showaddress}<br />
 		联系电话：{$dian.mobile}
 	</div>
-	<div class="layui-row">
+	<div class="layui-row nrow">
 		{$dian.content}
 	</div>
 	
