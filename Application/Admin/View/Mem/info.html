@@ -1,0 +1,60 @@
+<extend name="Public/base" />
+
+<block name="style">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<style>
+		.row{margin: 10px 0;}
+	</style>
+</block>
+
+<block name="body">
+	
+	<h2>会员详细信息</h2>
+	
+	<div class="cf">
+		<a class="btn" href="{:U('index')}">返回</a>
+	</div>
+	
+    <!-- 数据列表 -->
+    <div style="margin-top: 1em;border-top: 1px solid #ccc;">
+    	<div class="row">
+	    	<div class="col-xs-1">昵称：</div>
+			<div class="col-xs-11">
+				<img src="{$_info.headimgurl}" style="width: 50px;height: 50px;display: inline-block;"/>
+				{$_info['nickname']}
+			</div>
+		</div>
+		<div class="row">
+	    	<div class="col-xs-1">openid：</div>
+			<div class="col-xs-11">{$_info['openid']}</div>
+		</div>
+		<div class="row">
+	    	<div class="col-xs-1">关注：</div>
+			<div class="col-xs-11">{$_info['subscribe']}</div>
+		</div>
+		<div class="row">
+	    	<div class="col-xs-1">进入时间：</div>
+			<div class="col-xs-11">{$_info['time']|time_format}</div>
+		</div>
+		<div class="row">
+	    	<div class="col-xs-1">绑定手机号：</div>
+			<div class="col-xs-11">{$_info['isbind']}</div>
+		</div>
+		<div class="row">
+	    	<div class="col-xs-1">性别：</div>
+			<div class="col-xs-11">{$_info['sex']}</div>
+		</div>
+		<div class="row">
+	    	<div class="col-xs-1">区域：</div>
+			<div class="col-xs-11">{$_info['country']} {$_info['province']} {$_info['city']}</div>
+		</div>
+	</div>
+    
+</block>
+
+<block name="script">
+	<script type="text/javascript">	
+    //导航高亮
+    highlight_subnav('{:U('Mem/index')}');
+	</script>
+</block>

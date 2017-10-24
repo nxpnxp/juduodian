@@ -1,0 +1,60 @@
+<extend name="Public/base" />
+
+<block name="body">
+	<!-- 标题栏 -->
+	<div class="main-title">
+		<h2>会员列表</h2>
+	</div>
+	
+    <!-- 数据列表 -->
+    <div class="data-table table-striped">
+	<table class="">
+    <thead>
+        <tr>
+		<th class="">ID</th>
+		<th colspan="2">昵称</th>
+		<th class="">openid</th>
+		<th class="">进入时间</th>
+		<th class="">是否关注</th>
+		<th class="">手机号</th>
+		<th class="">操作</th>
+		</tr>
+    </thead>
+    <tbody>
+		<notempty name="_list">
+		<volist name="_list" id="vo">
+		<tr>
+			<td>{$vo.id} </td>
+			<td style="width: 55px;">
+				<img src="{$vo.headimgurl}" style="width: 50px;height: 50px;display: inline-block;"/>
+			</td>
+			<td>{$vo.nickname}</td>
+			<td>{$vo.openid}</td>
+			<td>{$vo.time}</td>
+			<td>{$vo.subscribe}</td>
+			<td>{$vo.mobile}</td>			
+			<td>
+				<a title="详情" href="{:U('info',array('id'=>$vo['id']))}">详情</a>
+			</td>			
+		</tr>
+		</volist>
+		<else/>
+		<td colspan="5" class="text-center"> aOh! 暂时还没有内容! </td>
+		</notempty>
+	</tbody>
+    </table>
+	</div>
+    <div class="page">
+        {$_page}
+    </div>
+</block>
+
+<block name="script">
+	<script src="__STATIC__/thinkbox/jquery.thinkbox.js"></script>
+
+	<script type="text/javascript">
+	
+    //导航高亮
+    highlight_subnav('{:U('Mem/index')}');
+	</script>
+</block>
