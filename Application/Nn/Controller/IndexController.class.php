@@ -20,8 +20,9 @@ class IndexController extends HomeController {
 		$this->assign('cates',$cates);
 		
 		$morens = M('Document')->alias('d')
-			->field('d.id,d.title,p.path')
+			->field('d.id,d.title,p.path,ds.longitude,ds.latitude')
 			->join('left join onethink_picture p on d.cover_id=p.id')
+			->join('left join onethink_document_shop ds on ds.id=d.id')
 			->limit(10)
 			->select();
 		$this->assign('morens',$morens);

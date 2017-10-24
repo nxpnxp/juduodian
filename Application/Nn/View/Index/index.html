@@ -35,6 +35,7 @@
      		line-height:50px;
      		height: 50px;
      	}
+     	.text-right{text-align:right;}
      </style>
 </head>
 <body>
@@ -70,7 +71,8 @@
 	      		<foreach name="morens" item="vo" >
 				<div class="layui-row open" data-id="{$vo.id}">
 				    <div class="layui-col-xs3"><img src="{$vo.path}" /></div>
-			    	<div class="layui-col-xs9">{$vo.title}</div>
+			    	<div class="layui-col-xs6">{$vo.title}</div>
+			    	<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}">30000m</div>
 				</div>
 				</foreach>			 			  
 			</div>
@@ -82,7 +84,8 @@
 	      		<foreach name="morens" item="vo" >
 			  	<div class="layui-row open" data-id="{$vo.id}">
 				    <div class="layui-col-xs3"><img src="{$vo.path}" /></div>
-			    	<div class="layui-col-xs9">{$vo.title}</div>
+			    	<div class="layui-col-xs6">{$vo.title}</div>
+			    	<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}">30000m</div>
 				</div>
 				</foreach>			  			  
 			</div>
