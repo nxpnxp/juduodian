@@ -23,6 +23,7 @@ class IndexController extends HomeController {
 			->field('d.id,d.title,p.path,ds.longitude,ds.latitude')
 			->join('left join onethink_picture p on d.cover_id=p.id')
 			->join('left join onethink_document_shop ds on ds.id=d.id')
+			->where('d.status=1')
 			->limit(10)
 			->select();
 		$this->assign('morens',$morens);

@@ -48,12 +48,15 @@
 		  <div class="layui-colla-item">
 		    <h2 class="layui-colla-title">{$vo.title}
 		    	<eq name="vo.paystatus" value="0"><span>[未支付]</span></eq>
-		    	<eq name="vo.paystatus" value="1"><span>[待审核]</span></eq>
+		    	<eq name="vo.paystatus" value="1">
+		    		<eq name="vo.status" value="2"><span>[待审核]</span></eq>
+		    		<eq name="vo.status" value="1"><span>[正常]</span></eq>
+		    	</eq>
 		    </h2>
 		    <div class="layui-colla-content layui-show">
 		    	<div class="layui-btn-group">
 				  <button class="layui-btn">详情</button>
-				  <button class="layui-btn">发红包</button>
+				  <button class="layui-btn sendhb" data-shopid="{$vo.id}">发红包</button>
 				</div>
 		    </div>
 		  </div>
@@ -85,6 +88,11 @@
 		//手风琴
 		var element = layui.element;
   		//…
+  		
+  		$('.sendhb').click(function(){
+	  		var shopid = $(this).attr('data-shopid');
+	  		layer.msg(shopid);
+	  	});
 		
 	});
 	
