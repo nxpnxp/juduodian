@@ -324,6 +324,7 @@ class ShopController extends HomeController {
 		$id = I('get.id');
 		
 		$dian = M('Document')->alias('d')
+				->field("d.*,ds.*,p.path")
 				->join('left join onethink_document_shop ds on d.id=ds.id')
 				->join('left join onethink_picture p on ds.imgs=p.id')
 				->where('d.id='.$id)->find();
@@ -346,5 +347,13 @@ class ShopController extends HomeController {
 		
     	$this->display();
     }
+	
+	//点赞
+	public function ajaxZan(){
+		$id = I('get.id');
+		M("DocumentShop")->where(array('id'=>$id))->setInc('zan');
+		echo $id;
+		exit;
+	}
 	
 }
