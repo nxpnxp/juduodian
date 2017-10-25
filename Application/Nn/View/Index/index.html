@@ -62,7 +62,7 @@
 	<div class="layui-tab">
 	  <ul class="layui-tab-title">
 	    <li class="layui-this">默认店铺</li>
-	    <li>红包店铺</li>
+	    <li>最近店铺</li>
 	  </ul>
 	  <div class="layui-tab-content">
 	    <div class="layui-tab-item layui-show">
@@ -72,7 +72,7 @@
 				<div class="layui-row open" data-id="{$vo.id}">
 				    <div class="layui-col-xs3"><img src="{$vo.path}" /></div>
 			    	<div class="layui-col-xs6">{$vo.title}</div>
-			    	<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}">30000m</div>
+			    	<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}">???m</div>
 				</div>
 				</foreach>			 			  
 			</div>
@@ -85,7 +85,7 @@
 			  	<div class="layui-row open" data-id="{$vo.id}">
 				    <div class="layui-col-xs3"><img src="{$vo.path}" /></div>
 			    	<div class="layui-col-xs6">{$vo.title}</div>
-			    	<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}">30000m</div>
+			    	<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}">???m</div>
 				</div>
 				</foreach>
 			</div>
@@ -97,8 +97,82 @@
 	<include file="Public/footer" />
 	
 </body>
- 
+<script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 <script type="text/javascript" src="__NN__/layui.js"></script>
+<script>
+	// 微信JSSDK异常处理
+	wx.error(function(e){
+    	alert('wxjssdk_error');
+    });
+    // 注入JSSDK配置参数，默认开启所有接口权限
+    wx.config({$options});
+    // 当JSSDK初始化完成后，再执行相关操作
+    wx.ready(function(){
+        // 这里就可以调用 wx 的jssdk的操作了
+        
+        wx.getLocation({
+		    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+		    success: function (res) {
+		        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+		        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+		        var speed = res.speed; // 速度，以米/每秒计
+		        var accuracy = res.accuracy; // 位置精度
+		        //alert(latitude+'--'+longitude);
+		        calc(latitude,longitude);
+		    }
+		});
+		
+		function calc(latitude,longitude){
+			layui.use(['layer','jquery'], function(){
+				var $ = layui.$ //重点处
+	  			,layer = layui.layer;
+	  			
+	  			var lat1 = latitude;
+	  			var lng1 = longitude;
+	  			
+	  			var EARTH_RADIUS = 6378137.0;    //单位M
+			    var PI = Math.PI;
+			     
+				$('.morendian>div').each(function(i,o){
+					var obj = $(o).find('.text-right');
+					var lon = obj.attr('data-lon');
+					var lat = obj.attr('data-lat');
+					//layer.msg(lon+' - '+lat);
+					var res = getGreatCircleDistance(lat1,lng1,lat,lon);
+					obj.html(res+'m');
+				});
+				
+				
+			    function getRad(d){
+			         return d*PI/180.0;
+			    }
+			     
+			     /**
+			      * caculate the great circle distance
+			      * @param {Object} lat1
+			      * @param {Object} lng1
+			      * @param {Object} lat2
+			      * @param {Object} lng2
+			      */
+			     function getGreatCircleDistance(lat1,lng1,lat2,lng2){
+			         var radLat1 = getRad(lat1);
+			         var radLat2 = getRad(lat2);
+			         
+			         var a = radLat1 - radLat2;
+			         var b = getRad(lng1) - getRad(lng2);
+			         
+			         var s = 2*Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) + Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+			         s = s*EARTH_RADIUS;
+			         s = Math.round(s*10000)/10000.0;
+			                
+			         return s;
+			     }
+				
+			});
+		}
+        
+    });
+</script> 
 <script>
 	layui.use(['layer','jquery'], function(){
 		

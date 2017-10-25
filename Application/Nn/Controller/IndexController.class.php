@@ -27,7 +27,20 @@ class IndexController extends HomeController {
 			->select();
 		$this->assign('morens',$morens);
 		
-    	$this->display();
+		$script = &  load_wechat('Script');
+		$thisurl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
+		$options = $script->getJsSign($thisurl);
+		$options = json_encode($options);
+					
+		if($options===FALSE){
+		    echo $script->errMsg;die;
+		}else{
+			$this->assign('options',$options);
+			
+			$this->display();
+		}
+		
+    	
 	}
 			
 	private function _request($url, $https=false, $method='get', $data=null)
