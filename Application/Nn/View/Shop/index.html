@@ -91,7 +91,14 @@
   		
   		$('.sendhb').click(function(){
 	  		var shopid = $(this).attr('data-shopid');
-	  		layer.msg(shopid);
+	  		var status = $(this).parent().parent().siblings('h2').find('span').html();
+	  		
+	  		if(status != '[正常]'){
+	  			layer.msg('您的店铺状态此时不可发红包！');
+	  		}else{
+	  			window.location.href = "{:U('Shop/sendhb')}"+'&shopid='+shopid;
+	  		}
+	  		
 	  	});
 		
 	});

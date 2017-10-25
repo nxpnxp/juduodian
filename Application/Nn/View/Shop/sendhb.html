@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> 发红包</title>    
+    <meta name="renderer" content="webkit">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="__CSS__/layui.css" media="all">	
+    <link rel="stylesheet" type="text/css" href="__CSS__/iconfont.css">
+     <style>     	
+     	.subscribe{ 
+     		padding: 10px 0;
+     		color: red;
+     		font-size: 15px;
+     		text-align: center;
+     		width: 90%;
+     		margin: 0 auto;
+     	}
+     	.title{
+     		padding: 30px 0;
+     		color: #fff;
+     		background-color: #2AA198;
+     		font-size: 25px;
+     		text-align: center;
+     		width: 100%;
+     	}
+     	form{margin-top: 10px;}   
+     	.layui-input-block{margin-right: 20px;}	
+     	
+     	.hide{display: none;}
+     </style>
+</head>
+<body>
+	<if condition="$user.subscribe != 1">
+		<div class="subscribe">您未关注，请点击关注</div>
+	</if>
+	
+	<div class="title">{$shop_title}</div>
+	
+	<form class="layui-form" method="post" action="{:U('Shop/dosendhb')}">
+			  	
+	  <div class="layui-form-item">
+	    <label class="layui-form-label">总金额</label>
+	    <div class="layui-input-block">
+	      <input type="text" name="money" required  lay-verify="required" placeholder="单位：元" autocomplete="off" class="layui-input">
+	    </div>
+	  </div>
+	  
+	  <div class="layui-form-item">
+	    <label class="layui-form-label">类型</label>
+	    <div class="layui-input-block">
+	      	<input type="radio" name="type" value="普通" title="普通" lay-filter="type" checked>
+      		<input type="radio" name="type" value="拼手气" title="拼手气" lay-filter="type">
+	    </div>
+	  </div>
+	  
+	  <div class="layui-form-item pt">
+	    <label class="layui-form-label">单个金额</label>
+	    <div class="layui-input-block">
+	      <input type="text" name="ptmoney" required  lay-verify="required" placeholder="单位：元" autocomplete="off" class="layui-input">
+	    </div>
+	  </div>
+	  
+	  <div class="layui-form-item psq">
+	    <label class="layui-form-label">最低金额</label>
+	    <div class="layui-input-block">
+	      <input type="text" name="psqmoney1" required  lay-verify="required" placeholder="单位：元" autocomplete="off" class="layui-input">
+	    </div>
+	  </div>
+	  <div class="layui-form-item psq">
+	    <label class="layui-form-label">最高金额</label>
+	    <div class="layui-input-block">
+	      <input type="text" name="psqmoney1" required  lay-verify="required" placeholder="单位：元" autocomplete="off" class="layui-input">
+	    </div>
+	  </div>
+	  
+	  <div class="layui-form-item">
+	    <label class="layui-form-label">是否口令</label>
+	    <div class="layui-input-block">
+	      <input type="checkbox" name="iskl" lay-skin="switch" lay-filter="iskl">
+	    </div>
+	  </div>
+	  <div class="layui-form-item kl">
+	    <label class="layui-form-label">口令</label>
+	    <div class="layui-input-block">
+	      <input type="text" name="kl" required  lay-verify="required" placeholder="您的红包口令" autocomplete="off" class="layui-input">
+	    </div>
+	  </div>
+	  
+	  <div class="layui-form-item">
+	    <div class="layui-input-block">
+	      <button class="layui-btn" lay-submit lay-filter="formDemo">下一步</button>
+	    </div>
+	  </div>
+	</form>
+	
+	
+</body>
+ 
+<script type="text/javascript" src="__NN__/layui.js"></script> 
+<script>
+	layui.use(['layer','jquery','form'], function(){
+		
+		//弹出层
+	  	var $ = layui.$ //重点处
+	  	,layer = layui.layer;
+	  	$('.subscribe').click(function(){
+	  		layer.open({
+			  type: 1, 
+			  title: false, // false  '请长按识别二维码'
+			  content: '<img src="/Public/erweima.jpg" style="width:250px;height:250px;"/>'
+			});
+	  	});
+	  	
+		var form = layui.form;
+		//监听提交
+		form.on('submit(formDemo)', function(data){
+			
+			layer.msg(JSON.stringify(obj));
+			return false;
+
+		});
+		
+		nradio('普通');
+		form.on('radio(type)', function(data){
+		  //layer.msg(data.value);
+		  nradio(data.value);
+		});  
+		function nradio(i){
+			if(i == '普通'){
+				$('.pt').show();
+				$('.psq').hide();
+				$('input[name=ptmoney]').val('');
+				$('input[name=psqmoney1]').val(0);
+				$('input[name=psqmoney2]').val(0);
+			}
+			if(i == '拼手气'){
+				$('.pt').hide();
+				$('.psq').show();
+				$('input[name=ptmoney]').val(0);
+				$('input[name=psqmoney1]').val('');
+				$('input[name=psqmoney2]').val('');
+			}
+		}
+		
+		form.on('switch(iskl)', function(data){
+		  //layer.msg(data.elem.checked); //开关是否开启，true或者false
+		  var cc = data.elem.checked;
+		  if(cc == true){
+		  	$('.kl').show();
+			$('input[name=kl]').val('');
+		  }else{
+		  	$('.kl').hide();
+			$('input[name=kl]').val(0);
+		  }
+		});  
+		
+	});
+	
+</script>
+</html>

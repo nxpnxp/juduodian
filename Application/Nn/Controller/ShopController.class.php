@@ -332,4 +332,19 @@ class ShopController extends HomeController {
     	$this->display();
     }
 	
+	/**
+	 * 发红包
+	 */
+    public function sendhb(){
+    	$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$this->assign('user',$user);
+		
+		$shopid = I('get.shopid');
+		$shop_title = M('Document')->where('id='.$shopid)->getField('title');
+		$this->assign('shop_title',$shop_title);
+		
+    	$this->display();
+    }
+	
 }
