@@ -337,19 +337,30 @@ class ShopController extends HomeController {
 	 * 发红包
 	 */
     public function sendhb(){
+    	$time = time();
+		
     	$openid = $this->openid;
 		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
 		$this->assign('user',$user);
 		
 		$shopid = I('get.shopid');
+		$this->assign('shopid',$shopid);
+			
 		$shop_title = M('Document')->where('id='.$shopid)->getField('title');
 		$this->assign('shop_title',$shop_title);
-		$this->assign('shopid',$shopid);
-		
-		$sxf = M('Config')->where('id=39')->getField('value');
-		$this->assign('sxf',$sxf);
-		
-    	$this->display();
+			
+		//查找店铺红包
+		$hb = M('Wxhb')->where('shopid='.$shopid.' and endtime > '.$time)->find();
+		if($hb){
+			//已经存在红包
+			$this->assign('hb',$hb);
+			$this->display('hbdetail');
+		}else{		
+			$sxf = M('Config')->where('id=39')->getField('value');
+			$this->assign('sxf',$sxf);
+			
+	    	$this->display();
+		}
     }
 	
     public function dosendhb(){
