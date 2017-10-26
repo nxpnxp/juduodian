@@ -344,9 +344,54 @@ class ShopController extends HomeController {
 		$shopid = I('get.shopid');
 		$shop_title = M('Document')->where('id='.$shopid)->getField('title');
 		$this->assign('shop_title',$shop_title);
+		$this->assign('shopid',$shopid);
+		
+		$sxf = M('Config')->where('id=39')->getField('value');
+		$this->assign('sxf',$sxf);
 		
     	$this->display();
     }
+	
+    public function dosendhb(){
+		$time = time();
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		
+		$_type = I('post.type');
+		if($_type == '普通'){ $type = 0; }
+		if($_type == '拼手气'){ $type = 1; }
+		
+		$_gettime = I('post.gettime');
+		$gettime = strtotime($_gettime);
+		
+		$deadline = M('Config')->where('id=40')->getField('value');
+		$endtime = $gettime + $deadline * 24*3600;
+		
+		$array = array(
+			'shopid' => I('post.shopid'),
+			'money' => I('post.money'),
+			'sxf' => I('post.sxf'),
+			'everymoney' => I('post.everymoney'),
+			'num' => I('post.num'),
+			'yue' => I('post.money') - I('post.sxf'), 
+			'type' => $type,
+			'ptmoney' => I('post.ptmoney'),
+			'psqmoney1' => I('post.psqmoney1'),
+			'psqmoney2' => I('post.psqmoney2'),
+			'iskl' => I('post.iskl'),
+			'kl' => I('post.kl'),
+			'createtime' => $time,
+			'endtime' => $endtime,
+			'area' => I('post.area'),
+			'gettime' => $gettime
+   		);
+		$id = M('Wxhb')->add($array);
+		if($id){
+			$this->success('发布成功',U('Shop/dians'));
+		}else{
+			$this->error('发布失败');
+		}
+	}
 	
 	//点赞
 	public function ajaxZan(){
