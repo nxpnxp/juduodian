@@ -28,7 +28,8 @@ $data = array(
 	'return_code' => $back,
 	'return_msg' => $msg
 );
-$pay->replyXml($data,true);
+//$pay->replyXml($data,true);
+$pay->replyXml($data);
 
 function _request($url, $https=false, $method='get', $data=null)
 {

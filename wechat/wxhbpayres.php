@@ -3,7 +3,7 @@ include "include.php";
 $pay = & load_wechat('Pay');		
 $res = $pay->getNotify();
 //$err = $pay->errMsg;
-//file_put_contents('abc.txt', json_encode($res));
+
 if($res !== FALSE){
 	$back = 'SUCCESS';
 	$msg = 'ok';
@@ -30,7 +30,9 @@ $data = array(
 	'return_code' => $back,
 	'return_msg' => $msg
 );
-$pay->replyXml($data,true);
+file_put_contents('abc.txt', json_encode($data));
+//$pay->replyXml($data,true);
+$pay->replyXml($data);
 
 function _request($url, $https=false, $method='get', $data=null)
 {
