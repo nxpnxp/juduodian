@@ -378,6 +378,8 @@ class ShopController extends HomeController {
 		$deadline = M('Config')->where('id=40')->getField('value');
 		$endtime = $gettime + $deadline * 24*3600;
 		
+		$ordersn = 'WXHB'.substr( md5('NNN'.time()) , 4,12);
+		
 		$array = array(
 			'shopid' => I('post.shopid'),
 			'money' => I('post.money'),
@@ -394,14 +396,86 @@ class ShopController extends HomeController {
 			'createtime' => $time,
 			'endtime' => $endtime,
 			'area' => I('post.area'),
-			'gettime' => $gettime
+			'gettime' => $gettime,
+			'sn' => $ordersn
    		);
 		$id = M('Wxhb')->add($array);
 		if($id){
-			$this->success('发布成功',U('Shop/dians'));
+			$this->success('发布成功',U('Shop/hbpay',array('id'=>$id)));
 		}else{
 			$this->error('发布失败');
 		}
+	}
+
+	public function hbpay(){
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$this->assign('user',$user);
+		
+		$id = I('get.id');
+		$wxhb =  M('Wxhb')->find($id);
+		$ordersn =  $wxhb['sn'];
+		$this->assign('ordersn',$ordersn);
+		$pay_price = $wxhb['money'];
+		$this->assign('pay_price',$pay_price);
+		
+		$this->display();
+	}
+	
+	public function wxhbpay(){
+		
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$this->assign('user',$user);
+		
+		$ordersn = I('get.ordersn');
+		$price = I('get.price');
+		$type = I('get.type');
+				
+		//验证 （订单号 + 金额）		
+		$info = M('Wxhb')->where('sn="'.$ordersn.'"')->find();
+		if(!$info){
+			die('请重新申请！');
+		}
+		
+		$body = '红包支付';
+		$out_trade_no = $ordersn;
+		$total_fee = $price * 100;
+		$notify_url = 'http://'.$_SERVER['HTTP_HOST'].'/wechat/wxhbpayres.php';
+				
+		if($type == '1'){
+			//微信支付
+
+			$pay = & load_wechat('Pay');
+			$prepayid = $pay->getPrepayId($openid, $body, $out_trade_no, $total_fee, $notify_url, $trade_type = "JSAPI");
+			if($prepayid===FALSE){
+				header("Content-type:text/html;charset=utf-8");
+			    echo '1--'.$pay->errMsg;die;
+			}
+			$pay_options = $pay->createMchPay($prepayid);			
+			if($pay_options===FALSE){
+				header("Content-type:text/html;charset=utf-8");
+			    echo '2--'.$pay->errMsg;die;
+			}
+			$pay_options = json_encode($pay_options);
+			$this->assign('pay_options',$pay_options);	
+			
+			$script = &  load_wechat('Script');
+			$thisurl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
+			$options = $script->getJsSign($thisurl);
+			$options = json_encode($options);	
+			if($options===FALSE){
+				header("Content-type:text/html;charset=utf-8");
+			    echo '3--'.$script->errMsg;die;
+			}
+			$this->assign('options',$options);	
+						
+			$this->display('wxhbpay');
+
+		}elseif($type == '2'){
+			//余额支付
+		}
+
 	}
 	
 	//点赞

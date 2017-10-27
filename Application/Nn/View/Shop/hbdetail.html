@@ -29,7 +29,10 @@
      		text-align: left;
      	}   	
      	
-     	
+     	.content{padding: 15px 20px;}
+     	.content .layui-row{height: 30px;line-height: 30px;}
+     	.content .layui-row .tr{text-align: right;}
+     	.content .layui-row .layui-col-xs9{padding-left: 10px;}
      </style>
 </head>
 <body>
@@ -43,33 +46,87 @@
 		<div class="layui-col-xs2"></div>
 	</div>
 	
-	<div>
-		总金额：{$hb.money}<br />
-		手续费：{$hb.sxf}<br />
-		每日金额：{$hb.everymoney}<br />
-		发放天数：{$hb.num}<br />
-		类型：
-		<eq name="hb['type']" value="0">普通</eq>
-		<eq name="hb['type']" value="1">拼手气</eq> <br />
-		余额：{$hb.yue}<br />
+	<div class="content">
+		<div class="layui-row">
+			<div class="layui-col-xs3 tr">总金额：</div>
+			<div class="layui-col-xs9">{$hb.money}</div>
+		</div>
+		<div class="layui-row">
+			<div class="layui-col-xs3 tr">手续费：</div>
+			<div class="layui-col-xs9">{$hb.sxf}</div>
+		</div>
+		<div class="layui-row">
+			<div class="layui-col-xs3 tr">每日金额：</div>
+			<div class="layui-col-xs9">{$hb.everymoney}</div>
+		</div>
+		<div class="layui-row">
+			<div class="layui-col-xs3 tr">发放天数：</div>
+			<div class="layui-col-xs9">{$hb.num}</div>
+		</div>
+		<div class="layui-row">
+			<div class="layui-col-xs3 tr">余额：</div>
+			<div class="layui-col-xs9">{$hb.yue}</div>
+		</div>
+		<div class="layui-row">
+			<div class="layui-col-xs3 tr">类型：</div>
+			<div class="layui-col-xs9">
+				<eq name="hb['type']" value="0">普通</eq>
+				<eq name="hb['type']" value="1">拼手气</eq>
+			</div>
+		</div>
 		<eq name="hb['type']" value="0">
-			单个金额：{$hb.ptmoney}
-		</eq><br />
-		
+		<div class="layui-row">
+			<div class="layui-col-xs3 tr">单个金额：</div>
+			<div class="layui-col-xs9">{$hb.ptmoney}</div>
+		</div>
+		</eq>		
 		<eq name="hb['type']" value="1">
-			最低金额：{$hb.psqmoney1}<br />
-			最高金额：{$hb.psqmoney2}
+		<div class="layui-row">
+			<div class="layui-col-xs3 tr">最低金额：</div>
+			<div class="layui-col-xs9">{$hb.psqmoney1}</div>
+		</div>
+		<div class="layui-row">
+			<div class="layui-col-xs3 tr">最高金额：</div>
+			<div class="layui-col-xs9">{$hb.psqmoney2}</div>
+		</div>
 		</eq>
-		是否口令：<eq name="hb['iskl']" value="0">否</eq>
-		<eq name="hb['iskl']" value="1">是</eq> <br />
+		<div class="layui-row">
+			<div class="layui-col-xs3 tr">是否口令：</div>
+			<div class="layui-col-xs9">
+				<eq name="hb['iskl']" value="0">否</eq>
+				<eq name="hb['iskl']" value="1">是</eq>
+			</div>
+		</div>
 		
-		<eq name="hb['iskl']" value="1">口令：{$hb.kl}</eq><br />
+		<eq name="hb['iskl']" value="1">
+		<div class="layui-row">
+			<div class="layui-col-xs3 tr">口令：</div>
+			<div class="layui-col-xs9">{$hb.kl}</div>
+		</div>
+		</eq>
 		
-		创建时间：{$hb.createtime|date="Y-m-d H:i:s",###}<br />
-		开始时间：{$hb.gettime|date="Y-m-d H:i:s",###}<br />
-		结束时间：{$hb.endtime|date="Y-m-d H:i:s",###}<br />
+		<div class="layui-row">
+			<div class="layui-col-xs3 tr">创建时间：</div>
+			<div class="layui-col-xs9">{$hb.createtime|date="Y-m-d H:i:s",###}</div>
+		</div>
+		<div class="layui-row">
+			<div class="layui-col-xs3 tr">开始时间：</div>
+			<div class="layui-col-xs9">{$hb.gettime|date="Y-m-d H:i:s",###}</div>
+		</div>
+		<div class="layui-row">
+			<div class="layui-col-xs3 tr">结束时间：</div>
+			<div class="layui-col-xs9">{$hb.endtime|date="Y-m-d H:i:s",###}</div>
+		</div>
 		
-		区域：{$hb.area}<br />
+		<div class="layui-row">
+			<div class="layui-col-xs3 tr">区域：</div>
+			<div class="layui-col-xs9">
+				<eq name="hb['area']" value="1">3km</eq>
+				<eq name="hb['area']" value="2">5km</eq>
+				<eq name="hb['area']" value="3">20km</eq>
+				<eq name="hb['area']" value="4">不限</eq>
+			</div>
+		</div>
 		
 	</div>
 	

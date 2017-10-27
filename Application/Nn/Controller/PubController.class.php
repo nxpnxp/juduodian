@@ -17,5 +17,20 @@ class PubController extends Controller {
 		$rr = M('DocumentShop')->where('id='.$info['id'])->save($data);
 		
 	}
+	
+	public function hbpay_success(){
+		
+		$openid = I('openid');
+		$ordersn = I('ordersn');
+		$total_fee = I('total_fee');
+		$info = M('Wxhb')->where('sn="'.$ordersn.'"')->find();
+		$data = array(
+			'ispay' => 1,
+			'paytype' => 1,
+			'paymoney' => $total_fee
+		);
+		$rr = M('Wxhb')->where('id='.$info['id'])->save($data);
+		
+	}
 
 }
