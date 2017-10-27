@@ -350,7 +350,7 @@ class ShopController extends HomeController {
 		$this->assign('shop_title',$shop_title);
 			
 		//查找店铺红包
-		$hb = M('Wxhb')->where('shopid='.$shopid.' and endtime > '.$time)->find();
+		$hb = M('Wxhb')->where('shopid='.$shopid.' and endtime > '.$time.' and ispay=1')->find();
 		if($hb){
 			//已经存在红包
 			$this->assign('hb',$hb);
@@ -369,9 +369,23 @@ class ShopController extends HomeController {
 		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
 		
 		$_type = I('post.type');
-		if($_type == '普通'){ $type = 0; }
-		if($_type == '拼手气'){ $type = 1; }
-		
+		$ptmoney = I('post.ptmoney');
+		$psqmoney1 = I('post.psqmoney1');
+		$_ptmoney = M('Config')->where('id=41')->getField('value');
+		$_psqmoney1 = M('Config')->where('id=42')->getField('value');
+		if($_type == '普通'){
+			$type = 0; 
+			if($ptmoney < $_ptmoney){
+				$this->error('发布失败,普通最低金额不满足条件');die;
+			}
+		}
+		if($_type == '拼手气'){
+			$type = 1; 
+			if($psqmoney1 < $_psqmoney1){
+				$this->error('发布失败,区间最低金额不满足条件');die;
+			}
+		}
+				
 		$_gettime = I('post.gettime');
 		$gettime = strtotime($_gettime);
 		
@@ -388,8 +402,8 @@ class ShopController extends HomeController {
 			'num' => I('post.num'),
 			'yue' => I('post.money') - I('post.sxf'), 
 			'type' => $type,
-			'ptmoney' => I('post.ptmoney'),
-			'psqmoney1' => I('post.psqmoney1'),
+			'ptmoney' => $ptmoney,
+			'psqmoney1' => $psqmoney1,
 			'psqmoney2' => I('post.psqmoney2'),
 			'iskl' => I('post.iskl'),
 			'kl' => I('post.kl'),

@@ -20,7 +20,6 @@ if($res !== FALSE){
 	);
 	$url = 'http://'.$_SERVER['HTTP_HOST'].'/nn.php?s=/Pub/hbpay_success.html';
 	_request($url,false,'post',$data);
-	//header('Location:'.$url);
 		
 }else{
 	$back = 'FAIL';

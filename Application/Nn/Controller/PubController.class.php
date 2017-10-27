@@ -27,7 +27,7 @@ class PubController extends Controller {
 		$data = array(
 			'ispay' => 1,
 			'paytype' => 1,
-			'paymoney' => $total_fee
+			'paymoney' => $total_fee/100
 		);
 		$rr = M('Wxhb')->where('id='.$info['id'])->save($data);
 		
