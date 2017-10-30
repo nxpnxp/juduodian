@@ -323,12 +323,28 @@ class ShopController extends HomeController {
 		
 		$id = I('get.id');
 		
+		//更新店铺红包是否过期
+		//。。。
+		
 		$dian = M('Document')->alias('d')
 				->field("d.*,ds.*,p.path")
 				->join('left join onethink_document_shop ds on d.id=ds.id')
 				->join('left join onethink_picture p on ds.imgs=p.id')
 				->where('d.id='.$id)->find();
 		$this->assign('dian',$dian);
+		
+		$wait = 8;
+		$flag = 0;//0没红包 1未开始 2疯抢中 3已抢完 4已结束
+		$time = time();
+		$wxhb = M('Wxhb')->where('shopid='.$id.' and ispay=1 and yue>0')->find();
+		if($wxhb){
+			if($wxhb['isson'] && ($wxhb['num']>1)){
+				//多日
+			}
+			if(($wxhb['isson']==0) && ($wxhb['num']==1)){
+				//单日
+			}
+		}
 		
     	$this->display();
     }

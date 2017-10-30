@@ -30,9 +30,18 @@ class FileController extends \Think\Controller {
 			);
 	    }else{// 上传成功
 	    	
-	    	$path = '/Uploads/'.$info['file']['savepath'].$info['file']['savename'];
+	    	$path = './Uploads/'.$info['file']['savepath'].$info['file']['savename'];
+			$_path_arr = explode('.', $path);
+			$_path = '.'.$_path_arr[1].'_thumb.'.$_path_arr[2];
+			
+			//修改成为缩略图
+			$image = new \Think\Image(); 
+			$image->open($path);
+			$image->thumb(640, 480)->save($_path);
+			
+	    	
 	    	$array = array(
-				'path' => $path,
+				'path' => $_path,
 				'url' => '',
 				'md5' => '',
 				'sha1' => '',
@@ -46,11 +55,6 @@ class FileController extends \Think\Controller {
 				'msg' => $path,
 				'newid' => $newid
 			);
-			
-			//修改成为缩略图
-			$image = new \Think\Image(); 
-			$image->open($path);
-			$image->thumb(640, 480)->save($path);
 			
 	    }
 		
