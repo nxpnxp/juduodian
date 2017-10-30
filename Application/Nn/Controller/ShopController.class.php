@@ -496,16 +496,17 @@ class ShopController extends HomeController {
 	public function ajaxZan(){
 		//test
 		$id = I('get.id');
-		$uid = M("Document")->where(array('id'=>$id))->getField('uid');
-		$flag = M("WxuserCode")->where(array('uid'=>$uid))->getField('zanflag');
-		if($flag=0){
-		M("DocumentShop")->where(array('id'=>$id))->setInc('zan');
-		$flag = M("WxuserCode")->where(array('uid'=>$uid))->setField('zanflag',1);
-		echo $id;
-		exit;
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$uid = $user['id'];
+		$flag = M("Zan")->where(array('uid'=>$uid,'sid'=>$id))->count();
+		if($flag==0){
+			$num = M("Zan")->add(array('uid'=>$uid,'sid'=>$id));
+			echo 1;
+			exit;
 		}else{
-		echo 0;
-		exit;
+			echo 0;
+			exit;
 		}
 	}
 	

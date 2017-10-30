@@ -164,12 +164,13 @@
 			data:{'id':id},
 			url:"{:U('Shop/ajaxZan')}",
 			success:function(data){
+				//alert(data)
 				if(data>0){
-				var _num = $("#zanum").html();
-				_num = parseInt(_num);
-				$("#zanum").html(_num+1);
+					var _num = $("#zanum").html();
+					_num = parseInt(_num);
+					$("#zanum").html(_num+1);
 				}else{
-				alert("您已经点过赞了！");
+					alert("您已经点过赞了！");
 				}
 			}
 				
