@@ -42,7 +42,8 @@
 		#lunbo{ position:relative;}
 		.goback{display:block; width:30px; height:30px; border-radius:50%; background-color:#333; opacity:0.8; line-height:30px; text-align:center; margin-left:10px;}
 		.view{display:block; width:60px; height:30px; color:#fff; font-size:14px; float:right; margin-right:10px; background-color:#333; opacity:0.8; line-height:30px; text-align:center;border-radius:5px; }
-    	.bar{ height:50px; line-height:50px; text-align:center; border-bottom:1px solid #eaeaea; color:#09F;}
+    	.bar{ width:100%; height:50px; line-height:50px; text-align:center; border-bottom:1px solid #eaeaea; color:#09F; z-index:999;
+			position:absolute; bottom:0; left:0; background-color:#333; opacity:0.6;}
 		.footbar{ width:100%; height:60px; position:fixed; bottom:0; text-align:center;}
 		.footbar p{ padding:0; margin:0;}
 		.footbar div{height:60px; padding-top:10px;}
@@ -70,18 +71,21 @@
 	</div>
 	
 	<div class="layui-carousel" id="lunbo" lay-filter="lunbo">
+    
+       	<div class="bar layui-col-xs12">
+		<div class="layui-col-xs4"><a href="#" class="white" id="collection"><i class="layui-icon">&#xe600;</i> 收藏</a></div>
+		<div class="layui-col-xs4"><a href="#" id="zan" class="white"><i class="layui-icon">&#xe6c6;</i> <span id="zanum" style="padding-bottom:5px;">{$dian.zan}</span></a></div>
+<!--		<div class="layui-col-xs3"><a href="#"><i class="layui-icon">&#xe642;</i> 评论</a></div>-->
+        <div class="layui-col-xs4"><a href="tel:{$dian.mobile}" class="white"><i class="layui-icon">&#xe63b;</i> 电话</a></div>
+	</div>
+    
 	  <div carousel-item="">
 	    <div><img src="{$dian.path}"></div>
 	  </div>
 	</div> 
    
    
-   	<div class="bar layui-row">
-		<div class="layui-col-xs3"><a href="#"><i class="layui-icon">&#xe600;</i> 收藏</a></div>
-		<div class="layui-col-xs3"><a href="#" id="zan"><i class="layui-icon">&#xe6c6;</i> <span id="zanum" style="padding-bottom:5px;">{$dian.zan}</span></a></div>
-		<div class="layui-col-xs3"><a href="#"><i class="layui-icon">&#xe642;</i> 评论</a></div>
-        <div class="layui-col-xs3"><a href="tel:{$dian.mobile}"><i class="layui-icon">&#xe63b;</i> 电话</a></div>
-	</div>
+
    
    
    <div class="layui-row" id="fix">
@@ -171,6 +175,25 @@
 					$("#zanum").html(_num+1);
 				}else{
 					alert("您已经点过赞了！");
+				}
+			}
+				
+			})
+		})
+		
+		//收藏
+		$("#collection").click(function(){
+			var id = {$dian.id};
+			$.ajax({
+			type:"GET",
+			data:{'id':id},
+			url:"{:U('Shop/ajaxCollection')}",
+			success:function(data){
+				//alert(data)
+				if(data>0){
+					alert("您收藏了店铺，可以在我的中心里查看！");
+				}else{
+					alert("您已经收藏过了！");
 				}
 			}
 				
