@@ -494,6 +494,7 @@ class ShopController extends HomeController {
 	
 	//点赞
 	public function ajaxZan(){
+		//test
 		$id = I('get.id');
 		$uid = M("Document")->where(array('id'=>$id))->getField('uid');
 		$flag = M("WxuserCode")->where(array('uid'=>$uid))->getField('zanflag');
