@@ -46,6 +46,12 @@ class FileController extends \Think\Controller {
 				'msg' => $path,
 				'newid' => $newid
 			);
+			
+			//修改成为缩略图
+			$image = new \Think\Image(); 
+			$image->open($path);
+			$image->thumb(640, 480)->save($path);
+			
 	    }
 		
 	    echo json_encode($return);
