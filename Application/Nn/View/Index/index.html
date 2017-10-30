@@ -76,7 +76,7 @@
 				<div class="layui-row open" data-id="{$vo.id}">
 				    <div class="layui-col-xs3"><img src="{$vo.path}" /></div>
 			    	<div class="layui-col-xs6">{$vo.title}</div>
-			    	<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}">???m</div>
+			    	<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}"> </div>
 				</div>
 				</foreach>			 			  
 			</div>
@@ -89,7 +89,7 @@
 			  	<div class="layui-row open" data-id="{$vo.id}">
 				    <div class="layui-col-xs3"><img src="{$vo.path}" /></div>
 			    	<div class="layui-col-xs6">{$vo.title}</div>
-			    	<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}">???m</div>
+			    	<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}"> </div>
 				</div>
 				</foreach>
 			</div>
@@ -143,7 +143,9 @@
 					var lat = obj.attr('data-lat');
 					//layer.msg(lon+' - '+lat);
 					var res = getGreatCircleDistance(lat1,lng1,lat,lon);
-					obj.html(res+'m');
+					res = res/1000;
+					res = res.toFixed(2);
+					obj.html(res+'km');
 				});
 				
 				
