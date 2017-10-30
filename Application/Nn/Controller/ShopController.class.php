@@ -510,5 +510,20 @@ class ShopController extends HomeController {
 		}
 	}
 	
-	
+	//收藏
+	public function ajaxCollection(){
+		$id = I('get.id');
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$uid = $user['id'];
+		$flag = M("Collection")->where(array('uid'=>$uid,'sid'=>$id))->count();
+		if($flag==0){
+			$num = M("Collection")->add(array('uid'=>$uid,'sid'=>$id));
+			echo 1;
+			exit;
+		}else{
+			echo 0;
+			exit;
+		}
+	}
 }
