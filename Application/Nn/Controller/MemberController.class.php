@@ -48,6 +48,17 @@ class MemberController extends HomeController {
 		
 	}
 	
+	public function yuelogs(){
+    	
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$this->assign('user',$user);
+		
+		$logs = M('WxuserYuelog')->where(array('uid'=>$user['id']))->select();
+		$this->assign('logs',$logs);
+		$this->display();
+		
+	}
 	
 	
 }

@@ -38,31 +38,34 @@
 	
 	<div class="title layui-row">
 		<div class="layui-col-xs2 back"><i class="layui-icon">&#xe65c;</i> </div>
-		<div class="layui-col-xs8">我的店铺</div>
+		<div class="layui-col-xs8">余额记录</div>
 		<div class="layui-col-xs2"></div>
 	</div>
 	
-	<div class="layui-collapse" lay-accordion>
+	<div style="padding: 10px 20px 0 20px;font-size: 23px;color:#008000;">我的余额：{$user['yue']}</div>
 		
-		<foreach name="dians" item="vo" >
-		  <div class="layui-colla-item">
-		    <h2 class="layui-colla-title">{$vo.title}
-		    	<eq name="vo.paystatus" value="0"><span>[未支付]</span></eq>
-		    	<eq name="vo.paystatus" value="1">
-		    		<eq name="vo.status" value="2"><span>[待审核]</span></eq>
-		    		<eq name="vo.status" value="1"><span>[正常]</span></eq>
-		    	</eq>
-		    </h2>
-		    <div class="layui-colla-content layui-show">
-		    	<div class="layui-btn-group">
-				  <button class="layui-btn">详情</button>
-				  <button class="layui-btn sendhb" data-shopid="{$vo.id}">发红包</button>
-				</div>
-		    </div>
-		  </div>
+  	<table class="layui-table" lay-skin="line">
+	  <colgroup>
+	    <col>
+	    <col width="35%">
+	  </colgroup>
+	  <thead>
+	    <tr>
+	      <th>详情</th>
+	      <th>时间</th>
+	    </tr> 
+	  </thead>
+	  <tbody>
+	  	<foreach name="logs" item="vo" >			  
+		  	<tr>
+		      <td>{$vo.desc}</td>
+		      <td>{$vo.time|date="y-m-d H:i",###}</td>
+		    </tr>
 	  	</foreach>
-	  
-	</div>
+	   
+	    
+	  </tbody>
+	</table>
 	
 </body>
  
