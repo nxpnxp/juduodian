@@ -324,7 +324,7 @@ class ShopController extends HomeController {
 		$id = I('get.id');
 		
 		//更新店铺红包是否过期
-		//。。。
+		$this->update_shophb($id);
 		
 		$dian = M('Document')->alias('d')
 				->field("d.*,ds.*,p.path")
@@ -348,6 +348,56 @@ class ShopController extends HomeController {
 		
     	$this->display();
     }
+
+	private function update_shophb($id){
+		$time = time();
+		$wxhb = M('Wxhb')->where('shopid='.$id.' and ispay=1 and yue>0')->find();
+		if($wxhb){
+			if($wxhb['isson'] && ($wxhb['num']>1)){
+				//多日
+				$wxhbson = M('WxhbSon')->where('hbid='.$wxhb['id'].' and yue>0 and endtime<'.$time)->find();
+				
+				//清除红包剩余余额
+				$yue = $wxhbson['yue'];
+				M('WxhbSon')->where('id='.$wxhbson['id'])->save(array('yue'=>0));
+				M('Wxhb')->where('id='.$wxhb['id'])->setDec('yue',$yue);
+				
+				//剩余余额返还商户余额
+				$shopid = $wxhbson['shopid'];
+				$uid = M('Document')->where(array('id'=>$shopid))->getField('uid');					
+				M('WxuserCode')->where('id='.$uid)->setInc('yue',$yue);
+				
+				//商户余额记录
+				M('WxuserYuelog')->add(array(
+					'uid' => $uid,
+					'fee' => $yue,
+					'desc' => '红包子订单['.$wxhbson['id'].']剩余['.$yue.']'.'转入余额',
+					'time' => $time
+				));			
+			}
+			if(($wxhb['isson']==0) && ($wxhb['num']==1)){
+				//单日
+				if($wxhb['endtime'] < $time){ //红包已过期
+					//清除红包剩余余额
+					$yue = $wxhb['yue'];
+					M('Wxhb')->where('id='.$wxhb['id'])->save(array('yue'=>0));
+					
+					//剩余余额返还商户余额
+					$shopid = $wxhb['shopid'];
+					$uid = M('Document')->where(array('id'=>$shopid))->getField('uid');					
+					M('WxuserCode')->where('id='.$uid)->setInc('yue',$yue);
+					
+					//商户余额记录
+					M('WxuserYuelog')->add(array(
+						'uid' => $uid,
+						'fee' => $yue,
+						'desc' => '红包['.$wxhb['id'].']剩余['.$yue.']'.'转入余额',
+						'time' => $time
+					));					
+				}
+			}
+		}
+	}
 	
 	/**
 	 * 发红包
