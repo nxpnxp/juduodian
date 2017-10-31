@@ -38,7 +38,7 @@
      		line-height:25px;padding:10px 0;
       	}
 		a.white{ color:#fff;}
-		.wrap{ width:100%; border-bottom:1px solid #eaeaea;}
+		.wrap{ width:100%;border-bottom:1px solid #eaeaea;}
 		#lunbo{ position:relative;}
 		.goback{display:block; width:30px; height:30px; border-radius:50%; background-color:#333; opacity:0.8; line-height:30px; text-align:center; margin-left:10px;}
 		.view{display:block; width:60px; height:30px; color:#fff; font-size:14px; float:right; margin-right:10px; background-color:#333; opacity:0.8; line-height:30px; text-align:center;border-radius:5px; }
@@ -53,10 +53,10 @@
 		.bg-d{ background-color:#ddd;}
 		.bg-d2{ background-color:#d2d2d2;}
 		.bg-bg{}
-		.logo{ position:absolute; bottom:-50px; left:45%; width:80px; height:80px; border-radius:50%; border:2px solid #fff; z-index:9999;}
-		.logo img{width:80px; height:80px;border-radius:50%;}
-		.shoptitle{ color:#FF5722;}
-		.shopdesc{ color:#c2c2c2;}
+		
+		.logo img{width:50px; height:50px;border-radius:50%; float:left; margin-right:10px;}
+		.shoptitle{ color:#2F4056; font-size:16px; font-weight:800}
+		.shopdesc{ color:#c2c2c2; line-height:1.5em;}
 	 </style>
 </head>
 <body>
@@ -73,10 +73,10 @@
 	<div class="layui-carousel" id="lunbo" lay-filter="lunbo">
     
        	<div class="bar layui-col-xs12">
-		<div class="layui-col-xs4"><a href="#" class="white" id="collection"><i class="layui-icon">&#xe600;</i> 收藏</a></div>
-		<div class="layui-col-xs4"><a href="#" id="zan" class="white"><i class="layui-icon">&#xe6c6;</i> <span id="zanum" style="padding-bottom:5px;">{$dian.zan}</span></a></div>
-<!--		<div class="layui-col-xs3"><a href="#"><i class="layui-icon">&#xe642;</i> 评论</a></div>-->
-        <div class="layui-col-xs4"><a href="tel:{$dian.mobile}" class="white"><i class="layui-icon">&#xe63b;</i> 电话</a></div>
+		<div class="layui-col-xs3"><a href="#" class="white" id="collection"><i class="layui-icon">&#xe600;</i> 收藏</a></div>
+		<div class="layui-col-xs3"><a href="#" id="zan" class="white"><i class="layui-icon">&#xe6c6;</i> <span id="zanum" style="padding-bottom:5px;">{$dian.zan}</span></a></div>
+ 		<div class="layui-col-xs3"><a href="#" class="white"><i class="layui-icon">&#xe64c;</i> 二维码</a></div> 
+        <div class="layui-col-xs3"><a href="tel:{$dian.mobile}" class="white"><i class="layui-icon">&#xe63b;</i> 电话</a></div>
 	</div>
     
 	  <div carousel-item="">
@@ -91,25 +91,25 @@
    <div class="layui-row" id="fix">
     
    </div>
-   <div class="wrap">
-	<div class="layui-row nrow"> 
-	    <div class="layui-col-xs9">
-	      <div class="shoptitle">{$dian.title}</div>
-	      <div class="shopdesc">{$dian.description}</div>
-	    </div>
-	    <div class="layui-col-xs3">
-	      二维码
-	    </div>
-	</div> 
-   </div>
+   
+   <div class="wrap"><div class="layui-row nrow"> 
+	<div class="layui-col-xs12"><div class="shoptitle">{$dian.title}</div></div>
+	</div></div>
+    
+     <div class="wrap" style="background-color:#F0F0F0"><div class="layui-row nrow"> 
+    <div class="layui-col-xs12 shopdesc logo"><img src="{$logo}">{$dian.description}</div>
+    </div> </div>
+
    <div class="wrap">
 	<div class="layui-row nrow">
 	<div class="layui-col-xs1"><i class="layui-icon">&#xe715;</i></div>
     <div class="layui-col-xs11" style="text-align:left;">地址：{$dian.showaddress}</div>
 	</div></div>
-	<div class="layui-row nrow">
+    
+	<div class="layui-row nrow" style="margin-bottom:80px;">
 		{$dian.content}
 	</div>
+    
     	<div class="footbar layui-row">
 		<div class="layui-col-xs3 layui-bg-cyan">
         <a href="#" class="white">
