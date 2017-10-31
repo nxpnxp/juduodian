@@ -342,9 +342,22 @@ class ShopController extends HomeController {
 				//多日
 				$wxhbson = M('WxhbSon')->where('hbid='.$wxhb['id'].' and yue>0 and gettime<='.$time.' and endtime>='.$time)->find();
 				if($wxhbson){
+					$this->assign('iskl',$wxhbson['iskl']);
 					$flag = 2;//2疯抢中
 				}else{
 					$flag = 4;//4不可抢
+					$_wxhbson = M('WxhbSon')->where('hbid='.$wxhb['id'].' and yue>0 ')->find();
+					if($time < $_wxhbson['gettime']){
+						$this->assign('gettime',date('Y-m-d H:i:s',$_wxhbson['gettime']));
+						$flag = 1;//1未开始
+					}
+					if( ($time >= $_wxhbson['gettime']) && ($time <= $_wxhbson['endtime']) ){
+						$this->assign('iskl',$_wxhbson['iskl']);
+						$flag = 2;//2疯抢中
+					}
+					if($time > $_wxhbson['endtime']){
+						$flag = 3;//3已结束
+					}
 				}
 			}
 			if(($wxhb['isson']==0) && ($wxhb['num']==1)){
@@ -354,6 +367,7 @@ class ShopController extends HomeController {
 					$flag = 1;//1未开始
 				}
 				if( ($time >= $wxhb['gettime']) && ($time <= $wxhb['endtime']) ){
+					$this->assign('iskl',$wxhb['iskl']);
 					$flag = 2;//2疯抢中
 				}
 				if($time > $wxhb['endtime']){
@@ -361,6 +375,7 @@ class ShopController extends HomeController {
 				}
 			}
 		}
+		$this->assign('wait',$wait);
 		$this->assign('flag',$flag);
 		
 		$logo = M('Picture')->where(array('id'=>$dian['cover_id']))->getField('path');
@@ -375,24 +390,28 @@ class ShopController extends HomeController {
 			if($wxhb['isson'] && ($wxhb['num']>1)){
 				//多日
 				$wxhbson = M('WxhbSon')->where('hbid='.$wxhb['id'].' and yue>0 and endtime<'.$time)->find();
+				if($wxhbson){
+					
+					//清除红包剩余余额
+					$yue = $wxhbson['yue'];
+					M('WxhbSon')->where('id='.$wxhbson['id'])->save(array('yue'=>0));
+					M('Wxhb')->where('id='.$wxhb['id'])->setDec('yue',$yue);
+					
+					//剩余余额返还商户余额
+					$shopid = $wxhbson['shopid'];
+					$uid = M('Document')->where(array('id'=>$shopid))->getField('uid');					
+					M('WxuserCode')->where('id='.$uid)->setInc('yue',$yue);
+					
+					//商户余额记录
+					M('WxuserYuelog')->add(array(
+						'uid' => $uid,
+						'fee' => $yue,
+						'desc' => '红包子订单['.$wxhbson['id'].']剩余['.$yue.']'.'转入余额',
+						'time' => $time,
+						'oid' => $wxhb['id'].'-'.$wxhbson['id']
+					));			
+				}
 				
-				//清除红包剩余余额
-				$yue = $wxhbson['yue'];
-				M('WxhbSon')->where('id='.$wxhbson['id'])->save(array('yue'=>0));
-				M('Wxhb')->where('id='.$wxhb['id'])->setDec('yue',$yue);
-				
-				//剩余余额返还商户余额
-				$shopid = $wxhbson['shopid'];
-				$uid = M('Document')->where(array('id'=>$shopid))->getField('uid');					
-				M('WxuserCode')->where('id='.$uid)->setInc('yue',$yue);
-				
-				//商户余额记录
-				M('WxuserYuelog')->add(array(
-					'uid' => $uid,
-					'fee' => $yue,
-					'desc' => '红包子订单['.$wxhbson['id'].']剩余['.$yue.']'.'转入余额',
-					'time' => $time
-				));			
 			}
 			if(($wxhb['isson']==0) && ($wxhb['num']==1)){
 				//单日
@@ -411,7 +430,8 @@ class ShopController extends HomeController {
 						'uid' => $uid,
 						'fee' => $yue,
 						'desc' => '红包['.$wxhb['id'].']剩余['.$yue.']'.'转入余额',
-						'time' => $time
+						'time' => $time,
+						'oid' => $wxhb['id'].'-0'
 					));					
 				}
 			}
@@ -435,7 +455,7 @@ class ShopController extends HomeController {
 		$this->assign('shop_title',$shop_title);
 			
 		//查找店铺红包
-		$hb = M('Wxhb')->where('shopid='.$shopid.' and endtime > '.$time.' and ispay=1')->find();
+		$hb = M('Wxhb')->where('shopid='.$shopid.' and endtime > '.$time.' and yue>0 and ispay=1')->find();
 		if($hb){
 			//已经存在红包
 			$this->assign('hb',$hb);
@@ -611,4 +631,174 @@ class ShopController extends HomeController {
 			exit;
 		}
 	}
+	
+	/**
+	 * 抢红包
+	 */
+    public function qianghb(){
+    	$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$latlon = M('WxuserLatlon')->where(array('uid'=>$user['id']))->order('id desc')->find();
+		
+		$kl = I('get.kl');		
+		
+		$shopid = I('get.shopid');
+		$dianshop = M('DocumentShop')->find($shopid);
+		
+		$time = time();
+		$wxhb = M('Wxhb')->where('shopid='.$shopid.' and ispay=1 and yue>0')->find();
+		if($wxhb){
+			if($wxhb['isson'] && ($wxhb['num']>1)){
+				//多日
+				$wxhbson = M('WxhbSon')->where('hbid='.$wxhb['id'].' and yue>0 and gettime<='.$time.' and endtime>='.$time)->find();
+				if($wxhbson){
+					if($wxhbson['type'] == 0){
+						//普通红包
+						$this->gethbmoney('WxhbSon',$wxhbson['id'],$user['id'],$wxhbson['ptmoney'],$kl);
+					}
+					if($wxhbson['type'] == 1){
+						//拼手气红包
+						$hbm = mt_rand($wxhbson['psqmoney1'],$wxhbson['psqmoney2']);
+						$this->gethbmoney('WxhbSon',$wxhbson['id'],$user['id'],$hbm,$kl);
+					}
+				}else{
+					//不可抢
+					$_wxhbson = M('WxhbSon')->where('hbid='.$wxhb['id'].' and yue>0 ')->find();
+					if($time < $_wxhbson['gettime']){
+						$this->error('未到红包发放时间');
+					}
+					if( ($time >= $_wxhbson['gettime']) && ($time <= $_wxhbson['endtime']) ){
+						if($_wxhbson['type'] == 0){
+							//普通红包
+							$this->gethbmoney('WxhbSon',$_wxhbson['id'],$user['id'],$_wxhbson['ptmoney'],$kl);
+						}
+						if($_wxhbson['type'] == 1){
+							//拼手气红包
+							$hbm = mt_rand($_wxhbson['psqmoney1'],$_wxhbson['psqmoney2']);
+							$this->gethbmoney('WxhbSon',$_wxhbson['id'],$user['id'],$hbm,$kl);
+						}
+					}
+					if($time > $_wxhbson['endtime']){
+						$this->error('红包发放时间已结束');
+					}
+				}
+			}
+			if(($wxhb['isson']==0) && ($wxhb['num']==1)){
+				//单日
+				if($time < $wxhb['gettime']){
+					$this->assign('gettime',date('Y-m-d H:i:s',$wxhb['gettime']));
+					$this->error('未到红包发放时间');
+				}
+				if( ($time >= $wxhb['gettime']) && ($time <= $wxhb['endtime']) ){
+					if($wxhb['type'] == 0){
+						//普通红包
+						$this->gethbmoney('Wxhb',$wxhb['id'],$user['id'],$wxhb['ptmoney'],$kl);
+					}
+					if($wxhb['type'] == 1){
+						//拼手气红包
+						$hbm = mt_rand($wxhb['psqmoney1'],$wxhb['psqmoney2']);
+						$this->gethbmoney('Wxhb',$wxhb['id'],$user['id'],$hbm,$kl);
+					}
+				}
+				if($time > $wxhb['endtime']){
+					$this->error('红包发放时间已结束');
+				}
+			}
+		}else{
+			$this->error('这个店铺没有红包啊~~');
+		}
+		
+    }
+
+	private function gethbmoney($f,$hbid,$uid,$money,$kl){
+		$time = time();
+		
+		//扣除单日红包余额
+		if($f == 'Wxhb'){
+			$model = M('Wxhb');
+			
+			//判断口令是否正确
+			$iskl = $model->where('id='.$hbid)->getField('iskl');
+			if($iskl){
+				$realkl = $model->where('id='.$hbid)->getField('kl');
+				if($realkl != $kl){
+					$this->error('抱歉，您输入的口令不正确！');
+				}
+			}
+			
+			//判断是否抢过
+			$log = M('WxuserYuelog')->where('uid='.$uid.' and oid="'.$hbid.'-0"')->find();
+			if($log){
+				$this->error('抱歉，您已抢过该红包了！');
+			}
+			
+			$model->startTrans();
+			$res = $model->where('id='.$hbid)->setDec('yue',$money);
+			if($res){
+				$model->commit();
+				//增加余额			
+				M('WxuserCode')->where('id='.$uid)->setInc('yue',$money);
+				
+				//存余额记录
+				M('WxuserYuelog')->add(array(
+					'uid' => $uid,
+					'fee' => $money,
+					'desc' => '红包['.$hbid.']抢到['.$money.']'.'转入余额',
+					'time' => $time,
+					'oid' => $hbid.'-0'
+				));
+				$this->success('真棒！抢到 '.$money.' 已存入余额。');
+			}else{
+				$model->rollback();
+				$this->error('呀！红包未抢到~');
+			}
+		}
+		//扣除多日红包余额
+		if($f == 'WxhbSon'){
+			$model1 = M('Wxhb');
+			$model2 = M('WxhbSon');
+			
+			$wxhbsonid = $hbid;
+			$wxhbid = $model2->where('id='.$wxhbsonid)->getField('hbid');
+			
+			//判断口令是否正确
+			$iskl = $model2->where('id='.$wxhbsonid)->getField('iskl');
+			if($iskl){
+				$realkl = $model2->where('id='.$wxhbsonid)->getField('kl');
+				if($realkl != $kl){
+					$this->error('抱歉，您输入的口令不正确！');
+				}
+			}
+			
+			//判断是否抢过
+			$log = M('WxuserYuelog')->where('uid='.$uid.' and oid="'.$wxhbid.'-'.$wxhbsonid.'"')->find();
+			if($log){
+				$this->error('抱歉，您已抢过该红包了！');
+			}
+			
+			$model1->startTrans();
+			$res1 = $model1->where('id='.$wxhbid)->setDec('yue',$money);
+			$res2 = $model2->where('id='.$wxhbsonid)->setDec('yue',$money);
+			if($res1 && $res2){
+				$model1->commit();
+				//增加余额			
+				M('WxuserCode')->where('id='.$uid)->setInc('yue',$money);
+				
+				//存余额记录
+				M('WxuserYuelog')->add(array(
+					'uid' => $uid,
+					'fee' => $money,
+					'desc' => '红包子订单['.$wxhbsonid.']抢到['.$money.']'.'转入余额',
+					'time' => $time,
+					'oid' => $wxhbid.'-'.$wxhbsonid
+				));
+				$this->success('真棒！抢到 '.$money.' 已存入余额。');
+			}else{
+				$model1->rollback();
+				$this->error('呀！红包未抢到~');
+			}
+		}
+		
+	}
+	
 }

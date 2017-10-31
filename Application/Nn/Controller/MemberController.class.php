@@ -32,6 +32,22 @@ class MemberController extends HomeController {
 		return $str;
 	}
 	
+	public function savelatlon(){
+    	
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		
+		$lat = I('post.lat');
+		$lon = I('post.lon');
+		M('WxuserLatlon')->add(array(
+			'uid' => $user['id'],
+			'lat' => $lat,
+			'lon' => $lon,
+			'time' => time()
+		));
+		
+	}
+	
 	
 	
 }

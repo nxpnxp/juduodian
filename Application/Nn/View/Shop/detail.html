@@ -124,7 +124,7 @@
 		        </a>
 			</if>
         </div>
-        <div class="layui-col-xs6 layui-bg-red"><a href="#" class="white">
+        <div class="layui-col-xs6 layui-bg-red"><a href="#" id="footcenter" class="white">
         	<eq name="flag" value="0">
         		<p>&nbsp;</p>
         		<p>店铺主还没发红包呢<p>
@@ -134,7 +134,7 @@
         		<p>未到红包发放时间<p>
         	</eq>
         	<eq name="flag" value="2">
-        		<p>10</p>
+        		<p>{$wait}</p>
         		<p>抢红包倒计时<p>
         	</eq>
         	<eq name="flag" value="3">
@@ -205,7 +205,7 @@
 			}
 				
 			})
-		})
+		});
 		
 		//收藏
 		$("#collection").click(function(){
@@ -224,7 +224,39 @@
 			}
 				
 			})
-		})
+		});
+		
+		var daojishi = {$wait};
+		settime();
+		function settime() { 
+		    if (daojishi == 0) { 
+		    	var iskl = {$iskl};
+		        $('#footcenter').html('<p>&nbsp;</p><p>开抢啦</p>');
+		        if(iskl){
+		        	$("#footcenter").click(function(){			        	
+						layer.prompt({
+						  formType: 2,
+						  value: '',
+						  title: '请输入口令'
+						}, function(value, index, elem){
+						  var url = "{:U('Shop/qianghb',array('shopid'=>$dian['id']))}";
+						  url += '&kl='+value;
+						  window.location.href=url;
+						  layer.close(index);
+						});
+					});
+		        }else{
+		        	$('#footcenter').attr('href',"{:U('Shop/qianghb',array('shopid'=>$dian['id']))}");
+		        }
+		        return;
+		    } else { 
+		        $('#footcenter').html('<p>'+daojishi+'</p><p>抢红包倒计时</p>');
+		        daojishi--; 
+		    } 
+			setTimeout(function() { 
+		    	settime() }
+		    ,1000) 
+		}
 				
 	});
 	

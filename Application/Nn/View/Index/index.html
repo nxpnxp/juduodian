@@ -123,6 +123,7 @@
 		        var accuracy = res.accuracy; // 位置精度
 		        //alert(latitude+'--'+longitude);
 		        calc(latitude,longitude);
+		        
 		    }
 		});
 		
@@ -133,6 +134,12 @@
 	  			
 	  			var lat1 = latitude;
 	  			var lng1 = longitude;
+	  			
+	  			$.ajax({
+		        	type:"post",
+		        	url:"{:U('Member/savelatlon')}",
+		        	data:{lat:lat1,lon:lng1}
+		        });
 	  			
 	  			var EARTH_RADIUS = 6378137.0;    //单位M
 			    var PI = Math.PI;
