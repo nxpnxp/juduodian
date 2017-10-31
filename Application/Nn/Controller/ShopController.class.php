@@ -334,17 +334,35 @@ class ShopController extends HomeController {
 		$this->assign('dian',$dian);
 		
 		$wait = 8;
-		$flag = 0;//0没红包 1未开始 2疯抢中 3已抢完 4已结束
+		$flag = 0;//0没红包 1未开始 2疯抢中 3已结束 4不可抢
 		$time = time();
 		$wxhb = M('Wxhb')->where('shopid='.$id.' and ispay=1 and yue>0')->find();
 		if($wxhb){
 			if($wxhb['isson'] && ($wxhb['num']>1)){
 				//多日
+				$wxhbson = M('WxhbSon')->where('hbid='.$wxhb['id'].' and yue>0 and gettime<='.$time.' and endtime>='.$time)->find();
+				if($wxhbson){
+					$flag = 2;//2疯抢中
+				}else{
+					$flag = 4;//4不可抢
+				}
 			}
 			if(($wxhb['isson']==0) && ($wxhb['num']==1)){
 				//单日
+				if($time < $wxhb['gettime']){
+					$this->assign('gettime',date('Y-m-d H:i:s',$wxhb['gettime']));
+					$flag = 1;//1未开始
+				}
+				if( ($time >= $wxhb['gettime']) && ($time <= $wxhb['endtime']) ){
+					$flag = 2;//2疯抢中
+				}
+				if($time > $wxhb['endtime']){
+					$flag = 3;//3已结束
+				}
 			}
 		}
+		$this->assign('flag',$flag);
+		
 		$logo = M('Picture')->where(array('id'=>$dian['cover_id']))->getField('path');
 		$this->assign('logo',$logo);
     	$this->display();

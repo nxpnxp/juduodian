@@ -73,11 +73,11 @@
 	<div class="layui-carousel" id="lunbo" lay-filter="lunbo">
     
        	<div class="bar layui-col-xs12">
-		<div class="layui-col-xs3"><a href="#" class="white" id="collection"><i class="layui-icon">&#xe600;</i> 收藏</a></div>
-		<div class="layui-col-xs3"><a href="#" id="zan" class="white"><i class="layui-icon">&#xe6c6;</i> <span id="zanum" style="padding-bottom:5px;">{$dian.zan}</span></a></div>
- 		<div class="layui-col-xs3"><a href="#" class="white"><i class="layui-icon">&#xe64c;</i> 二维码</a></div> 
-        <div class="layui-col-xs3"><a href="tel:{$dian.mobile}" class="white"><i class="layui-icon">&#xe63b;</i> 电话</a></div>
-	</div>
+			<div class="layui-col-xs3"><a href="#" class="white" id="collection"><i class="layui-icon">&#xe600;</i> 收藏</a></div>
+			<div class="layui-col-xs3"><a href="#" id="zan" class="white"><i class="layui-icon">&#xe6c6;</i> <span id="zanum" style="padding-bottom:5px;">{$dian.zan}</span></a></div>
+	 		<div class="layui-col-xs3"><a href="#" class="white"><i class="layui-icon">&#xe64c;</i> 二维码</a></div> 
+	        <div class="layui-col-xs3"><a href="tel:{$dian.mobile}" class="white"><i class="layui-icon">&#xe63b;</i> 电话</a></div>
+		</div>
     
 	  <div carousel-item="">
 	    <div><img src="{$dian.path}"></div>
@@ -112,15 +112,41 @@
     
     	<div class="footbar layui-row">
 		<div class="layui-col-xs3 layui-bg-cyan">
-        <a href="#" class="white">
-        <p><i class="iconfont icon-dianpu-copy"></i></p>
-        <p>我要开店</p>
-        </a></div>
+			<if condition=" $user['id'] eq $dian['uid'] "> 
+				<a href="{:U('Shop/dians')}" class="white">
+		        <p><i class="iconfont icon-dianpu-copy"></i></p>
+		        <p>店铺管理</p>
+		        </a>
+			<else />
+				<a href="{:U('Shop/index')}" class="white">
+		        <p><i class="iconfont icon-dianpu-copy"></i></p>
+		        <p>我要开店</p>
+		        </a>
+			</if>
+        </div>
         <div class="layui-col-xs6 layui-bg-red"><a href="#" class="white">
-        <p>10</p>
-        <p>抢红包倒计时<p>
+        	<eq name="flag" value="0">
+        		<p>&nbsp;</p>
+        		<p>店铺主还没发红包呢<p>
+        	</eq>
+        	<eq name="flag" value="1">
+        		<p>{$gettime}</p>
+        		<p>未到红包发放时间<p>
+        	</eq>
+        	<eq name="flag" value="2">
+        		<p>10</p>
+        		<p>抢红包倒计时<p>
+        	</eq>
+        	<eq name="flag" value="3">
+        		<p>&nbsp;</p>
+        		<p>红包发放时间已结束<p>
+        	</eq>
+        	<eq name="flag" value="4">
+        		<p>&nbsp;</p>
+        		<p>当前红包不可抢<p>
+        	</eq>
         </a></div>
-        <div class="layui-col-xs3 layui-bg-cyan"><a href="#" class="white">
+        <div class="layui-col-xs3 layui-bg-cyan"><a href="{:U('Member/index')}" class="white">
         <p><i class="iconfont icon-huiyuan"></i></p>
         <p>个人中心<p>
         </a></div>
@@ -174,7 +200,7 @@
 					_num = parseInt(_num);
 					$("#zanum").html(_num+1);
 				}else{
-					alert("您已经点过赞了！");
+					layer.msg("您已经点过赞了！");
 				}
 			}
 				
@@ -191,9 +217,9 @@
 			success:function(data){
 				//alert(data)
 				if(data>0){
-					alert("您收藏了店铺，可以在我的中心里查看！");
+					layer.msg("您收藏了店铺，可以在我的中心里查看！");
 				}else{
-					alert("您已经收藏过了！");
+					layer.msg("您已经收藏过了！");
 				}
 			}
 				
