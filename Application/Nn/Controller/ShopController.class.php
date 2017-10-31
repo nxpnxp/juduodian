@@ -345,7 +345,8 @@ class ShopController extends HomeController {
 				//单日
 			}
 		}
-		
+		$logo = M('Picture')->where(array('id'=>$dian['cover_id']))->getField('path');
+		$this->assign('logo',$logo);
     	$this->display();
     }
 	
