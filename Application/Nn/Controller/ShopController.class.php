@@ -459,6 +459,12 @@ class ShopController extends HomeController {
 		if($hb){
 			//已经存在红包
 			$this->assign('hb',$hb);
+			
+			if($hb['isson'] && ($hb['num']>1)){
+				$hbsons = M('WxhbSon')->where('hbid='.$hb['id'])->order('gettime asc')->select();
+				$this->assign('hbsons',$hbsons);
+			}
+			
 			$this->display('hbdetail');
 		}else{		
 			$sxf = M('Config')->where('id=39')->getField('value');
@@ -800,5 +806,28 @@ class ShopController extends HomeController {
 		}
 		
 	}
+
+
+	/**
+	 * 抢红包记录
+	 */
+    public function logs(){
+    	$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$this->assign('user',$user);
+		
+    	$hbid = I('get.hbid');
+		$hbyue = M('Wxhb')->where('id='.$hbid)->getField('yue');
+		$this->assign('hbyue',$hbyue);	
+		
+		$logs = M('WxuserYuelog')->alias('a')
+				->field('a.*,b.nickname')
+				->join('left join onethink_wxuser_code b on a.uid=b.id')
+				->where('a.oid like "'.$hbid.'-%"')
+				->order('time desc')
+				->select();
+		$this->assign('logs',$logs);
+		$this->display();	
+    }
 	
 }

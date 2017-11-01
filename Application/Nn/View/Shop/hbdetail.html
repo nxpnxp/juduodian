@@ -43,7 +43,9 @@
 	<div class="title layui-row">
 		<div class="layui-col-xs2 back"><i class="layui-icon">&#xe65c;</i> </div>
 		<div class="layui-col-xs8">{$shop_title}红包</div>
-		<div class="layui-col-xs2"></div>
+		<div class="layui-col-xs2">
+			<a href="{:U('Shop/logs',array('hbid'=>$hb['id']))}" style="color:#ffaaaa;font-size: 15px;">记录</a>
+		</div>
 	</div>
 	
 	<div class="content">
@@ -128,13 +130,32 @@
 			</div>
 		</div>
 		
+		<if condition="($hb['isson'] eq 1) AND ($hb['num'] gt 1) "> 
+			<div class="layui-collapse" lay-accordion>		
+				<foreach name="hbsons" item="vo" >
+				  <div class="layui-colla-item">
+				    <h2 class="layui-colla-title">{$vo.gettime|date="Y-m-d H:i:s",###} ~ {$vo.endtime|date="Y-m-d H:i:s",###}</h2>
+				    <div class="layui-colla-content layui-show">
+				    	<div class="layui-row">
+						    <div class="layui-col-xs6">
+						      每日金额：{$vo.everymoney}
+						    </div>
+						    <div class="layui-col-xs6">
+						      余额：{$vo.yue}
+						    </div>
+						  </div>
+				    </div>
+				  </div>
+				</foreach>
+			</div>
+		</if>
 	</div>
 	
 </body>
  
 <script type="text/javascript" src="__NN__/layui.js"></script> 
 <script>
-	layui.use(['layer','jquery','form','laydate'], function(){
+	layui.use(['layer','jquery','form','laydate','element'], function(){
 		
 		//弹出层
 	  	var $ = layui.$ //重点处
@@ -150,6 +171,10 @@
 	  	$('.back').click(function(){
 	  		window.location.href = "{:U('Shop/dians')}";
 	  	});
+	  	
+	  	//手风琴
+		var element = layui.element;
+  		//…
 	  	
 	});
 	
