@@ -64,6 +64,7 @@ class MemberController extends HomeController {
 	public function collection(){
 		$openid = $this->openid;
 		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$this->assign('user',$user);
 		$data = M('Collection')->where(array('uid'=>$user['id']))->select();
 		$ids = '';
 		foreach($data as $k=>$v){
