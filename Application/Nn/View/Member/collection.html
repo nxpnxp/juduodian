@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>我的收藏</title>    
+    <meta name="renderer" content="webkit">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="__CSS__/layui.css" media="all">	
+    <link rel="stylesheet" type="text/css" href="__CSS__/iconfont.css">
+     <style>     	
+     	.subscribe{ 
+     		padding: 10px 0;
+     		color: red;
+     		font-size: 15px;
+     		text-align: center;
+     		width: 90%;
+     		margin: 0 auto;
+     	}     
+     	.title{
+     		width: 100%;
+     		text-align: center;
+     		padding: 10px 0;
+     		background-color: #009688;
+     		color: #fff;
+     		font-size: 20px;
+			margin-bottom:10px;
+     	}	  
+     	.title i{
+     		text-align: left;
+     	}   	
+		.white{ color:#fff;}
+     	.layui-colla-title span{color:red;margin-left: 10px;}
+		.shoplist{ margin:0 auto; width:96%; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid #eaeaea;}
+		.shoplist img{ width:50px; height:50px; border-radius:50%;}
+     </style>
+</head>
+<body>
+	<if condition="$user.subscribe != 1">
+		<div class="subscribe">您未关注，请点击关注</div>
+	</if>
+	
+	<div class="title layui-row">
+		<div class="layui-col-xs2 back"><a class="white"  href="javascript:history.go(-1)"><i class="layui-icon">&#xe65c;</i> </a></div>
+		<div class="layui-col-xs8">我的收藏</div>
+		<div class="layui-col-xs2"></div>
+	</div>
+	<foreach name="collections" item="vo" >
+    <a href="__MODULE__/shop/detail/id/{$vo.id}">
+	<div class="layui-row shoplist">
+    <div class="layui-col-xs3"><img src="{$vo.logo}" /></div>
+	<div class="layui-col-xs6">{$vo.title}</div>
+    </div>
+    </a>
+	</foreach>	
+  	
+	
+</body>
+ 
+<script type="text/javascript" src="__NN__/layui.js"></script> 
+<script>
+	layui.use(['layer','jquery','element'], function(){
+		
+		$('.back').click(function(){
+	  		window.location.href = "{:U('Member/index')}";
+	  	});
+		
+		$('.open').click(function(){
+			var id = $(this).attr('data-id');
+			var url = "{:U('Shop/detail')}"+'&id='+id;
+			window.location.href = url;
+		});
+		
+	});
+	
+</script>
+</html>

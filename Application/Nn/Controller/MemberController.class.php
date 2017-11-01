@@ -60,5 +60,22 @@ class MemberController extends HomeController {
 		
 	}
 	
-	
+	//我的收藏
+	public function collection(){
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$data = M('Collection')->where(array('uid'=>$user['id']))->select();
+		$ids = '';
+		foreach($data as $k=>$v){
+			$ids .= $v['sid'].',';
+		}
+		$ids = trim($ids,',');
+		$collections = M('Document')->where("id in ($ids)")->select();
+		foreach($collections as $k=>$v){
+			$collections[$k]['logo'] = M('Picture')->where(array('id'=>$v['cover_id']))->getField('path');
+		}
+		
+		$this->assign('collections',$collections);
+		$this->display();
+	}
 }
