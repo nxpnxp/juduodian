@@ -651,6 +651,8 @@ class ShopController extends HomeController {
 		$shopid = I('get.shopid');
 		$dianshop = M('DocumentShop')->find($shopid);
 		
+		$jvli = $this->getDistance($latlon['lon'],$latlon['lat'],$dianshop['longitude'],$dianshop['latitude'],2);
+		
 		$time = time();
 		$wxhb = M('Wxhb')->where('shopid='.$shopid.' and ispay=1 and yue>0')->find();
 		if($wxhb){
@@ -660,12 +662,12 @@ class ShopController extends HomeController {
 				if($wxhbson){
 					if($wxhbson['type'] == 0){
 						//普通红包
-						$this->gethbmoney('WxhbSon',$wxhbson['id'],$user['id'],$wxhbson['ptmoney'],$kl);
+						$this->gethbmoney('WxhbSon',$wxhbson['id'],$user['id'],$wxhbson['ptmoney'],$kl,$jvli);
 					}
 					if($wxhbson['type'] == 1){
 						//拼手气红包
 						$hbm = mt_rand($wxhbson['psqmoney1'],$wxhbson['psqmoney2']);
-						$this->gethbmoney('WxhbSon',$wxhbson['id'],$user['id'],$hbm,$kl);
+						$this->gethbmoney('WxhbSon',$wxhbson['id'],$user['id'],$hbm,$kl,$jvli);
 					}
 				}else{
 					//不可抢
@@ -676,12 +678,12 @@ class ShopController extends HomeController {
 					if( ($time >= $_wxhbson['gettime']) && ($time <= $_wxhbson['endtime']) ){
 						if($_wxhbson['type'] == 0){
 							//普通红包
-							$this->gethbmoney('WxhbSon',$_wxhbson['id'],$user['id'],$_wxhbson['ptmoney'],$kl);
+							$this->gethbmoney('WxhbSon',$_wxhbson['id'],$user['id'],$_wxhbson['ptmoney'],$kl,$jvli);
 						}
 						if($_wxhbson['type'] == 1){
 							//拼手气红包
 							$hbm = mt_rand($_wxhbson['psqmoney1'],$_wxhbson['psqmoney2']);
-							$this->gethbmoney('WxhbSon',$_wxhbson['id'],$user['id'],$hbm,$kl);
+							$this->gethbmoney('WxhbSon',$_wxhbson['id'],$user['id'],$hbm,$kl,$jvli);
 						}
 					}
 					if($time > $_wxhbson['endtime']){
@@ -698,12 +700,12 @@ class ShopController extends HomeController {
 				if( ($time >= $wxhb['gettime']) && ($time <= $wxhb['endtime']) ){
 					if($wxhb['type'] == 0){
 						//普通红包
-						$this->gethbmoney('Wxhb',$wxhb['id'],$user['id'],$wxhb['ptmoney'],$kl);
+						$this->gethbmoney('Wxhb',$wxhb['id'],$user['id'],$wxhb['ptmoney'],$kl,$jvli);
 					}
 					if($wxhb['type'] == 1){
 						//拼手气红包
 						$hbm = mt_rand($wxhb['psqmoney1'],$wxhb['psqmoney2']);
-						$this->gethbmoney('Wxhb',$wxhb['id'],$user['id'],$hbm,$kl);
+						$this->gethbmoney('Wxhb',$wxhb['id'],$user['id'],$hbm,$kl,$jvli);
 					}
 				}
 				if($time > $wxhb['endtime']){
@@ -716,12 +718,47 @@ class ShopController extends HomeController {
 		
     }
 
-	private function gethbmoney($f,$hbid,$uid,$money,$kl){
+	private function gethbmoney($f,$hbid,$uid,$money,$kl,$jvli){
 		$time = time();
 		
 		//扣除单日红包余额
 		if($f == 'Wxhb'){
 			$model = M('Wxhb');
+			
+			//判断距离
+			$_jvli_type = $model->where('id='.$hbid)->getField('area');
+			switch ($_jvli_type) {
+				case '1':
+					//3km 
+					if( ($jvli>0) && ($jvli<=3) ){
+						
+					}else{
+						$this->error('抱歉，您超过3km区域不可抢红包，赶快靠近抢吧！');
+					}
+					break;
+				case '2':
+					//5km
+					if( ($jvli>0) && ($jvli<=5) ){
+						
+					}else{
+						$this->error('抱歉，您超过5km区域不可抢红包，赶快靠近抢吧！');
+					}
+					break;
+				case '3':
+					//20km
+					if( ($jvli>0) && ($jvli<=20) ){
+						
+					}else{
+						$this->error('抱歉，您超过20km区域不可抢红包，赶快靠近抢吧！');
+					}
+					break;
+				case '4':
+					//不限
+					break;
+				default:
+					$this->error('区域不正确！');
+					break;
+			}
 			
 			//判断口令是否正确
 			$iskl = $model->where('id='.$hbid)->getField('iskl');
@@ -806,7 +843,41 @@ class ShopController extends HomeController {
 		}
 		
 	}
-
+	
+	/**
+	 * 计算两点地理坐标之间的距离
+	 * @param  Decimal $longitude1 起点经度
+	 * @param  Decimal $latitude1  起点纬度
+	 * @param  Decimal $longitude2 终点经度 
+	 * @param  Decimal $latitude2  终点纬度
+	 * @param  Int     $unit       单位 1:米 2:公里
+	 * @param  Int     $decimal    精度 保留小数位数
+	 * @return Decimal
+	 */
+	private function getDistance($longitude1, $latitude1, $longitude2, $latitude2, $unit=2, $decimal=2){
+	
+	    $EARTH_RADIUS = 6370.996; // 地球半径系数
+	    $PI = 3.1415926;
+	
+	    $radLat1 = $latitude1 * $PI / 180.0;
+	    $radLat2 = $latitude2 * $PI / 180.0;
+	
+	    $radLng1 = $longitude1 * $PI / 180.0;
+	    $radLng2 = $longitude2 * $PI /180.0;
+	
+	    $a = $radLat1 - $radLat2;
+	    $b = $radLng1 - $radLng2;
+	
+	    $distance = 2 * asin(sqrt(pow(sin($a/2),2) + cos($radLat1) * cos($radLat2) * pow(sin($b/2),2)));
+	    $distance = $distance * $EARTH_RADIUS * 1000;
+	
+	    if($unit==2){
+	        $distance = $distance / 1000;
+	    }
+	
+	    return round($distance, $decimal);
+	
+	}
 
 	/**
 	 * 抢红包记录
