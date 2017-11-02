@@ -136,17 +136,53 @@ class MemberController extends HomeController {
 			$this->error('您申请的金额超过您已有余额');
 		}
 		
+		$ordersn = 'WXTX'.substr( md5('NNN'.time()) , 4,12);
 		$data = array(
 			'uid' => $user['id'],
 			'applyfee' => $fee,
 			'applytime' => $time,
-			'type' => 0 //0已申请  1审核通过并打款  2拒绝
+			'type' => 0, //0已申请  1审核通过并打款  2拒绝  //改为无审核  直接打款
+			'sn' => $ordersn
 		);
 		$res = M('WxuserTixian')->add($data);
 		if($res){
-			$this->success('申请提现成功');
+			
+			// 实例化支付接口
+			$pay = & load_wechat('Pay');
+			
+			$amount = $fee * 100;
+			$billno = $ordersn;
+			$desc = '用户余额提现';
+			
+			// 调用方法
+			$result = $pay->transfers($openid,$amount,$billno, $desc);
+			
+			// 处理结果
+			if($result === FALSE){
+				// 返回失败的处理结果
+			    $err = $pay->errMsg;
+				$this->error($err);
+			}else{
+				// 返回成功的处理结果
+				M('WxuserTixian')->where('id='.$res)->save(array(
+					'overfee' => $fee,
+					'overtime' => time(),
+					'type' => 1
+				));
+				M('WxuserCode')->where('id='.$user['id'])->setDec('yue',$fee);				
+				M('WxuserYuelog')->add(array(
+					'uid' => $user['id'],
+					'fee' => $fee,
+					'desc' => '余额提现：订单号['.$billno.'],金额['.$fee.']',
+					'time' => time(),
+					'oid' => '0-0'
+				));		
+				$this->success('提现成功');
+			}
+				
+			
 		}else{
-			$this->error('申请提现失败');
+			$this->error('提现失败');
 		}
 		
 	}
