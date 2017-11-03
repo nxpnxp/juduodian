@@ -490,9 +490,14 @@ class ShopController extends HomeController {
 		$this->update_shophb($id);
 		
 		$dian = M('Document')->alias('d')
-				->field("d.*,ds.*,p.path")
+				->field("d.*,ds.*,p.path imgsp,p1.path imgs1p,p2.path imgs2p,p3.path imgs3p,p4.path imgs4p,p5.path imgs5p")
 				->join('left join onethink_document_shop ds on d.id=ds.id')
 				->join('left join onethink_picture p on ds.imgs=p.id')
+				->join('left join onethink_picture p1 on ds.imgs1=p1.id')
+				->join('left join onethink_picture p2 on ds.imgs2=p2.id')
+				->join('left join onethink_picture p3 on ds.imgs3=p3.id')
+				->join('left join onethink_picture p4 on ds.imgs4=p4.id')
+				->join('left join onethink_picture p5 on ds.imgs5=p5.id')
 				->where('d.id='.$id)->find();
 		$this->assign('dian',$dian);
 		
@@ -836,7 +841,7 @@ class ShopController extends HomeController {
 					//不可抢
 					$_wxhbson = M('WxhbSon')->where('hbid='.$wxhb['id'].' and yue>0 ')->find();
 					if($time < $_wxhbson['gettime']){
-						$this->error('未到红包发放时间');
+						echo json_encode(array('i'=>0,'msg'=>'未到红包发放时间'));
 					}
 					if( ($time >= $_wxhbson['gettime']) && ($time <= $_wxhbson['endtime']) ){
 						if($_wxhbson['type'] == 0){
@@ -850,7 +855,7 @@ class ShopController extends HomeController {
 						}
 					}
 					if($time > $_wxhbson['endtime']){
-						$this->error('红包发放时间已结束');
+						echo json_encode(array('i'=>0,'msg'=>'红包发放时间已结束'));
 					}
 				}
 			}
@@ -858,7 +863,7 @@ class ShopController extends HomeController {
 				//单日
 				if($time < $wxhb['gettime']){
 					$this->assign('gettime',date('Y-m-d H:i:s',$wxhb['gettime']));
-					$this->error('未到红包发放时间');
+					echo json_encode(array('i'=>0,'msg'=>'未到红包发放时间'));
 				}
 				if( ($time >= $wxhb['gettime']) && ($time <= $wxhb['endtime']) ){
 					if($wxhb['type'] == 0){
@@ -872,11 +877,11 @@ class ShopController extends HomeController {
 					}
 				}
 				if($time > $wxhb['endtime']){
-					$this->error('红包发放时间已结束');
+					echo json_encode(array('i'=>0,'msg'=>'红包发放时间已结束'));
 				}
 			}
 		}else{
-			$this->error('这个店铺没有红包啊~~');
+			echo json_encode(array('i'=>0,'msg'=>'这个店铺没有红包啊~~'));
 		}
 		
     }
@@ -896,7 +901,7 @@ class ShopController extends HomeController {
 					if( ($jvli>0) && ($jvli<=3) ){
 						
 					}else{
-						$this->error('抱歉，您超过3km区域不可抢红包，赶快靠近抢吧！');
+						echo json_encode(array('i'=>0,'msg'=>'抱歉，您超过3km区域不可抢红包，赶快靠近抢吧！'));die;
 					}
 					break;
 				case '2':
@@ -904,7 +909,7 @@ class ShopController extends HomeController {
 					if( ($jvli>0) && ($jvli<=5) ){
 						
 					}else{
-						$this->error('抱歉，您超过5km区域不可抢红包，赶快靠近抢吧！');
+						echo json_encode(array('i'=>0,'msg'=>'抱歉，您超过5km区域不可抢红包，赶快靠近抢吧！'));die;
 					}
 					break;
 				case '3':
@@ -912,14 +917,14 @@ class ShopController extends HomeController {
 					if( ($jvli>0) && ($jvli<=20) ){
 						
 					}else{
-						$this->error('抱歉，您超过20km区域不可抢红包，赶快靠近抢吧！');
+						echo json_encode(array('i'=>0,'msg'=>'抱歉，您超过20km区域不可抢红包，赶快靠近抢吧！'));die;
 					}
 					break;
 				case '4':
 					//不限
 					break;
 				default:
-					$this->error('区域不正确！');
+					echo json_encode(array('i'=>0,'msg'=>'区域不正确！'));die;
 					break;
 			}
 			
@@ -928,14 +933,14 @@ class ShopController extends HomeController {
 			if($iskl){
 				$realkl = $model->where('id='.$hbid)->getField('kl');
 				if($realkl != $kl){
-					$this->error('抱歉，您输入的口令不正确！');
+					echo json_encode(array('i'=>0,'msg'=>'抱歉，您输入的口令不正确！'));die;
 				}
 			}
 			
 			//判断是否抢过
 			$log = M('WxuserYuelog')->where('uid='.$uid.' and oid="'.$hbid.'-0"')->find();
 			if($log){
-				$this->error('抱歉，您已抢过该红包了！');
+				echo json_encode(array('i'=>0,'msg'=>'抱歉，您已抢过该红包了！'));die;
 			}
 			
 			$model->startTrans();
@@ -953,10 +958,10 @@ class ShopController extends HomeController {
 					'time' => $time,
 					'oid' => $hbid.'-0'
 				));
-				$this->success('真棒！抢到 '.$money.' 已存入余额。');
+				echo json_encode(array('i'=>1,'msg'=>'真棒！抢到 '.$money.' 已存入余额。'));die;
 			}else{
 				$model->rollback();
-				$this->error('呀！红包未抢到~');
+				echo json_encode(array('i'=>0,'msg'=>'呀！红包未抢到~'));die;
 			}
 		}
 		//扣除多日红包余额
@@ -972,14 +977,14 @@ class ShopController extends HomeController {
 			if($iskl){
 				$realkl = $model2->where('id='.$wxhbsonid)->getField('kl');
 				if($realkl != $kl){
-					$this->error('抱歉，您输入的口令不正确！');
+					echo json_encode(array('i'=>0,'msg'=>'抱歉，您输入的口令不正确！'));die;
 				}
 			}
 			
 			//判断是否抢过
 			$log = M('WxuserYuelog')->where('uid='.$uid.' and oid="'.$wxhbid.'-'.$wxhbsonid.'"')->find();
 			if($log){
-				$this->error('抱歉，您已抢过该红包了！');
+				echo json_encode(array('i'=>0,'msg'=>'抱歉，您已抢过该红包了！'));die;
 			}
 			
 			$model1->startTrans();
@@ -998,10 +1003,10 @@ class ShopController extends HomeController {
 					'time' => $time,
 					'oid' => $wxhbid.'-'.$wxhbsonid
 				));
-				$this->success('真棒！抢到 '.$money.' 已存入余额。');
+				echo json_encode(array('i'=>1,'msg'=>'真棒！抢到 '.$money.' 已存入余额。'));die;
 			}else{
 				$model1->rollback();
-				$this->error('呀！红包未抢到~');
+				echo json_encode(array('i'=>0,'msg'=>'呀！红包未抢到~'));die;
 			}
 		}
 		
