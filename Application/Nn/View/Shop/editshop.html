@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title> 申请店铺</title>    
+    <title> 编辑店铺</title>    
     <meta name="renderer" content="webkit">
   	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -38,10 +38,24 @@
 		<div class="subscribe">您未关注，请点击关注</div>
 	</if>
 	
-	<div class="title">申请您的专属小店</div>
+	<div class="title">编辑您的店铺</div>
 	
-	<form class="layui-form" method="post" action="{:U('Shop/doapply')}">
+	<form class="layui-form" method="post" action="{:U('Shop/doapplyedit1')}">
 		
+		<input type="hidden" name="id" value="{$one.id}" />
+		
+        	  <div class="layui-form-item">
+	    <label class="layui-form-label">店铺LOGO</label>
+	    <div class="layui-input-block">
+	     	<button type="button" class="layui-btn" id="img4">
+			  <i class="layui-icon">&#xe67c;</i>上传图片
+			</button>
+			<img src="" id="img4res" style="display:none;width:80px;height:80px;"/>
+			<input type="hidden" required name="newid2" value="" />
+	    </div>
+	  </div>
+        
+        
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">封面1</label>
 	    <div class="layui-input-block">
@@ -52,8 +66,7 @@
 			<input type="hidden" required name="img1" value="" />
 	    </div>
 	  </div>
-      
-      	  <div class="layui-form-item">
+  <div class="layui-form-item">
 	    <label class="layui-form-label">封面2</label>
 	    <div class="layui-input-block">
 	     	<button type="button" class="layui-btn" id="img2">
@@ -74,52 +87,39 @@
 			<input type="hidden" required name="img3" value="" />
 	    </div>
 	  </div>
-	  
-	  <div class="layui-form-item">
-	    <label class="layui-form-label">店铺LOGO</label>
-	    <div class="layui-input-block">
-	     	<button type="button" class="layui-btn" id="img4">
-			  <i class="layui-icon">&#xe67c;</i>上传图片
-			</button>
-			<img src="" id="img4res" style="display:none;width:200px;height:100px;"/>
-			<input type="hidden" required name="newid2" value="" />
-	    </div>
-	  </div>
-	
+
     	  <div class="layui-form-item">
 	    <label class="layui-form-label">二维码</label>
 	    <div class="layui-input-block">
 	     	<button type="button" class="layui-btn" id="img7">
 			  <i class="layui-icon">&#xe67c;</i>上传图片
 			</button>
-			<img src="" id="img7res" style="display:none;width:200px;height:100px;"/>
+			<img src="" id="img7res" style="display:none;width:80px;height:80px;"/>
 			<input type="hidden" required name="img7" value="" />
 	    </div>
 	  </div>
-    
-    
+	
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">小店名称</label>
 	    <div class="layui-input-block">
-	      <input type="text" name="title" required  lay-verify="required" placeholder="您的小店名称" autocomplete="off" class="layui-input">
+	      <input type="text" name="title" value="{$one.title}" required  lay-verify="required" placeholder="您的小店名称" autocomplete="off" class="layui-input">
 	    </div>
 	  </div>
 	  
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">描述</label>
 	    <div class="layui-input-block">
-	      <input type="text" name="brief" placeholder="您的小店描述" autocomplete="off" class="layui-input">
+	      <input type="text" name="brief" value="{$one.description}" placeholder="您的小店描述" autocomplete="off" class="layui-input">
 	    </div>
 	  </div>
 	  
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">详情</label>
 	    <div class="layui-input-block">
-	      <textarea name="content" required lay-verify="required" placeholder="请输入详情" class="layui-textarea"></textarea>
+	      <textarea name="content" required lay-verify="required" placeholder="请输入详情" class="layui-textarea">{$dian.content}</textarea>
 	    </div>
 	  </div>
-      
-      <div class="layui-form-item">
+ <div class="layui-form-item">
 	    <label class="layui-form-label">详情图片1</label>
 	    <div class="layui-input-block">
 	     	<button type="button" class="layui-btn" id="img5">
@@ -140,28 +140,30 @@
 			<input type="hidden" required name="img6" value="" />
 	    </div>
 	  </div>
-      
 	   <div class="layui-form-item">
 		    <label class="layui-form-label">选择分类</label>
 		    <div class="layui-input-block">
 		      <select name="cate1" lay-verify="required" lay-filter="cate1">
 		        <option value=""></option>
 		        <foreach name="cate1" item="vo" >
-				    <option value="{$vo.id}">{$vo.title}</option>
+				    <option value="{$vo.id}" <eq name="cate1_id" value="$vo['id']">selected="selected"</eq>>{$vo.title}</option>
 				</foreach>
 		      </select>
 		      <select name="cate2" lay-verify="required"  lay-filter="cate2">
-		        <option value=""></option>		        
+		        <option value=""></option>	
+		        <foreach name="cate2" item="vo" >
+				    <option value="{$vo.id}" <eq name="one['category_id']" value="$vo['id']">selected="selected"</eq>>{$vo.title}</option>
+				</foreach>
 		      </select>
 		    </div>
 		  </div>
-	  
-	  <div class="layui-form-item">
-	    <label class="layui-form-label">显示地址</label>
-	    <div class="layui-input-block">
-	      <textarea name="showaddress" required lay-verify="required" placeholder="请输入显示的地址" class="layui-textarea"></textarea>
-	    </div>
-	  </div>
+		  
+		<div class="layui-form-item">
+		    <label class="layui-form-label">显示地址</label>
+		    <div class="layui-input-block">
+		      <textarea name="showaddress" required lay-verify="required" placeholder="请输入显示的地址" class="layui-textarea">{$dian.showaddress}</textarea>
+		    </div>
+		</div>
 	  
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">地址</label>
@@ -182,7 +184,7 @@
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">联系电话</label>
 	    <div class="layui-input-block">
-	      <input type="text" name="mobile" required placeholder="170xxxx0000" lay-verify="phone" autocomplete="off" class="layui-input">
+	      <input type="text" name="mobile" value="{$dian.mobile}" required placeholder="170xxxx0000" lay-verify="phone" autocomplete="off" class="layui-input">
 	    </div>
 	  </div>
 	  
@@ -345,9 +347,46 @@
 		
 		form.on('select(cate2)', function(data){
 		  var cate2 = data.value;
-		  //layer.msg(cate2);
+		  layer.msg(cate2);
 		});
 		
+		initimg();
+		function initimg(){
+			var cover_id = '{$one.cover_id}'; //logo
+			var cover_src = '{$one.logo}';
+			$('#img4res').attr('src',cover_src).show();
+	      	$('input[name=newid2]').val(cover_id);
+	      	
+			var imgs_id = '{$dian.imgs}'; //封面1
+			var imgs_src = '{$one.img}';
+			$('#img1res').attr('src',imgs_src).show();
+	      	$('input[name=img1]').val(imgs_id);
+			
+			var imgs_id1 = '{$dian.imgs1}'; //封面2
+			var imgs_src1 = '{$one.img1}';
+			$('#img2res').attr('src',imgs_src1).show();
+	      	$('input[name=img2]').val(imgs_id1);
+
+			var imgs_id2 = '{$dian.imgs2}'; //封面3
+			var imgs_src2 = '{$one.img2}';
+			$('#img3res').attr('src',imgs_src2).show();
+	      	$('input[name=img3]').val(imgs_id2);
+			
+			var imgs_id3 = '{$dian.imgs3}';
+			var imgs_src3 = '{$one.img3}';
+			$('#img5res').attr('src',imgs_src3).show();
+	      	$('input[name=img5]').val(imgs_id3);
+			
+			var imgs_id4 = '{$dian.imgs4}';
+			var imgs_src4 = '{$one.img4}';
+			$('#img6res').attr('src',imgs_src4).show();
+	      	$('input[name=img6]').val(imgs_id4);
+			
+			var imgs_id5 = '{$dian.imgs5}';
+			var imgs_src5 = '{$one.img5}';
+			$('#img7res').attr('src',imgs_src5).show();
+	      	$('input[name=img7]').val(imgs_id5);
+		}
 		
 		var upload = layui.upload;
 		var uploadInst1 = upload.render({

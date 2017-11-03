@@ -46,16 +46,46 @@ class ShopController extends HomeController {
 					$this->assign('dian_shop',$dian_shop);
 					//---
 					$cover_id = $dian['cover_id'];
-					$imgs_id = $dian_shop['imgs'];
-					if($cover_id > 1){
+					$imgs_id  = $dian_shop['imgs'];
+					$imgs_id1 = $dian_shop['imgs1'];
+					$imgs_id2 = $dian_shop['imgs2'];
+					$imgs_id3 = $dian_shop['imgs3'];
+					$imgs_id4 = $dian_shop['imgs4'];
+					$imgs_id5 = $dian_shop['imgs5'];
+					if($cover_id > 0){ //logo
 						$cover = M('Picture')->find($cover_id);
 						$cover_src = $cover['path'];
 						$this->assign('cover_src',$cover_src);
 					}
-					if($imgs_id > 1){
+					if($imgs_id > 0){ //封面1
 						$imgs = M('Picture')->find($imgs_id);
 						$imgs_src = $imgs['path'];
 						$this->assign('imgs_src',$imgs_src);
+					}
+					if($imgs_id1 > 0){ //封面2
+						$imgs1 = M('Picture')->find($imgs_id1);
+						$imgs_src1 = $imgs1['path'];
+						$this->assign('imgs_src1',$imgs_src1);
+					}
+					if($imgs_id2 > 0){ //封面3
+						$imgs2 = M('Picture')->find($imgs_id2);
+						$imgs_src2 = $imgs2['path'];
+						$this->assign('imgs_src2',$imgs_src2);
+					}
+					if($imgs_id3 > 0){ //详情1
+						$imgs3 = M('Picture')->find($imgs_id3);
+						$imgs_src3 = $imgs3['path'];
+						$this->assign('imgs_src3',$imgs_src3);
+					}
+					if($imgs_id4 > 0){ //详情2
+						$imgs4 = M('Picture')->find($imgs_id4);
+						$imgs_src4 = $imgs4['path'];
+						$this->assign('imgs_src4',$imgs_src4);
+					}
+					if($imgs_id5 > 0){ //二维码
+						$imgs5 = M('Picture')->find($imgs_id5);
+						$imgs_src5 = $imgs5['path'];
+						$this->assign('imgs_src5',$imgs_src5);
 					}
 					//---
 					$category_id = $dian['category_id'];
@@ -84,6 +114,129 @@ class ShopController extends HomeController {
 		
     	
 	}
+	
+	//编辑店铺
+	public function editshop(){
+		$script = &  load_wechat('Script');
+		$thisurl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
+		$options = $script->getJsSign($thisurl);
+		$options = json_encode($options);
+		if($options===FALSE){
+			    echo $script->errMsg;die;
+			}else{
+				$this->assign('options',$options);
+			}
+			
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$this->assign('user',$user);
+		$id = I('id');
+		$one = M("Document")->where(array('id'=>$id))->find();
+		$one['logo'] = M("Picture")->where(array('id'=>$one['cover_id']))->getField('path');
+		$dian = M('DocumentShop')->where(array('id'=>$id))->find();
+		$this->assign('dian',$dian);
+		
+		$cate1 = M('Category')->field('id,title')->where(array('pid'=>'0'))->order('sort asc')->select();
+		$this->assign('cate1',$cate1);
+		$category_id = $one['category_id'];
+		$cate1_id = M('Category')->where('id='.$category_id)->getField('pid');
+		$this->assign('cate1_id',$cate1_id);
+		$cate2 = M('Category')->field('id,title')->where(array('pid'=>$cate1_id))->order('sort asc')->select();
+		$this->assign('cate2',$cate2);
+		
+		
+		$imgs_id  = $dian['imgs'];
+		$imgs_id1 = $dian['imgs1'];
+		$imgs_id2 = $dian['imgs2'];
+		$imgs_id3 = $dian['imgs3'];
+		$imgs_id4 = $dian['imgs4'];
+		$imgs_id5 = $dian['imgs5'];
+
+		if($imgs_id > 0){ //封面1
+			$imgs = M('Picture')->find($imgs_id);
+			$one['img'] = $imgs['path'];
+		}
+		if($imgs_id1 > 0){ //封面2
+			$imgs1 = M('Picture')->find($imgs_id1);
+			$one['img1'] = $imgs1['path'];
+		}
+		if($imgs_id2 > 0){ //封面3
+			$imgs2 = M('Picture')->find($imgs_id2);
+			$one['img2'] = $imgs2['path'];
+		}
+		if($imgs_id3 > 0){ //详情1
+			$imgs3 = M('Picture')->find($imgs_id3);
+			$one['img3'] = $imgs3['path'];
+		}
+		if($imgs_id4 > 0){ //详情2
+			$imgs4 = M('Picture')->find($imgs_id4);
+			$one['img4'] = $imgs4['path'];
+		}
+		if($imgs_id5 > 0){ //二维码
+			$imgs5 = M('Picture')->find($imgs_id5);
+			$one['img5'] = $imgs5['path'];
+		}
+		$this->assign('one',$one);
+		//print_r($one);
+		$this->display();
+		
+	}
+	
+	public function doapplyedit1(){
+    	$time = time();
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$id = I('post.id');
+		
+		$array1 = array(
+			'uid' => $user['id'],
+			'title' => I('post.title'),
+			'category_id' => I('post.cate2'),
+			'description' => I('post.brief'),
+			'model_id' => 4, //模型id
+			'type' => 1, //1目录   （2主题 3段落）
+			'cover_id' => I('post.newid2'), //店铺logo
+			'display' => 1,//所有人可见
+			'deadline' => 0,//截止时间
+			'create_time' => $time,
+			'update_time' => $time,
+			'status' => 2//状态 -1回收站 0禁用 1可用 2待审核
+ 		);
+		M('Document')->where('id='.$id)->save($array1);
+		
+		$lnglat = I('post.lnglat');
+		$lnglat = explode(',', $lnglat);
+		$ordersn = 'WXAPPLY'.substr( md5('NNN'.time()) , 4,12);
+		
+		$array2 = array(
+			'imgs' => I('post.img1'),  //店铺形象图1
+			'imgs1' => I('post.img2'), //店铺形象图2
+			'imgs2' => I('post.img3'), //店铺形象图3
+			'imgs3' => I('post.img5'), //详情图1
+			'imgs4' => I('post.img6'), //详情图2
+			'imgs5' => I('post.img7'), //二维码
+			'address' => I('post.address'),
+			'showaddress' => I('post.showaddress'),
+			'mobile' => I('post.mobile'),
+			'content' => I('post.content'),
+			'longitude' => $lnglat[0], 
+			'latitude' => $lnglat[1],
+			'ordersn' => $ordersn,
+			'paytype' => 0,
+			'paystatus' => 0
+		);
+		$id2 = M('DocumentShop')->where('id='.$id)->save($array2);
+		
+		if($id && $id2){
+			$this->success('修改成功', U('shop/dians'));
+		}else{
+			$this->error('修改失败');
+		}
+		
+	}
+	
+	
+	
 			
 	private function _request($url, $https=false, $method='get', $data=null)
 	{
@@ -117,7 +270,7 @@ class ShopController extends HomeController {
 			'description' => I('post.brief'),
 			'model_id' => 4, //模型id
 			'type' => 1, //1目录   （2主题 3段落）
-			'cover_id' => I('post.newid1'), //封面
+			'cover_id' => I('post.newid2'), //店铺logo
 			'display' => 1,//所有人可见
 			'deadline' => 0,//截止时间
 			'create_time' => $time,
@@ -132,7 +285,12 @@ class ShopController extends HomeController {
 		
 		$array2 = array(
 			'id' => $id,
-			'imgs' => I('post.newid2'), //店铺形象图
+			'imgs' => I('post.img1'),  //店铺形象图1
+			'imgs1' => I('post.img2'), //店铺形象图2
+			'imgs2' => I('post.img3'), //店铺形象图3
+			'imgs3' => I('post.img5'), //详情图1
+			'imgs4' => I('post.img6'), //详情图2
+			'imgs5' => I('post.img7'), //二维码
 			'address' => I('post.address'),
 			'showaddress' => I('post.showaddress'),
 			'mobile' => I('post.mobile'),
@@ -262,7 +420,7 @@ class ShopController extends HomeController {
 			'description' => I('post.brief'),
 			'model_id' => 4, //模型id
 			'type' => 1, //1目录   （2主题 3段落）
-			'cover_id' => I('post.newid1'), //封面
+			'cover_id' => I('post.newid2'), //店铺logo
 			'display' => 1,//所有人可见
 			'deadline' => 0,//截止时间
 			'create_time' => $time,
@@ -276,7 +434,12 @@ class ShopController extends HomeController {
 		$ordersn = 'WXAPPLY'.substr( md5('NNN'.time()) , 4,12);
 		
 		$array2 = array(
-			'imgs' => I('post.newid2'), //店铺形象图
+			'imgs' => I('post.img1'),  //店铺形象图1
+			'imgs1' => I('post.img2'), //店铺形象图2
+			'imgs2' => I('post.img3'), //店铺形象图3
+			'imgs3' => I('post.img5'), //详情图1
+			'imgs4' => I('post.img6'), //详情图2
+			'imgs5' => I('post.img7'), //二维码
 			'address' => I('post.address'),
 			'showaddress' => I('post.showaddress'),
 			'mobile' => I('post.mobile'),
