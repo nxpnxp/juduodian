@@ -546,6 +546,19 @@ class ShopController extends HomeController {
 		$this->assign('wait',$wait);
 		$this->assign('flag',$flag);
 		
+		if($flag == '2'){ //可抢		
+			//8秒后 显示  判断结果
+			$flag2 = 1;
+			$flag2_msg = '';
+			
+			$flag2_res = $this->check_user_can_qhb($dian['id']);
+			$flag2 = $flag2_res['i'];
+			$flag2_msg = $flag2_res['msg'];
+			
+			$this->assign('flag2',$flag2);
+			$this->assign('flag2_msg',$flag2_msg);
+		}
+		
 		$logo = M('Picture')->where(array('id'=>$dian['cover_id']))->getField('path');
 		$this->assign('logo',$logo);
     	$this->display();
@@ -834,7 +847,7 @@ class ShopController extends HomeController {
 					}
 					if($wxhbson['type'] == 1){
 						//拼手气红包
-						$hbm = mt_rand($wxhbson['psqmoney1'],$wxhbson['psqmoney2']);
+						$hbm = mt_rand($wxhbson['psqmoney1']*100,$wxhbson['psqmoney2']*100) /100;
 						$this->gethbmoney('WxhbSon',$wxhbson['id'],$user['id'],$hbm,$kl,$jvli);
 					}
 				}else{
@@ -850,7 +863,7 @@ class ShopController extends HomeController {
 						}
 						if($_wxhbson['type'] == 1){
 							//拼手气红包
-							$hbm = mt_rand($_wxhbson['psqmoney1'],$_wxhbson['psqmoney2']);
+							$hbm = mt_rand($wxhbson['psqmoney1']*100,$wxhbson['psqmoney2']*100) /100;
 							$this->gethbmoney('WxhbSon',$_wxhbson['id'],$user['id'],$hbm,$kl,$jvli);
 						}
 					}
@@ -872,7 +885,7 @@ class ShopController extends HomeController {
 					}
 					if($wxhb['type'] == 1){
 						//拼手气红包
-						$hbm = mt_rand($wxhb['psqmoney1'],$wxhb['psqmoney2']);
+						$hbm = mt_rand($wxhb['psqmoney1']*100,$wxhb['psqmoney2']*100) /100;
 						$this->gethbmoney('Wxhb',$wxhb['id'],$user['id'],$hbm,$kl,$jvli);
 					}
 				}
@@ -972,6 +985,41 @@ class ShopController extends HomeController {
 			$wxhbsonid = $hbid;
 			$wxhbid = $model2->where('id='.$wxhbsonid)->getField('hbid');
 			
+			//判断距离
+			$_jvli_type = $model->where('id='.$wxhbsonid)->getField('area');
+			switch ($_jvli_type) {
+				case '1':
+					//3km 
+					if( ($jvli>0) && ($jvli<=3) ){
+						
+					}else{
+						echo json_encode(array('i'=>0,'msg'=>'抱歉，您超过3km区域不可抢红包，赶快靠近抢吧！'));die;
+					}
+					break;
+				case '2':
+					//5km
+					if( ($jvli>0) && ($jvli<=5) ){
+						
+					}else{
+						echo json_encode(array('i'=>0,'msg'=>'抱歉，您超过5km区域不可抢红包，赶快靠近抢吧！'));die;
+					}
+					break;
+				case '3':
+					//20km
+					if( ($jvli>0) && ($jvli<=20) ){
+						
+					}else{
+						echo json_encode(array('i'=>0,'msg'=>'抱歉，您超过20km区域不可抢红包，赶快靠近抢吧！'));die;
+					}
+					break;
+				case '4':
+					//不限
+					break;
+				default:
+					echo json_encode(array('i'=>0,'msg'=>'区域不正确！'));die;
+					break;
+			}
+			
 			//判断口令是否正确
 			$iskl = $model2->where('id='.$wxhbsonid)->getField('iskl');
 			if($iskl){
@@ -1068,5 +1116,214 @@ class ShopController extends HomeController {
 		$this->assign('logs',$logs);
 		$this->display();	
     }
+	
+	/**
+	 * 8秒后 判断一下  是否可抢
+	 */
+	private function check_user_can_qhb($dianid){
+		$back = array('i'=>1,'msg'=>'');
+		
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$latlon = M('WxuserLatlon')->where(array('uid'=>$user['id']))->order('id desc')->find();
+		
+		$shopid = $dianid;
+		$dianshop = M('DocumentShop')->find($shopid);
+		
+		$jvli = $this->getDistance($latlon['lon'],$latlon['lat'],$dianshop['longitude'],$dianshop['latitude'],2);
+		
+		$time = time();
+		$wxhb = M('Wxhb')->where('shopid='.$shopid.' and ispay=1 and yue>0')->find();
+		if($wxhb){
+			if($wxhb['isson'] && ($wxhb['num']>1)){
+				//多日
+				$wxhbson = M('WxhbSon')->where('hbid='.$wxhb['id'].' and yue>0 and gettime<='.$time.' and endtime>='.$time)->find();
+				if($wxhbson){
+					if($wxhbson['type'] == 0){
+						//普通红包
+						$back = $this->gethbmoney2('WxhbSon',$wxhbson['id'],$user['id'],$wxhbson['ptmoney'],$jvli);
+					}
+					if($wxhbson['type'] == 1){
+						//拼手气红包
+						$hbm = mt_rand($wxhbson['psqmoney1']*100,$wxhbson['psqmoney2']*100)/100;
+						$back = $this->gethbmoney2('WxhbSon',$wxhbson['id'],$user['id'],$hbm,$jvli);
+					}
+				}else{
+					//不可抢
+					$_wxhbson = M('WxhbSon')->where('hbid='.$wxhb['id'].' and yue>0 ')->find();
+					if($time < $_wxhbson['gettime']){
+						$back['i'] = 0;
+						$back['msg'] = '未到红包发放时间';
+						if($back['i'] == 0){ return $back; }
+					}
+					if( ($time >= $_wxhbson['gettime']) && ($time <= $_wxhbson['endtime']) ){
+						if($_wxhbson['type'] == 0){
+							//普通红包
+							$back = $this->gethbmoney2('WxhbSon',$_wxhbson['id'],$user['id'],$_wxhbson['ptmoney'],$jvli);
+						}
+						if($_wxhbson['type'] == 1){
+							//拼手气红包
+							$hbm = mt_rand($_wxhbson['psqmoney1']*100,$_wxhbson['psqmoney2']*100)/100;
+							$back = $this->gethbmoney2('WxhbSon',$_wxhbson['id'],$user['id'],$hbm,$jvli);
+						}
+					}
+					if($time > $_wxhbson['endtime']){
+						$back['i'] = 0;
+						$back['msg'] = '红包发放时间已结束';
+						if($back['i'] == 0){ return $back; }
+					}
+				}
+			}
+			if(($wxhb['isson']==0) && ($wxhb['num']==1)){
+				//单日
+				if($time < $wxhb['gettime']){
+					$back['i'] = 0;
+					$back['msg'] = '未到红包发放时间';
+					if($back['i'] == 0){ return $back; }
+				}
+				if( ($time >= $wxhb['gettime']) && ($time <= $wxhb['endtime']) ){
+					if($wxhb['type'] == 0){
+						//普通红包
+						$back = $this->gethbmoney2('Wxhb',$wxhb['id'],$user['id'],$wxhb['ptmoney'],$kl,$jvli);
+					}
+					if($wxhb['type'] == 1){
+						//拼手气红包
+						$hbm = mt_rand($wxhb['psqmoney1']*100,$wxhb['psqmoney2']*100)/100;
+						$back = $this->gethbmoney2('Wxhb',$wxhb['id'],$user['id'],$hbm,$jvli);
+					}
+				}
+				if($time > $wxhb['endtime']){
+					$back['i'] = 0;
+					$back['msg'] = '红包发放时间已结束';
+					if($back['i'] == 0){ return $back; }
+				}
+			}
+		}else{			
+			$back['i'] = 0;
+			$back['msg'] = '这个店铺没有红包啊~~';
+			if($back['i'] == 0){ return $back; }
+		}
+		
+		return $back;
+	}
+
+	private function gethbmoney2($f,$hbid,$uid,$money,$jvli){
+		$back = array('i'=>1,'msg'=>'');
+		
+		$time = time();
+		
+		//单日红包
+		if($f == 'Wxhb'){
+			$model = M('Wxhb');
+			
+			//判断距离
+			$_jvli_type = $model->where('id='.$hbid)->getField('area');
+			switch ($_jvli_type) {
+				case '1':
+					//3km 
+					if( ($jvli>0) && ($jvli<=3) ){
+						
+					}else{
+						$back['i'] = 0;
+						$back['msg'] = '抱歉，您超过3km区域不可抢红包，赶快靠近抢吧！';
+					}
+					break;
+				case '2':
+					//5km
+					if( ($jvli>0) && ($jvli<=5) ){
+						
+					}else{
+						$back['i'] = 0;
+						$back['msg'] = '抱歉，您超过5km区域不可抢红包，赶快靠近抢吧！';
+					}
+					break;
+				case '3':
+					//20km
+					if( ($jvli>0) && ($jvli<=20) ){
+						
+					}else{
+						$back['i'] = 0;
+						$back['msg'] = '抱歉，您超过20km区域不可抢红包，赶快靠近抢吧！';
+					}
+					break;
+				case '4':
+					//不限
+					break;
+				default:
+					$back['i'] = 0;
+					$back['msg'] = '区域不正确！';
+					break;
+			}
+			if($back['i'] == 0){ return $back; }
+			
+			//判断是否抢过
+			$log = M('WxuserYuelog')->where('uid='.$uid.' and oid="'.$hbid.'-0"')->find();
+			if($log){				
+				$back['i'] = 0;
+				$back['msg'] = '抱歉，您已抢过该红包了！';
+			}
+			if($back['i'] == 0){ return $back; }
+						
+		}
+		//多日红包
+		if($f == 'WxhbSon'){
+			$model1 = M('Wxhb');
+			$model2 = M('WxhbSon');
+			
+			$wxhbsonid = $hbid;
+			$wxhbid = $model2->where('id='.$wxhbsonid)->getField('hbid');
+			
+			//判断距离
+			$_jvli_type = $model->where('id='.$wxhbsonid)->getField('area');
+			switch ($_jvli_type) {
+				case '1':
+					//3km 
+					if( ($jvli>0) && ($jvli<=3) ){
+						
+					}else{
+						$back['i'] = 0;
+						$back['msg'] = '抱歉，您超过3km区域不可抢红包，赶快靠近抢吧！';
+					}
+					break;
+				case '2':
+					//5km
+					if( ($jvli>0) && ($jvli<=5) ){
+						
+					}else{
+						$back['i'] = 0;
+						$back['msg'] = '抱歉，您超过5km区域不可抢红包，赶快靠近抢吧！';
+					}
+					break;
+				case '3':
+					//20km
+					if( ($jvli>0) && ($jvli<=20) ){
+						
+					}else{
+						$back['i'] = 0;
+						$back['msg'] = '抱歉，您超过20km区域不可抢红包，赶快靠近抢吧！';
+					}
+					break;
+				case '4':
+					//不限
+					break;
+				default:
+					$back['i'] = 0;
+					$back['msg'] = '区域不正确！';
+					break;
+			}			
+			if($back['i'] == 0){ return $back; }
+									
+			//判断是否抢过
+			$log = M('WxuserYuelog')->where('uid='.$uid.' and oid="'.$wxhbid.'-'.$wxhbsonid.'"')->find();
+			if($log){
+				$back['i'] = 0;
+				$back['msg'] = '抱歉，您已抢过该红包了！';
+			}
+			if($back['i'] == 0){ return $back; }
+						
+		}
+
+		return $back;
+	}
 	
 }

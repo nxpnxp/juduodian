@@ -229,101 +229,151 @@
 			})
 		});
 		
-		<eq name="flag" value="2">        
-			var daojishi = {$wait};
-			settime();
-			function settime() { 
-			    if (daojishi == 0) { 
-			    	$('#footcenter').html('<p>&nbsp;</p><p>开抢啦</p>');	
-			    	$("#footcenter").click(function(){			        	
-						$('.hb').fadeIn();
-					});
-			        return;
-			    } else { 
-			        $('#footcenter').html('<p>'+daojishi+'</p><p>抢红包倒计时</p>');
-			        daojishi--; 
-			    } 
-				setTimeout(function() { 
-			    	settime() }
-			    ,1000) 
-			}	
-			
-			
-		
-			$(".red").click(function(){
-				$(".red").addClass("shake");			
-				$(".opacity").fadeIn();
+		<eq name="flag" value="2">    
+			<eq name="flag2" value="1">
+				var daojishi = {$wait};
+				settime();
+				function settime() { 
+				    if (daojishi == 0) { 
+				    	$('#footcenter').html('<p>&nbsp;</p><p>开抢啦</p>');	
+				    	$("#footcenter").click(function(){			        	
+							$('.hb').fadeIn();
+						});
+				        return;
+				    } else { 
+				        $('#footcenter').html('<p>'+daojishi+'</p><p>抢红包倒计时</p>');
+				        daojishi--; 
+				    } 
+					setTimeout(function() { 
+				    	settime() }
+				    ,1000) 
+				}	
 				
-				setTimeout(function(){
-					calchb();
-				},2000);
 				
-			});
 			
-			function calchb(){
-				var iskl = {$iskl};		        
-		        if(iskl){
-		        	    	
-					layer.prompt({
-						formType: 2,
-						value: '',
-						title: '请输入口令'
-					}, function(value, index, elem){
-						var url = "{:U('Shop/qianghb',array('shopid'=>$dian['id']))}";
-						url += '&kl='+value;					  
-						ajaxcalchb(url);
-						layer.close(index);
-					});
+				$(".red").click(function(){
+					$(".red").addClass("shake");			
+					$(".opacity").fadeIn();
 					
-		        }else{
-		        	var url = "{:U('Shop/qianghb',array('shopid'=>$dian['id']))}";
-					ajaxcalchb(url);					
-		        }
-			}
-			
-			function ajaxcalchb(url){
-				$.ajax({
-				  	type:"get",
-				  	url:url,
-				  	success:function(data){
-				  		$(".red").removeClass("shake");	
-				  			
-				  		var data = JSON.parse(data);
-				  		if(data.i == '1'){
-							layer.open({
-							  type: 0,
-							  shade: false,
-							  title: false, //不显示标题
-							  content: data.msg,
-							  btn: ['按钮一', '按钮二', '按钮三'],
-							  yes: function(){
-							  	layer.msg('按钮一');
-							    $(".hb").fadeOut();
-							  },
-							  btn2: function(){
-							  	layer.msg('按钮二');
-							    $(".hb").fadeOut();
-							  },
-							  btn3: function(){
-							  	layer.msg('按钮三');
-							    $(".hb").fadeOut();
-							  },
-							  cancel: function(){
-							    $(".hb").fadeOut();
-							  }
-							});
-				  		}else{
-				  			layer.msg(data.msg);
-				  			$(".hb").fadeOut();
-				  		}
-				  	}
-				  	,error: function(){
-				  		layer.msg('抢红包失败');
-				  		$(".hb").fadeOut();
-				  	}
-				  });
-			}
-			
+					setTimeout(function(){
+						calchb();
+					},2000);
+					
+				});
+				
+				function calchb(){
+					var iskl = {$iskl};		        
+			        if(iskl){
+			        	    	
+						layer.prompt({
+							formType: 2,
+							value: '',
+							title: '请输入口令'
+						}, function(value, index, elem){
+							var url = "{:U('Shop/qianghb',array('shopid'=>$dian['id']))}";
+							url += '&kl='+value;					  
+							ajaxcalchb(url);
+							layer.close(index);
+						});
+						
+			        }else{
+			        	var url = "{:U('Shop/qianghb',array('shopid'=>$dian['id']))}";
+						ajaxcalchb(url);					
+			        }
+				}
+				
+				function ajaxcalchb(url){
+					var shopid = {$dian['id']};
+					$.ajax({
+					  	type:"get",
+					  	url:url,
+					  	success:function(data){
+					  		$(".red").removeClass("shake");	
+					  			
+					  		var data = JSON.parse(data);
+					  		if(data.i == '1'){
+								layer.open({
+								  type: 0,
+								  shade: false,
+								  title: false, //不显示标题
+								  content: data.msg,
+								  btn: ['生成朋友圈海报', '分享到朋友圈'],
+								  yes: function(){
+								  	
+								  	$.ajax({
+										type:"POST",
+										data:{'shopid':shopid},
+										url:"{:U('Paper/index')}",
+										success:function(data){
+											layer.msg(data);
+										},
+										error: function(){
+											layer.msg('error里');
+										}
+									})
+								  	
+								  	
+								  },
+								  btn2: function(){
+								  	
+								    var json = {
+									  "title": "", //相册标题
+									  "id": 2, //相册id
+									  "start": 0, //初始显示的图片序号，默认0
+									  "data": [   //相册包含的图片，数组格式
+									    {
+									      "alt": "",
+									      "pid": 7, //图片id
+									      "src": './Public/share.jpg', //原图地址
+									      "thumb": "" //缩略图地址
+									    }
+									  ]
+									};
+					        		layer.photos({
+									    photos: json,
+									    area: ['100%', 'auto'],
+									    anim: 5
+									    //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+									});
+									
+								  },
+								  cancel: function(){
+								    $(".hb").fadeOut();
+								  }
+								});
+					  		}else{
+					  			layer.msg(data.msg);
+					  			$(".hb").fadeOut();
+					  		}
+					  	}
+					  	,error: function(){
+					  		layer.msg('抢红包失败');
+					  		$(".hb").fadeOut();
+					  	}
+					  });
+				}
+				
+	        </eq>
+	        <eq name="flag2" value="0">
+	       		var daojishi = {$wait};
+				settime();
+				function settime() { 
+				    if (daojishi == 0) { 
+				    	$('#footcenter').html('<p>&nbsp;</p><p>暂不可抢</p>');	
+				    	layer.msg('{$flag2_msg}');
+				    	$("#footcenter").click(function(){			        	
+							layer.msg('{$flag2_msg}');
+						});
+				        return;
+				    } else { 
+				        $('#footcenter').html('<p>'+daojishi+'</p><p>抢红包倒计时</p>');
+				        daojishi--; 
+				    } 
+					setTimeout(function() { 
+				    	settime() }
+				    ,1000) 
+				}	
+        	</eq>
         </eq>
         
         $('#erweima').click(function(){
