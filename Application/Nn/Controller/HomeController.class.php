@@ -27,15 +27,15 @@ class HomeController extends Controller {
     protected function _initialize(){
 		include "wechat/include.php";
 		
-		
 		$openid = cookie('openid');
 		if(!$openid){
 			$this->get_user();
 		}else{
 			$this->openid = $openid; 
+			$this->assign('openid',$openid);
+			$this->user_pid($openid);
 		}
 		
-    	
     }
 	
 	//获取用户openid
@@ -54,6 +54,8 @@ class HomeController extends Controller {
 				
 	    	//获取用户信息
 	    	$this->get_user_info($openid); 
+			$this->assign('openid',$openid);
+			$this->user_pid($openid);
 				
 		}else{
 			$thisurl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
@@ -120,6 +122,19 @@ class HomeController extends Controller {
 			}
 			M('WxuserCode')->add($array);
 			
+		}
+	}
+
+	//保存用户上下级关系
+	private function user_pid($openid){
+		$user = M('WxuserCode')->where('openid="'.$openid.'"')->find();
+		if($user){
+			$pid = I('get.pid');
+			if( empty($user['pid']) && !empty($pid) ){
+				M('WxuserCode')->where('id='.$user['id'])->save(array(
+					'pid' => $pid
+				));
+			}
 		}
 	}
 
