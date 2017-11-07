@@ -34,6 +34,7 @@ class HomeController extends Controller {
 			$this->openid = $openid; 
 			$this->assign('openid',$openid);
 			$this->user_pid($openid);
+			$this->save_user_avatar($openid);
 		}
 		
     }
@@ -56,6 +57,7 @@ class HomeController extends Controller {
 	    	$this->get_user_info($openid); 
 			$this->assign('openid',$openid);
 			$this->user_pid($openid);
+			$this->save_user_avatar($openid);
 				
 		}else{
 			$thisurl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
@@ -134,6 +136,25 @@ class HomeController extends Controller {
 				M('WxuserCode')->where('id='.$user['id'])->save(array(
 					'pid' => $pid
 				));
+			}
+		}
+	}
+	
+	//保存用户头像
+	private function save_user_avatar($openid){
+		$user = M('WxuserCode')->where('openid="'.$openid.'"')->find();
+		if($user){
+			$avatar = $user['headimgurl'];
+			$isdlhimg = $user['isdlhimg'];
+			if( !empty($avatar) && empty($isdlhimg) ){
+				$data = file_get_contents($avatar);
+				$filename = './Uploads/Avatar/'.$user['id'].'.png';
+				@file_put_contents($filename, $data);
+				if(file_exists($filename)){
+					M('WxuserCode')->where('id='.$user['id'])->save(array(
+						'isdlhimg' => 1
+					));
+				}
 			}
 		}
 	}
