@@ -501,7 +501,11 @@ class ShopController extends HomeController {
 				->where('d.id='.$id)->find();
 		$this->assign('dian',$dian);
 		
-		$wait = 8;
+		$wait = M('Config')->where(array('id'=>"44"))->getField('value');
+		if(!$wait){
+			$wait = 8;
+		}
+		
 		$flag = 0;//0没红包 1未开始 2疯抢中 3已结束 4不可抢
 		$time = time();
 		$wxhb = M('Wxhb')->where('shopid='.$id.' and ispay=1 and yue>0')->find();

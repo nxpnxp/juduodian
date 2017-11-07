@@ -186,5 +186,17 @@ class MemberController extends HomeController {
 		}
 		
 	}
+
+	public function fxcenter(){
+    	
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$this->assign('user',$user);
+			
+		$xiaxian = M('WxuserCode')->where(array('pid'=>$user['id']))->select();
+		$this->assign('xiaxian',$xiaxian);
+				
+		$this->display();
+	}
 	
 }

@@ -132,7 +132,7 @@ class HomeController extends Controller {
 		$user = M('WxuserCode')->where('openid="'.$openid.'"')->find();
 		if($user){
 			$pid = I('get.pid');
-			if( empty($user['pid']) && !empty($pid) ){
+			if( empty($user['pid']) && !empty($pid) && ($pid!=$user['id']) ){
 				M('WxuserCode')->where('id='.$user['id'])->save(array(
 					'pid' => $pid
 				));
