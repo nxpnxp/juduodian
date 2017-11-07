@@ -188,4 +188,6 @@ class Image{
         $this->img->text($text, $font, $size, $color, $locate, $offset, $angle);
         return $this;
     }
+	
+
 }

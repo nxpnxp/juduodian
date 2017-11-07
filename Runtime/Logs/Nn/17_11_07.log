@@ -1,0 +1,90 @@
+[ 2017-11-07T10:08:35+08:00 ] 127.0.0.1 /index.php/Nn/paper/index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.006000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.007000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002001s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002001s ]
+SQL: SHOW COLUMNS FROM `onethink_wxuser_code` [ RunTime:0.0160s ]
+SQL: SELECT * FROM `onethink_wxuser_code` WHERE `openid` = 0 LIMIT 1   [ RunTime:0.0190s ]
+NOTIC: [8] Undefined variable: headpic F:\Apache2.2\htdocs\juduodian\Application\Nn\Controller\PaperController.class.php 第 29 行.
+NOTIC: [2] unlink(): Invalid argument F:\Apache2.2\htdocs\juduodian\Application\Nn\Controller\PaperController.class.php 第 29 行.
+SQL: SHOW COLUMNS FROM `onethink_wxuser_yuelog` [ RunTime:0.0200s ]
+SQL: SELECT * FROM `onethink_wxuser_yuelog` WHERE `uid` = 425 ORDER BY time desc LIMIT 1   [ RunTime:0.0180s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.004000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.005000s ]
+
+[ 2017-11-07T10:09:34+08:00 ] 127.0.0.1 /index.php/Nn/paper/index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.002001s ]
+INFO: [ app_init ] --END-- [ RunTime:0.004001s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `onethink_wxuser_code` [ RunTime:0.0170s ]
+SQL: SELECT * FROM `onethink_wxuser_code` WHERE `openid` = 0 LIMIT 1   [ RunTime:0.0190s ]
+NOTIC: [8] Undefined variable: headpic F:\Apache2.2\htdocs\juduodian\Application\Nn\Controller\PaperController.class.php 第 29 行.
+NOTIC: [2] unlink(): Invalid argument F:\Apache2.2\htdocs\juduodian\Application\Nn\Controller\PaperController.class.php 第 29 行.
+SQL: SHOW COLUMNS FROM `onethink_wxuser_yuelog` [ RunTime:0.0170s ]
+SQL: SELECT * FROM `onethink_wxuser_yuelog` WHERE `uid` = 425 ORDER BY time desc LIMIT 1   [ RunTime:0.0170s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.002000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.002000s ]
+
+[ 2017-11-07T10:10:12+08:00 ] 127.0.0.1 /index.php/Nn/paper/index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.004000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.004000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `onethink_wxuser_code` [ RunTime:0.0190s ]
+SQL: SELECT * FROM `onethink_wxuser_code` WHERE `openid` = 0 LIMIT 1   [ RunTime:0.0170s ]
+NOTIC: [8] Undefined variable: headpic F:\Apache2.2\htdocs\juduodian\Application\Nn\Controller\PaperController.class.php 第 29 行.
+NOTIC: [2] unlink(): Invalid argument F:\Apache2.2\htdocs\juduodian\Application\Nn\Controller\PaperController.class.php 第 29 行.
+SQL: SHOW COLUMNS FROM `onethink_wxuser_yuelog` [ RunTime:0.0170s ]
+SQL: SELECT * FROM `onethink_wxuser_yuelog` WHERE `uid` = 425 ORDER BY time desc LIMIT 1   [ RunTime:0.0170s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.002000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.002000s ]
+
+[ 2017-11-07T10:10:40+08:00 ] 127.0.0.1 /index.php/Nn/paper/index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.003000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.004000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `onethink_wxuser_code` [ RunTime:0.0170s ]
+SQL: SELECT * FROM `onethink_wxuser_code` WHERE `openid` = 0 LIMIT 1   [ RunTime:0.0170s ]
+NOTIC: [8] Undefined variable: headpic F:\Apache2.2\htdocs\juduodian\Application\Nn\Controller\PaperController.class.php 第 29 行.
+NOTIC: [2] unlink(): Invalid argument F:\Apache2.2\htdocs\juduodian\Application\Nn\Controller\PaperController.class.php 第 29 行.
+SQL: SHOW COLUMNS FROM `onethink_wxuser_yuelog` [ RunTime:0.0180s ]
+SQL: SELECT * FROM `onethink_wxuser_yuelog` WHERE `uid` = 425 ORDER BY time desc LIMIT 1   [ RunTime:0.0170s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
+[ 2017-11-07T10:11:03+08:00 ] 127.0.0.1 /index.php/Nn/paper/index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: Run Common\Behavior\InitHookBehavior [ RunTime:0.005000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.006000s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `onethink_wxuser_code` [ RunTime:0.0230s ]
+SQL: SELECT * FROM `onethink_wxuser_code` WHERE `openid` = 0 LIMIT 1   [ RunTime:0.0200s ]
+NOTIC: [8] Undefined variable: headpic F:\Apache2.2\htdocs\juduodian\Application\Nn\Controller\PaperController.class.php 第 29 行.
+NOTIC: [2] unlink(): Invalid argument F:\Apache2.2\htdocs\juduodian\Application\Nn\Controller\PaperController.class.php 第 29 行.
+SQL: SHOW COLUMNS FROM `onethink_wxuser_yuelog` [ RunTime:0.0210s ]
+SQL: SELECT * FROM `onethink_wxuser_yuelog` WHERE `uid` = 425 ORDER BY time desc LIMIT 1   [ RunTime:0.0170s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+
