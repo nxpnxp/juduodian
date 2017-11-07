@@ -911,7 +911,7 @@ class ShopController extends HomeController {
 			switch ($_jvli_type) {
 				case '1':
 					//3km 
-					if( ($jvli>0) && ($jvli<=3) ){
+					if( ($jvli>=0) && ($jvli<=3) ){
 						
 					}else{
 						echo json_encode(array('i'=>0,'msg'=>'抱歉，您超过3km区域不可抢红包，赶快靠近抢吧！'));die;
@@ -919,7 +919,7 @@ class ShopController extends HomeController {
 					break;
 				case '2':
 					//5km
-					if( ($jvli>0) && ($jvli<=5) ){
+					if( ($jvli>=0) && ($jvli<=5) ){
 						
 					}else{
 						echo json_encode(array('i'=>0,'msg'=>'抱歉，您超过5km区域不可抢红包，赶快靠近抢吧！'));die;
@@ -927,7 +927,7 @@ class ShopController extends HomeController {
 					break;
 				case '3':
 					//20km
-					if( ($jvli>0) && ($jvli<=20) ){
+					if( ($jvli>=0) && ($jvli<=20) ){
 						
 					}else{
 						echo json_encode(array('i'=>0,'msg'=>'抱歉，您超过20km区域不可抢红包，赶快靠近抢吧！'));die;
@@ -1221,7 +1221,7 @@ class ShopController extends HomeController {
 			switch ($_jvli_type) {
 				case '1':
 					//3km 
-					if( ($jvli>0) && ($jvli<=3) ){
+					if( ($jvli>=0) && ($jvli<=3) ){
 						
 					}else{
 						$back['i'] = 0;
@@ -1230,7 +1230,7 @@ class ShopController extends HomeController {
 					break;
 				case '2':
 					//5km
-					if( ($jvli>0) && ($jvli<=5) ){
+					if( ($jvli>=0) && ($jvli<=5) ){
 						
 					}else{
 						$back['i'] = 0;
@@ -1239,7 +1239,7 @@ class ShopController extends HomeController {
 					break;
 				case '3':
 					//20km
-					if( ($jvli>0) && ($jvli<=20) ){
+					if( ($jvli>=0) && ($jvli<=20) ){
 						
 					}else{
 						$back['i'] = 0;

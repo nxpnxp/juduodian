@@ -305,7 +305,28 @@
 										data:{'shopid':shopid},
 										url:"{:U('Paper/index')}",
 										success:function(data){
-											layer.msg(data);
+											//layer.msg(data);
+											if(data.length>0){
+												var json = {
+												  "title": "", //相册标题
+												  "id": 3, //相册id
+												  "start": 0, //初始显示的图片序号，默认0
+												  "data": [   //相册包含的图片，数组格式
+												    {
+												      "alt": "",
+												      "pid": 8, //图片id
+												      "src": data, //原图地址
+												      "thumb": "" //缩略图地址
+												    }
+												  ]
+												};
+								        		layer.photos({
+												    photos: json,
+												    area: ['100%', 'auto'],
+												    anim: 5
+												    //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+												});
+											}
 										},
 										error: function(){
 											layer.msg('error里');

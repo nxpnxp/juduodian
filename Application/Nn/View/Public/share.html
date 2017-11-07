@@ -22,7 +22,16 @@ if($options===FALSE){
     wx.config({$options});
     // 当JSSDK初始化完成后，再执行相关操作
     wx.ready(function(){
-        // 这里就可以调用 wx 的jssdk的操作了
+        
+        wx.hideMenuItems({
+		    menuList: [
+		    	"menuItem:share:weiboApp",
+		    	"menuItem:share:facebook",
+		    	"menuItem:share:qq",
+		    	"menuItem:share:QZone"
+		    ] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+		});
+        
         var thisurl = '{$thisurl}'+'&pid={$uid}';
         
         share_friend();
