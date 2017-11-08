@@ -27,6 +27,11 @@ class HomeController extends Controller {
     protected function _initialize(){
 		include "wechat/include.php";
 		
+		$pid = I('get.pid');
+		if($pid){
+			cookie('pid',$pid,3600); 
+		}
+		
 		$openid = cookie('openid');
 		if(!$openid){
 			$this->get_user();
