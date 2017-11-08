@@ -195,7 +195,14 @@ class MemberController extends HomeController {
 			
 		$xiaxian = M('WxuserCode')->where(array('pid'=>$user['id']))->select();
 		$this->assign('xiaxian',$xiaxian);
-				
+		
+		$zyj = M('WxuserYuelog')->where('uid='.$user['id'].' and oid="kdyj"')->sum('fee');
+		if(!$zyj){ $zyj = 0; }
+		$this->assign('zyj',$zyj);
+		
+		$logs = M('WxuserYuelog')->where('uid='.$user['id'].' and oid="kdyj"')->select();
+		$this->assign('logs',$logs);
+		
 		$this->display();
 	}
 	

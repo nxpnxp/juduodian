@@ -9,12 +9,43 @@ class PubController extends Controller {
 		
 		$openid = I('openid');
 		$ordersn = I('ordersn');
+		
 		$info = M('DocumentShop')->where('ordersn="'.$ordersn.'"')->find();
 		$data = array(
 			'paytype' => 1,
 			'paystatus' => 1
 		);
 		$rr = M('DocumentShop')->where('id='.$info['id'])->save($data);
+		
+		$document = M('Document')->where('id='.$info['id'])->find();
+		$data1 = array(
+			'status' => 1//状态 -1回收站 0禁用 1可用 2待审核
+		);
+		$rr = M('Document')->where('id='.$document['id'])->save($data1);
+		
+		//如果该店是通过谁来的  给佣金
+		if($info['pid']>0){
+			$paymoney = M('Config')->where(array('name'=>"NXP_APPLY_DIAN_PAY"))->getField('value');
+			$yj = M('Config')->where(array('id'=>"45"))->getField('value');
+			if($paymoney && $yj){
+				
+				$money = $paymoney * $yj / 100;
+				$money = sprintf("%.2f",substr(sprintf("%.3f", $money), 0, -2));
+				
+				//增加余额			
+				M('WxuserCode')->where('id='.$info['pid'])->setInc('yue',$money);
+				
+				//存余额记录
+				M('WxuserYuelog')->add(array(
+					'uid' => $info['pid'],
+					'fee' => $money,
+					'desc' => '店铺['.$info['id'].']开店成功，获得佣金['.$money.']'.'转入余额',
+					'time' => time(),
+					'oid' => 'kdyj'
+				));
+				
+			}
+		}
 		
 		echo 'success';
 	}

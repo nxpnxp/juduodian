@@ -283,6 +283,9 @@ class ShopController extends HomeController {
 		$lnglat = explode(',', $lnglat);
 		$ordersn = 'WXAPPLY'.substr( md5('NNN'.time()) , 4,12);
 		
+		$pid = cookie('pid');
+		if(!$pid){ $pid=0; }
+		
 		$array2 = array(
 			'id' => $id,
 			'imgs' => I('post.img1'),  //店铺形象图1
@@ -299,7 +302,8 @@ class ShopController extends HomeController {
 			'latitude' => $lnglat[1],
 			'ordersn' => $ordersn,
 			'paytype' => 0,
-			'paystatus' => 0
+			'paystatus' => 0,
+			'pid' => $pid
 		);
 		$id2 = M('DocumentShop')->add($array2);
 		

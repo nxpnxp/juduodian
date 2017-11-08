@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title> 分类</title>    
+    <title> </title>    
     <meta name="renderer" content="webkit">
   	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -18,9 +18,27 @@
      	
      	.leftc{background-color: #2D93CA;color:#fff;padding-top: 20px;}
      	.rightc{padding-top: 20px;}
+     	
+     	.title{
+     		width: 100%;
+     		text-align: center;
+     		padding: 10px 0;
+     		background-color: #009688;
+     		color: #fff;
+     		font-size: 20px;
+     	}	  
+     	.title i{
+     		text-align: left;
+     	} 
      </style>
 </head>
 <body>
+	
+	<div class="title layui-row">
+		<div class="layui-col-xs2 back"><i class="layui-icon">&#xe65c;</i> </div>
+		<div class="layui-col-xs8">分类</div>
+		<div class="layui-col-xs2"></div>
+	</div>
 	
 	<div class="layui-row">
 	    
@@ -33,7 +51,7 @@
 	    </div>
 	    <div class="layui-col-xs8 rightc">
 	      	<foreach name="cates_son" item="vo" >
-				<div class="cate layui-col-xs4" cateid="{$vo.id}" >
+				<div class="cate layui-col-xs4" cateid="{$vo.id}" onclick="showall(this)">
 					<div><img src="{$vo.path}" /></div>
 			    	<div>{$vo.title}</div>
 			    </div>
@@ -50,6 +68,10 @@
 		//弹出层
 	  	var $ = layui.$ //重点处
 	  	,layer = layui.layer;
+	  	
+	  	$('.back').click(function(){
+	  		window.location.href = "{:U('Index/index')}";
+	  	});
 	  	
 	  	var winh = $(window).height(); 
 	  	$('.leftc').css('height',winh);
@@ -78,7 +100,7 @@
 	  	function soncate(arr){
 	  		var str = '';
 	  		for (var i=0;i<arr.length;i++) {
-	  			str += '<div class="cate layui-col-xs4" cateid="'+arr[i]['id']+'" >';
+	  			str += '<div class="cate layui-col-xs4" cateid="'+arr[i]['id']+'" onclick="showall(this)">';
 	  			str += '<div><img src="'+arr[i]['path']+'" /></div>';
 	  			str += '<div>'+arr[i]['title']+'</div>';
 	  			str += '</div>';
@@ -87,5 +109,16 @@
 	  	}
 	  
 	});
+	
+	function showall(obj){
+		layui.use(['layer','jquery'], function(){
+			//弹出层
+		  	var $ = layui.$ //重点处
+		  	,layer = layui.layer;
+		  	
+		  	var cateid = $(obj).attr('cateid');
+		  	window.location.href = "{:U('Category/showall')}"+'&id='+cateid;
+	  	});
+	}
 </script>
 </html>

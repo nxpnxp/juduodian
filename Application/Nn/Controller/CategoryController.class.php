@@ -47,6 +47,27 @@ class CategoryController extends HomeController {
 		$this->ajaxReturn($return);
 	}
 	
+	public function showall(){
+		$cateid = I('get.id');
+		$catename = M('Category')->where(array('id'=>$cateid))->getField('title');
+		$this->assign('catename',$catename);
+		
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$this->assign('user',$user);
+		
+		$morens = M('Document')->alias('d')
+			->field('d.id,d.title,p.path,ds.longitude,ds.latitude')
+			->join('left join onethink_picture p on d.cover_id=p.id')
+			->join('left join onethink_document_shop ds on ds.id=d.id')
+			->where('d.status=1 and d.category_id='.$cateid)
+			->limit(10)
+			->select();
+		$this->assign('morens',$morens);
+		
+		$this->display();
+	}
+	
 	
 	
 }

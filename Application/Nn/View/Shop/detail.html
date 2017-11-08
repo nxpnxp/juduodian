@@ -58,6 +58,8 @@
 		.logo img{width:50px; height:50px;border-radius:50%; float:left; margin-right:10px;}
 		.shoptitle{ color:#2F4056; font-size:16px; font-weight:800}
 		.shopdesc{ color:#c2c2c2; line-height:1.5em;}
+		
+		#map{width: 100%;height: 300px;display: none;}
 	 </style>
 </head>
 <body>
@@ -102,8 +104,11 @@
    <div class="wrap">
 	<div class="layui-row nrow">
 	<div class="layui-col-xs1"><i class="layui-icon">&#xe715;</i></div>
-    <div class="layui-col-xs11" style="text-align:left;">地址：{$dian.showaddress}</div>
-	</div></div>
+    <div class="layui-col-xs11 showaddress" style="text-align:left;" lon="{$dian.longitude}" lat="{$dian.latitude}">
+    	地址：{$dian.showaddress}</div>
+	</div>
+   </div>
+   <div id="map"></div>
     
 	<div class="layui-row nrow" style="margin-bottom:80px;">
 		{$dian.content}
@@ -160,7 +165,36 @@
 </body>
  
 <script type="text/javascript" src="__NN__/layui.js"></script> 
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.0&key=2d91c93f3322cc37c798dc6f9d806f38"></script>
+<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+	  
 <script>
+	AMapUI.loadUI(['misc/PositionPicker'], function(PositionPicker) {
+	    layui.use(['layer','jquery'], function(){
+	    	var $ = layui.$ //重点处
+	  		,layer = layui.layer;
+		    var lat = $('.showaddress').attr('lat');
+	  		var lon = $('.showaddress').attr('lon');
+	  		
+	  		var map = new AMap.Map('map',{
+		        resizeEnable: true,
+		        zoom: 16,
+		        //center: [116.480983, 40.0958]
+		        center: [lon, lat]
+		    });
+		    
+		    var marker = new AMap.Marker({
+				position: [lon, lat],
+				title: '',
+				map: map
+		    });
+	  		
+  		});
+  		
+	    
+	    
+	});
+	
 	layui.use(['layer','jquery','carousel'], function(){
 		
 		//弹出层
@@ -176,6 +210,17 @@
 	  	
 	  	$('.back').click(function(){
 	  		window.location.href = "{:U('Index/index')}";
+	  	});
+	  	
+	  	$('.showaddress').click(function(){
+	  		
+	  		layer.open({
+			  type: 1,
+			  area: ['90%', 'auto'],
+			  title: false,
+			  content: $('#map')
+			});
+	  		
 	  	});
 	  	
 	  	//轮播
