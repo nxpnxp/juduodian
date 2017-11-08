@@ -18,28 +18,33 @@
      		width: 90%;
      		margin: 0 auto;
      	}
+		.layui-col-xs25{ width:20%; display:inline-block;}
      	.cate{
      		padding: 10px 0;
      		font-size: 13px;     		
      		text-align: center;
      	}
-     	.cate img{ width: 30px;height: 30px; }
+     	.cate img{ width: 50px;height: 50px; margin-bottom:10px;  }
      	
      	
      	.morendian,
-     	.hongbaodian{width: 90%;margin: 0 auto;}
+     	.hongbaodian{width: 99%;margin: 0 auto;}
      	.morendian img,
-     	.hongbaodian img{width: 50px;height: 50px;}
+     	.hongbaodian img{width: 94%;height: 85px; border-radius:5px;}
      	.morendian .layui-row,
      	.hongbaodian .layui-row{
-     		line-height:50px;
-     		height: 50px;
+     		
+     		height: 85px;
      		margin-bottom: 10px;
      		padding-bottom: 10px;
      		border-bottom: 1px dashed #F0F0F0;
      	}
+		.mt5{ margin-top:5px;}
      	.text-right{text-align:right;}
-     	
+     	.addr{ font-size:12px;  padding:0; margin:0; color:#09F;}
+		.desp{font-size:12px; color:#999;}
+		.stitle{ font-size:15px;}
+		.orange{ color:#F90; font-size:12px;}
      </style>
 </head>
 <body>
@@ -56,7 +61,7 @@
 	
 	<div class="layui-row">
 		<foreach name="cates" item="vo" >
-			<div class="cate layui-col-xs3" cateid="{$vo.id}" >
+			<div class="cate layui-col-xs25" cateid="{$vo.id}" >
 				<div><img src="{$vo.path}" /></div>
 		    	<div>{$vo.title}</div>
 		    </div>
@@ -74,9 +79,14 @@
 	      	<div class="morendian">
 	      		<foreach name="morens" item="vo" >
 				<div class="layui-row open" data-id="{$vo.id}">
-				    <div class="layui-col-xs3"><img src="{$vo.path}" /></div>
-			    	<div class="layui-col-xs6">{$vo.title}</div>
-			    	<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}"> </div>
+				    <div class="layui-col-xs4"><img src="{$vo.path}" /></div>
+			    	<div class="layui-col-xs8">
+                    <p class="layui-col-xs9 stitle">{$vo.title}</p><p class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}"></p>
+                    <p class="layui-col-xs12 desp mt5">{$vo.description|mb_substr=###,0,36,utf8}</p>
+                    <p class="layui-col-xs12 addr mt5">地址：{$vo.showaddress|mb_substr=###,0,12,utf8}</p>
+                    <p class="layui-col-xs12 orange">收藏：{$vo.collection} 赞：{$vo.zan}</p>
+                    </div>
+			    	<!--<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}"> </div>-->
 				</div>
 				</foreach>			 			  
 			</div>
@@ -85,11 +95,16 @@
 	    <div class="layui-tab-item">
 	    	
 	    	<div class="hongbaodian">
-	      		<foreach name="morens" item="vo" >
+	      		<foreach name="fujin" item="vo" >
 			  	<div class="layui-row open" data-id="{$vo.id}">
-				    <div class="layui-col-xs3"><img src="{$vo.path}" /></div>
-			    	<div class="layui-col-xs6">{$vo.title}</div>
-			    	<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}"> </div>
+				    <div class="layui-col-xs4"><img src="{$vo.path}" /></div>
+			    	<div class="layui-col-xs8">
+                     <p class="layui-col-xs9 stitle">{$vo.title}</p><p class="layui-col-xs3 text-right">{$vo.juli}km</p>
+                    <p class="layui-col-xs12 desp mt5">{$vo.description|mb_substr=###,0,36,utf8}</p>
+                    <p class="layui-col-xs12 addr mt5">地址：{$vo.showaddress|mb_substr=###,0,12,utf8}</p>
+                    <p class="layui-col-xs12 orange">收藏：{$vo.collection} 赞：{$vo.zan}</p>
+                    </div>
+<!--			    	<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}">{$vo.juli}km </div>-->
 				</div>
 				</foreach>
 			</div>
