@@ -16,16 +16,18 @@
      		text-align: center;
      		width: 90%;
      		margin: 0 auto;
-     	}    
-     	.top{border-bottom: 1px solid #ccc; background: url("__PUBLIC__/mbg.jpg")}
-     	.top img{width: 60px;height: 60px;border-radius: 50%;}	  
+     	}
+		.line100{ line-height:150px;}
+     	.top{border-bottom: 1px solid #ccc; background: url("__PUBLIC__/mbg.jpg"); text-align:center; color:#fff; height:150px; vertical-align:middle;}
+     	.top img{width: 80px;height: 80px;border-radius: 50%;}	  
      	
      	.layui-nav{border-radius: 0;}   
      	.layui-nav-tree{width: 100%;}	
 		
-		.menu1{ background-color:#FFF;}
-		.menu1 ul li{ border-bottom:1px dashed #eaeaea;  background-color:#FFF; width:100%; height:50px; line-height:50px;}
-		.menu1 ul li a{ color: #333;}
+		.mt15{ margin-top:25px;}
+		.menu1{ background-color:#FFF; text-indent:30px;}
+		.menu1 ul li{ border-bottom:1px dashed #eaeaea;  background-color:#FFF; width:100%; height:60px; line-height:60px;}
+		.menu1 ul li a{ color: #333; font-size:15px; display:block; width:100%; height:60px;}
 		
      </style>
 </head>
@@ -36,9 +38,9 @@
 	
 	<div class="top">
     <div class="layui-row open">
-    <div class="layui-col-xs4"> 积分：0</div>
-    <div class="layui-col-xs4"><img src="{$user.headimgurl}" />{$user.nickname}</div>
-    <div class="layui-col-xs4">余额：{$user.yue}</div>
+    <div class="layui-col-xs4 line100"> 积分：0</div>
+    <div class="layui-col-xs4"><img src="{$user.headimgurl}" class="mt15" /><p>{$user.nickname}</p></div>
+    <div class="layui-col-xs4 line100">余额：{$user.yue}</div>
     </div>
     
 		
@@ -46,11 +48,11 @@
 	
 	<div class="menu1">
 		<ul>	
-		  <li><a href="{:U('Shop/dians')}">我的店铺</a></li>
-		  <li><a href="{:U('Member/collection')}">我的收藏</a></li>
-		  <li><a href="{:U('Member/yuelogs')}">余额记录</a></li>
-		  <li><a href="{:U('Member/yuetixian')}">余额提现</a></li>
-		  <li><a href="{:U('Member/fxcenter')}">推广中心</a></li>
+		  <li><a href="{:U('Shop/dians')}"><i class="layui-icon" style="font-size: 20px; color: #1E9FFF;">&#xe68e;</i> 我的店铺</a></li>
+		  <li><a href="{:U('Member/collection')}"><i class="layui-icon" style="font-size: 20px; color: #1E9FFF;">&#xe7a0;</i> 我的收藏</a></li>
+		  <li><a href="{:U('Member/yuelogs')}"><i class="layui-icon" style="font-size: 20px; color: #1E9FFF;">&#xe65e;</i> 余额记录</a></li>
+		  <li><a href="{:U('Member/yuetixian')}"><i class="layui-icon" style="font-size: 20px; color: #1E9FFF;">&#xe857;</i> 余额提现</a></li>
+		  <li><a href="{:U('Member/fxcenter')}"><i class="layui-icon" style="font-size: 20px; color: #1E9FFF;">&#xe630;</i> 推广中心</a></li>
 		</ul>
 	</div>
 	

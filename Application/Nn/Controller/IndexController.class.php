@@ -26,9 +26,17 @@ class IndexController extends HomeController {
 			->where('d.status=1')
 			->limit(10)
 			->select();
+		$daybegin=strtotime(date("Ymd")); 
+		$dayend=$daybegin+86400;
 		foreach($morens as $k=>$v){
 			$morens[$k]['collection'] = M("Collection")->where(array('sid'=>$v['id']))->count();
 			$morens[$k]['zan'] = M("Zan")->where(array('sid'=>$v['id']))->count();
+			$flag = 0;
+			$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			if($flag <=0){
+				$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			}
+			$morens[$k]['hb'] = $flag;
 		}
 		$this->assign('morens',$morens);
 		
@@ -56,6 +64,13 @@ class IndexController extends HomeController {
 		foreach($dianpu1 as $k=>$v){
 			$dianpu1[$k]['collection'] = M("Collection")->where(array('sid'=>$v['id']))->count();
 			$dianpu1[$k]['zan'] = M("Zan")->where(array('sid'=>$v['id']))->count();
+			$flag = 0;
+			$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			if($flag <=0){
+				$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			}
+			$dianpu1[$k]['hb'] = $flag;
+			
 		}
 		$this->assign('fujin',$dianpu1);
 
