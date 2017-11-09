@@ -519,6 +519,7 @@ class ShopController extends HomeController {
 				$wxhbson = M('WxhbSon')->where('hbid='.$wxhb['id'].' and yue>0 and gettime<='.$time.' and endtime>='.$time)->find();
 				if($wxhbson){
 					$this->assign('iskl',$wxhbson['iskl']);
+					$this->assign('kl',$wxhbson['kl']);
 					$flag = 2;//2疯抢中
 				}else{
 					$flag = 4;//4不可抢
@@ -529,6 +530,7 @@ class ShopController extends HomeController {
 					}
 					if( ($time >= $_wxhbson['gettime']) && ($time <= $_wxhbson['endtime']) ){
 						$this->assign('iskl',$_wxhbson['iskl']);
+						$this->assign('kl',$_wxhbson['kl']);
 						$flag = 2;//2疯抢中
 					}
 					if($time > $_wxhbson['endtime']){
@@ -544,6 +546,7 @@ class ShopController extends HomeController {
 				}
 				if( ($time >= $wxhb['gettime']) && ($time <= $wxhb['endtime']) ){
 					$this->assign('iskl',$wxhb['iskl']);
+					$this->assign('iskl',$wxhb['kl']);
 					$flag = 2;//2疯抢中
 				}
 				if($time > $wxhb['endtime']){
