@@ -21,14 +21,14 @@
      		width: 100%;
      		text-align: center;
      		padding: 10px 0;
-     		background-color: #009688;
+     		background-color: #09F;
      		color: #fff;
-     		font-size: 20px;
+     		font-size: 15px;
      	}	  
      	.title i{
      		text-align: left;
      	}   	
-     	.layui-colla-title span{color:red;margin-left: 10px;}
+     	.layui-colla-title span{color: #09F;margin-left: 10px;}
      </style>
 </head>
 <body>
@@ -45,6 +45,7 @@
 	<div class="layui-collapse" lay-accordion>
 		
 		<foreach name="dians" item="vo" >
+        
 		  <div class="layui-colla-item">
 		    <h2 class="layui-colla-title">{$vo.title}
 		    	<eq name="vo.paystatus" value="0"><span>[未支付]</span></eq>
@@ -55,11 +56,12 @@
 		    </h2>
 		    <div class="layui-colla-content layui-show">
 		    	<div class="layui-btn-group">
-				  <button class="layui-btn"><a href="__CONTROLLER__/editshop/id/{$vo.id}" style="color:#fff;">编辑店铺</a></button>
-				  <button class="layui-btn sendhb" data-shopid="{$vo.id}">发红包</button>
+				 <a href="__CONTROLLER__/editshop/id/{$vo.id}" style="color:#fff;">编辑店铺</a>
+				 <a class="sendhb" data-shopid="{$vo.id}">发红包</a>
 				</div>
 		    </div>
 		  </div>
+          
 	  	</foreach>
 	  
 	</div>
