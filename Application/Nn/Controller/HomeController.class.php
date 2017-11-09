@@ -186,7 +186,7 @@ class HomeController extends Controller {
 		    echo $result->errCode;
 		} else {
 		    // 接口正常的处理
-		    echo 'ook';
+		    //echo 'ook';
 		}
 	}
 

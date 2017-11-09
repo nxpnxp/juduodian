@@ -47,6 +47,9 @@ class PubController extends Controller {
 			}
 		}
 		
+		//创建店铺完成  发模板消息 提醒发红包
+		$this->sendmessage('','恭喜您创建成功，给店铺增加红包试试，会有意想不到的效果！~');
+		
 		echo 'success';
 	}
 	
@@ -104,6 +107,32 @@ class PubController extends Controller {
 		echo 'success';
 		
 		
+	}
+
+	//发送模板消息
+	private function sendmessage($openid='',$txt='hello'){
+		if(!$openid){	
+			$openid = $this->openid;
+		}
+		
+		$data = array(
+			'touser' => $openid,
+			"msgtype" => "text",
+			'text' => array(
+				'content' => $txt
+			)
+		);
+		$wechat = &load_wechat('Receive');
+		$result = $wechat->sendCustomMessage($data);
+		
+		// 接口异常的处理
+		if ($result === FALSE) {
+		    echo $result->errMsg;
+		    echo $result->errCode;
+		} else {
+		    // 接口正常的处理
+		    //echo 'ook';
+		}
 	}
 
 }
