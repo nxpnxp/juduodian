@@ -985,6 +985,35 @@ class ShopController extends HomeController {
 				echo json_encode(array('i'=>1,'msg'=>'真棒！抢到 '.$money.' 已存入余额。'));die;
 			}else{
 				$model->rollback();
+				
+				//红包已领完，若有剩余返还余额，发模板消息提醒
+				$yue = 	$model->where('id='.$hbid)->getField('yue');
+				$shopid = $model->where('id='.$hbid)->getField('shopid');
+				$shopuid = M('Document')->where('id='.$shopid)->getField('uid');
+				if($shopuid){
+					$shopopenid = M('WxuserCode')->where('id='.$shopuid)->getField('openid');
+				
+					if($yue){
+						//增加余额			
+						M('WxuserCode')->where('id='.$shopuid)->setInc('yue',$yue);
+						
+						//减少余额
+						$model->where('id='.$hbid)->setDec('yue',$yue);
+						
+						//存余额记录
+						M('WxuserYuelog')->add(array(
+							'uid' => $shopuid,
+							'fee' => $yue,
+							'desc' => '您的红包['.$hbid.']剩余['.$yue.']'.'转入余额',
+							'time' => $time,
+							'oid' => $hbid.'-0'
+						));
+					}
+					
+					$this->sendmessage($shopopenid,'您的红包已被领完，您又可以继续发红包了！~');
+				}
+					
+				
 				echo json_encode(array('i'=>0,'msg'=>'呀！红包未抢到~'));die;
 			}
 		}
@@ -1065,6 +1094,34 @@ class ShopController extends HomeController {
 				echo json_encode(array('i'=>1,'msg'=>'真棒！抢到 '.$money.' 已存入余额。'));die;
 			}else{
 				$model1->rollback();
+				
+				//红包已领完，若有剩余返还余额，发模板消息提醒
+				$yue = 	$model2->where('id='.$wxhbsonid)->getField('yue');
+				$shopid = $model1->where('id='.$wxhbid)->getField('shopid');
+				$shopuid = M('Document')->where('id='.$shopid)->getField('uid');
+				if($shopuid){
+					$shopopenid = M('WxuserCode')->where('id='.$shopuid)->getField('openid');
+				
+					if($yue){
+						//增加余额			
+						M('WxuserCode')->where('id='.$shopuid)->setInc('yue',$yue);
+						
+						//减少余额
+						$model2->where('id='.$wxhbsonid)->setDec('yue',$yue);
+						
+						//存余额记录
+						M('WxuserYuelog')->add(array(
+							'uid' => $shopuid,
+							'fee' => $yue,
+							'desc' => '您的红包['.$hbid.']剩余['.$yue.']'.'转入余额',
+							'time' => $time,
+							'oid' => $hbid.'-0'
+						));
+					}
+					
+					$this->sendmessage($shopopenid,'您的今日红包已被领完，别忘了明天还能抢红包啊！~');
+				}
+				
 				echo json_encode(array('i'=>0,'msg'=>'呀！红包未抢到~'));die;
 			}
 		}
