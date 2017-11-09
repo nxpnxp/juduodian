@@ -165,27 +165,21 @@ class HomeController extends Controller {
 	}
 
 	//发送模板消息
-	public function sendmessage(){
-		$openid = $this->openid;
+	public function sendmessage($openid='',$txt='hello'){
+		if(!$openid){	
+			$openid = $this->openid;
+		}
 		
 		$data = array(
 			'touser' => $openid,
-			'template_id' => '_04aDWEjRySMYJ0fCJ_7iVwYmN6mY7h3NFU-VUco_t0',
-			'url' => '',
-			'topcolor' => '#FF0000',
-			'data' => array(
-				'user' => array('value'=>'one','color'=>"#173177"),
-				'reason' => array('value'=>'one1','color'=>"#173177"),
-				'address' => array('value'=>'one2','color'=>"#173177")
+			"msgtype" => "text",
+			'text' => array(
+				'content' => $txt
 			)
 		);
-		$wechat = &load_wechat('Message');
-		$result = $wechat->sendTemplateMessage($data);
+		$wechat = &load_wechat('Receive');
+		$result = $wechat->sendCustomMessage($data);
 		
-		var_dump($result);
-		var_dump($result->errMsg);
-		var_dump($result->errCode);
-		die;
 		// 接口异常的处理
 		if ($result === FALSE) {
 		    echo $result->errMsg;
