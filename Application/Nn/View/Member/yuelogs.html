@@ -21,10 +21,10 @@
      		width: 100%;
      		text-align: center;
      		padding: 10px 0;
-     		background-color: #009688;
+     		background-color: #09F;
      		color: #fff;
-     		font-size: 20px;
-     	}	  
+     		font-size: 15px;
+     	}		  
      	.title i{
      		text-align: left;
      	}   	
@@ -42,9 +42,9 @@
 		<div class="layui-col-xs2"></div>
 	</div>
 	
-	<div style="padding: 10px 20px 0 20px;font-size: 23px;color:#008000;">我的余额：{$user['yue']}</div>
+	<div style="padding: 10px 20px 0 20px;font-size: 16px;color:#09F;"><i class="layui-icon" style="font-size: 20px; color: #1E9FFF;">&#xe65e;</i> {$user['yue']}</div>
 		
-  	<table class="layui-table" lay-skin="line">
+  	<table class="layui-table" lay-skin="line" style="margin-bottom:100px;">
 	  <colgroup>
 	    <col>
 	    <col width="35%">
@@ -66,7 +66,7 @@
 	    
 	  </tbody>
 	</table>
-	
+<include file="Public/footer" />	
 </body>
  
 <script type="text/javascript" src="__NN__/layui.js"></script> 
@@ -103,6 +103,22 @@
 	  		}
 	  		
 	  	});
+		
+		$('.footer').click(function(){
+	  		$(this).addClass('footer-on').siblings().removeClass('footer-on');
+			var nid = $(this).attr('nid');
+			if(nid=='1'){
+				var url = "{:U('Index/index')}";
+			}
+			if(nid=='2'){
+				var url = "{:U('Shop/index')}";
+			}
+			if(nid=='3'){
+				var url = "{:U('Member/index')}";
+			}
+			
+			window.location.href = url;
+		});
 		
 	});
 	

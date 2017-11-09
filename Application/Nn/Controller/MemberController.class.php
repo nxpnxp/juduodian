@@ -65,6 +65,7 @@ class MemberController extends HomeController {
 		$openid = $this->openid;
 		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
 		$this->assign('user',$user);
+		$visit = M("WxuserLatlon")->where(array('uid'=>$user['id']))->order("time desc")->find();
 		$data = M('Collection')->where(array('uid'=>$user['id']))->select();
 		$ids = '';
 		foreach($data as $k=>$v){
@@ -72,14 +73,50 @@ class MemberController extends HomeController {
 		}
 		$ids = trim($ids,',');
 		$collections = M('Document')->where("id in ($ids)")->select();
+		$daybegin=strtotime(date("Ymd")); 
+		$dayend=$daybegin+86400;
 		foreach($collections as $k=>$v){
 			$collections[$k]['logo'] = M('Picture')->where(array('id'=>$v['cover_id']))->getField('path');
+			$collections[$k]['collection'] = M("Collection")->where(array('sid'=>$v['id']))->count();
+			$collections[$k]['zan'] = M("Zan")->where(array('sid'=>$v['id']))->count();
+			$collections[$k]['showaddress'] = M('DocumentShop')->where(array('id'=>$v['id']))->getField('showaddress');
+			$_lon = M('DocumentShop')->where(array('id'=>$v['id']))->getField('longitude');
+			$_lat = M('DocumentShop')->where(array('id'=>$v['id']))->getField('latitude');
+			$collections[$k]['juli'] = $this->getDistance($_lon, $_lat,$visit['lon'], $visit['lat']);
+			$flag = 0;
+			$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			if($flag <=0){
+				$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			}
+			$collections[$k]['hb'] = $flag;
 		}
-		
 		$this->assign('collections',$collections);
 		$this->display();
 	}
+		private function getDistance($longitude1, $latitude1, $longitude2, $latitude2, $unit=2, $decimal=2){
 	
+	    $EARTH_RADIUS = 6370.996; // 地球半径系数
+	    $PI = 3.1415926;
+	
+	    $radLat1 = $latitude1 * $PI / 180.0;
+	    $radLat2 = $latitude2 * $PI / 180.0;
+	
+	    $radLng1 = $longitude1 * $PI / 180.0;
+	    $radLng2 = $longitude2 * $PI /180.0;
+	
+	    $a = $radLat1 - $radLat2;
+	    $b = $radLng1 - $radLng2;
+	
+	    $distance = 2 * asin(sqrt(pow(sin($a/2),2) + cos($radLat1) * cos($radLat2) * pow(sin($b/2),2)));
+	    $distance = $distance * $EARTH_RADIUS * 1000;
+	
+	    if($unit==2){
+	        $distance = $distance / 1000;
+	    }
+	
+	    return round($distance, $decimal);
+	
+	}	
 	public function yuetixian(){
     	
 		$openid = $this->openid;

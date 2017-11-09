@@ -34,7 +34,7 @@
 		.shoplist img{ width:50px; height:50px; border-radius:50%;}
 		
 		 .morendian,
-     	.hongbaodian{width: 99%;margin: 0 auto;}
+     	.hongbaodian{width: 95%;margin: 0 auto;}
      	.morendian img,
      	.hongbaodian img{width: 95px;height: 95px; border-radius:5px;}
      	.morendian .layui-row,
@@ -60,35 +60,35 @@
 		<div class="subscribe">您未关注，请点击关注</div>
 	</if>
 	
-	<div class="title layui-row">
+	<div class="title layui-row" style="margin-bottom:20px;">
 		<div class="layui-col-xs2 back"><a class="white"  href="javascript:history.go(-1)"><i class="layui-icon">&#xe65c;</i> </a></div>
 		<div class="layui-col-xs8">我的收藏</div>
 		<div class="layui-col-xs2"></div>
 	</div>
 	<foreach name="collections" item="vo" >
     <a href="__MODULE__/shop/detail/id/{$vo.id}">
-    
+    <div class="morendian">
 <div class="layui-row open" data-id="{$vo.id}">
 <div class="layui-col-xs4"><img src="{$vo.logo}" /></div>
 <div class="layui-col-xs8">
-<p class="layui-col-xs10 stitle">{$vo.title|mb_substr=###,0,10,utf8} <if condition="$vo.hb gt 0"><span class="hb">红包</span></if></p><p class="layui-col-xs2 text-right jl" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}"></p>
+<p class="layui-col-xs10 stitle">{$vo.title|mb_substr=###,0,10,utf8} <if condition="$vo.hb gt 0"><span class="hb">红包</span></if></p><p class="layui-col-xs2 text-right jl">{$vo.juli}km</p>
 <p class="layui-col-xs12 desp mt5">{$vo.description|mb_substr=###,0,16,utf8}</p>
 <p class="layui-col-xs12 addr mt5"><i class="layui-icon">&#xe715;</i> {$vo.showaddress|mb_substr=###,0,12,utf8}</p>
 <p class="layui-col-xs12 orange mt5"><i class="layui-icon">&#xe600;</i> {$vo.collection} &nbsp;&nbsp;&nbsp;<i class="layui-icon">&#xe6c6;</i> {$vo.zan} &nbsp;&nbsp;&nbsp;<i class="layui-icon">&#xe60c;</i> 998</p>
 </div>
-<!--<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}"> </div>-->
 </div>
-
+</div>
     </a>
 	</foreach>	
-  	
-	
+  	<div style="margin-bottom:100px;"></div>
+<include file="Public/footer" />	
 </body>
- 
-<script type="text/javascript" src="__NN__/layui.js"></script> 
+<script type="text/javascript" src="__NN__/layui.js"></script>
 <script>
 	layui.use(['layer','jquery','element'], function(){
-		
+		//弹出层
+	  	var $ = layui.$ //重点处
+	  	,layer = layui.layer;
 		$('.back').click(function(){
 	  		window.location.href = "{:U('Member/index')}";
 	  	});
@@ -96,6 +96,22 @@
 		$('.open').click(function(){
 			var id = $(this).attr('data-id');
 			var url = "{:U('Shop/detail')}"+'&id='+id;
+			window.location.href = url;
+		});
+		
+		$('.footer').click(function(){
+	  		$(this).addClass('footer-on').siblings().removeClass('footer-on');
+			var nid = $(this).attr('nid');
+			if(nid=='1'){
+				var url = "{:U('Index/index')}";
+			}
+			if(nid=='2'){
+				var url = "{:U('Shop/index')}";
+			}
+			if(nid=='3'){
+				var url = "{:U('Member/index')}";
+			}
+			
 			window.location.href = url;
 		});
 		

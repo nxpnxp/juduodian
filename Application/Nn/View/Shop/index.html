@@ -29,6 +29,27 @@
      		text-align: left;
      	}   	
      	.layui-colla-title span{color: #09F;margin-left: 10px;}
+		
+		.morendian,
+     	.hongbaodian{width: 95%;margin: 0 auto;}
+     	.morendian img,
+     	.hongbaodian img{width: 95px;height: 95px; border-radius:5px;}
+     	.morendian .layui-row,
+     	.hongbaodian .layui-row{
+     		
+     		height: 95px;
+     		margin-bottom: 10px;
+     		padding-bottom: 10px;
+     		border-bottom: 1px solid #F0F0F0;
+     	}
+		.mt5{ margin-top:7px;}
+     	.text-right{text-align:right;}
+     	.addr{ font-size:14px; color:#999;}
+		.desp{font-size:14px; color:#999;}
+		.stitle{ font-size:15px; color:#000; font-weight:bold;}
+		.orange{ color: #3CC; font-size:12px;}
+		.jl{ color:#666; font-size:12px;}
+		.hb{ font-size:8px; color: #fff; background-color: #F33; padding:2px;  display:inline-block; border-radius:3px;}
      </style>
 </head>
 <body>
@@ -65,7 +86,8 @@
 	  	</foreach>
 	  
 	</div>
-	
+<div style="margin-bottom:100px;"></div>
+<include file="Public/footer" />	
 </body>
  
 <script type="text/javascript" src="__NN__/layui.js"></script> 
@@ -102,6 +124,22 @@
 	  		}
 	  		
 	  	});
+		
+		$('.footer').click(function(){
+	  		$(this).addClass('footer-on').siblings().removeClass('footer-on');
+			var nid = $(this).attr('nid');
+			if(nid=='1'){
+				var url = "{:U('Index/index')}";
+			}
+			if(nid=='2'){
+				var url = "{:U('Shop/index')}";
+			}
+			if(nid=='3'){
+				var url = "{:U('Member/index')}";
+			}
+			
+			window.location.href = url;
+		});
 		
 	});
 	

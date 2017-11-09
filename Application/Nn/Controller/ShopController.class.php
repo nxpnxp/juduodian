@@ -475,8 +475,8 @@ class ShopController extends HomeController {
 		$dians = M('Document')->alias('d')
 				->join('left join onethink_document_shop ds on d.id=ds.id')
 				->where('d.uid='.$user['id'])->select();
+				
 		$this->assign('dians',$dians);
-		
     	$this->display('index');
     }
 	
