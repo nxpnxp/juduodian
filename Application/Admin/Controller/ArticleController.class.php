@@ -225,6 +225,15 @@ class ArticleController extends AdminController {
         // 列表显示处理
         $list   =   $this->parseDocumentList($list,$model_id);
         
+		foreach ($list as $k => $v) {
+			$istj = M('DocumentShop')->where('id='.$v['id'])->getField('istj');
+			$list[$k]['istj'] = $istj;
+		}		
+		$grids[] = array(
+			'field'=> array('istj'),
+			'title'=> '是否推荐'	
+		);
+		
         $this->assign('model_id',$model_id);
 		$this->assign('group_id',$group_id);
         $this->assign('position',$position);
@@ -789,4 +798,32 @@ class ArticleController extends AdminController {
             $this->error('非法请求！');
         }
     }
+
+	/**
+     * 设置一条或者多条数据的 推荐
+     */
+    public function setTj($model='Document'){
+        
+		$ids    =   I('request.ids');
+        $status =   I('request.status');
+        if(empty($ids)){
+            $this->error('请选择要操作的数据');
+        }
+
+        $map['id'] = array('in',$ids);
+        switch ($status){
+            case 0  :
+                $data    =  array('istj' => 0);
+        		$this->editRow( 'DocumentShop' , $data, $map, array( 'success'=>'推荐状态禁用成功！', 'error'=>'推荐状态禁用失败！'));
+                break;
+            case 1  :
+				$data    =  array('istj' => 1);
+        		$this->editRow( 'DocumentShop' , $data, $map, array( 'success'=>'推荐状态恢复成功！', 'error'=>'推荐状态恢复失败！'));
+                break;
+            default :
+                $this->error('参数错误');
+                break;
+        }
+    }
+	
 }

@@ -40,6 +40,27 @@ class IndexController extends HomeController {
 		}
 		$this->assign('morens',$morens);
 		
+		$tjs = M('Document')->alias('d')
+			->field('d.id,d.title,d.description,p.path,ds.longitude,ds.latitude,ds.showaddress')
+			->join('left join onethink_picture p on d.cover_id=p.id')
+			->join('left join onethink_document_shop ds on ds.id=d.id')
+			->where('d.status=1 and ds.istj=1')
+			->limit(10)
+			->select();
+		$daybegin=strtotime(date("Ymd")); 
+		$dayend=$daybegin+86400;
+		foreach($tjs as $k=>$v){
+			$tjs[$k]['collection'] = M("Collection")->where(array('sid'=>$v['id']))->count();
+			$tjs[$k]['zan'] = M("Zan")->where(array('sid'=>$v['id']))->count();
+			$flag = 0;
+			$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			if($flag <=0){
+				$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			}
+			$tjs[$k]['hb'] = $flag;
+		}
+		$this->assign('tjs',$tjs);
+		
 		//附近的店铺
 		$visit = M("WxuserLatlon")->where(array('uid'=>$user['id']))->order("time desc")->find();
 		$dianpu = M('Document')->alias('d')
