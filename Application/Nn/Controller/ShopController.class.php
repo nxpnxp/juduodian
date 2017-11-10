@@ -604,13 +604,14 @@ class ShopController extends HomeController {
 					//剩余余额返还商户余额
 					$shopid = $wxhbson['shopid'];
 					$uid = M('Document')->where(array('id'=>$shopid))->getField('uid');					
+					$shopname = M('Document')->where(array('id'=>$shopid))->getField('title');
 					M('WxuserCode')->where('id='.$uid)->setInc('yue',$yue);
 					
 					//商户余额记录
 					M('WxuserYuelog')->add(array(
 						'uid' => $uid,
 						'fee' => $yue,
-						'desc' => '红包子订单['.$wxhbson['id'].']剩余['.$yue.']'.'转入余额',
+						'desc' => '红包店['.$shopname.']剩余['.$yue.']'.'转入余额',
 						'time' => $time,
 						'oid' => $wxhb['id'].'-'.$wxhbson['id']
 					));			
@@ -626,14 +627,15 @@ class ShopController extends HomeController {
 					
 					//剩余余额返还商户余额
 					$shopid = $wxhb['shopid'];
-					$uid = M('Document')->where(array('id'=>$shopid))->getField('uid');					
+					$uid = M('Document')->where(array('id'=>$shopid))->getField('uid');
+					$shopname = M('Document')->where(array('id'=>$shopid))->getField('title');
 					M('WxuserCode')->where('id='.$uid)->setInc('yue',$yue);
 					
 					//商户余额记录
 					M('WxuserYuelog')->add(array(
 						'uid' => $uid,
 						'fee' => $yue,
-						'desc' => '红包['.$wxhb['id'].']剩余['.$yue.']'.'转入余额',
+						'desc' => '红包店['.$shopname.']剩余['.$yue.']'.'转入余额',
 						'time' => $time,
 						'oid' => $wxhb['id'].'-0'
 					));					
@@ -1002,10 +1004,12 @@ class ShopController extends HomeController {
 				M('WxuserCode')->where('id='.$uid)->setInc('yue',$money);
 				
 				//存余额记录
+				$shopid = $model->where('id='.$hbid)->getField('shopid');
+				$shopname = M('Document')->where('id='.$shopid)->getField('title');
 				M('WxuserYuelog')->add(array(
 					'uid' => $uid,
 					'fee' => $money,
-					'desc' => '红包['.$hbid.']抢到['.$money.']'.'转入余额',
+					'desc' => '在红包店['.$shopname.']抢到['.$money.']'.'转入余额',
 					'time' => $time,
 					'oid' => $hbid.'-0'
 				));
@@ -1111,10 +1115,12 @@ class ShopController extends HomeController {
 				M('WxuserCode')->where('id='.$uid)->setInc('yue',$money);
 				
 				//存余额记录
+				$shopid = $model1->where('id='.$wxhbid)->getField('shopid');
+				$shopname = M('Document')->where('id='.$shopid)->getField('title');				
 				M('WxuserYuelog')->add(array(
 					'uid' => $uid,
 					'fee' => $money,
-					'desc' => '红包子订单['.$wxhbsonid.']抢到['.$money.']'.'转入余额',
+					'desc' => '在红包店['.$shopname.']抢到['.$money.']'.'转入余额',
 					'time' => $time,
 					'oid' => $wxhbid.'-'.$wxhbsonid
 				));
