@@ -475,7 +475,19 @@ class ShopController extends HomeController {
 		$dians = M('Document')->alias('d')
 				->join('left join onethink_document_shop ds on d.id=ds.id')
 				->where('d.uid='.$user['id'])->select();
-				
+		$daybegin=strtotime(date("Ymd")); 
+		$dayend=$daybegin+86400;
+		foreach($dians as $k=>$v){
+			$dians[$k]['logo'] = M('Picture')->where(array('id'=>$v['cover_id']))->getField('path');
+			$dians[$k]['collection'] = M("Collection")->where(array('sid'=>$v['id']))->count();
+			$dians[$k]['zan'] = M("Zan")->where(array('sid'=>$v['id']))->count();
+			$flag = 0;
+			$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			if($flag <=0){
+				$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			}
+			$collections[$k]['hb'] = $flag;
+		}
 		$this->assign('dians',$dians);
     	$this->display('index');
     }

@@ -233,6 +233,9 @@ class MemberController extends HomeController {
 		$xiaxian = M('WxuserCode')->where(array('pid'=>$user['id']))->select();
 		$this->assign('xiaxian',$xiaxian);
 		
+		$xxnum =  M('WxuserCode')->where(array('pid'=>$user['id']))->count();
+		$this->assign('xxnum',$xxnum);
+		
 		$zyj = M('WxuserYuelog')->where('uid='.$user['id'].' and oid="kdyj"')->sum('fee');
 		if(!$zyj){ $zyj = 0; }
 		$this->assign('zyj',$zyj);
@@ -241,6 +244,28 @@ class MemberController extends HomeController {
 		$this->assign('logs',$logs);
 		
 		$this->display();
+	}
+	//分销下线
+	public function mygroup(){
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$this->assign('user',$user);
+		$xiaxian = M('WxuserCode')->where(array('pid'=>$user['id']))->select();
+		$this->assign('xiaxian',$xiaxian);
+		$this->display();
+	}
+	
+	
+	//佣金明细
+	public function yjmx(){
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$this->assign('user',$user);
+		
+		$logs = M('WxuserYuelog')->where('uid='.$user['id'].' and oid="kdyj"')->select();
+		$this->assign('logs',$logs);
+		$this->display();
+	
 	}
 	
 }

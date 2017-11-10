@@ -25,12 +25,14 @@
      		width: 100%;
      		text-align: center;
      		padding: 10px 0;
+     		background-color: #09F;
      		color: #fff;
      		font-size: 15px;
-     	}	  
+     	}		  
      	.title i{
      		text-align: left;
      	}   	
+     	.layui-colla-title span{color:red;margin-left: 10px;} 	
      	.title .mytghb{font-size:10px;color:red;padding-top:8px;}
      	.layui-colla-title span{color:red;margin-left: 10px;}
 		.paper{ height:50px; line-height:50px; width:100%; color: #09F; text-indent:30px; font-size:15px;}
@@ -47,46 +49,43 @@
 	</if>
 	
 
+	<div class="title layui-row">
+		<div class="layui-col-xs2 back"><i class="layui-icon">&#xe65c;</i> </div>
+		<div class="layui-col-xs8">佣金明细</div>
+		<div class="layui-col-xs2"></div>
+	</div>
     
-    <div class="top">
-    <div class="layui-row">
-    <div class="layui-col-xs4 line100">佣金：{$zyj}</div>
-    <div class="layui-col-xs4"><img src="{$user.headimgurl}" class="mt15" /><p>{$user['nickname']}的推广中心</p></div>
-    <div class="layui-col-xs4 line100 mytghb"> <i class="layui-icon">&#xe613;</i>   推广海报</div>
-    </div>
-    </div>
-    
-    <div class="layui-row wrap">
-    
-    <div class="layui-col-xs6 borderl">
-    <p><i class="layui-icon" style="font-size:48px; color: #F90">&#xe65e;</i>  </p>
-      <p>我的佣金</p>
-      <p class="g12">{$zyj} 元</p>
-    </div>
-    <div class="layui-col-xs6">
-     <a href="__CONTROLLER__/mygroup">
-       <p><i class="layui-icon" style="font-size:48px; color: #0C0">&#xe613;</i>  </p>
-      <p>我的团队</p>
-      <p class="g12">{$xxnum} 个成员</p>
-      </a>
-    </div>
-    
-    </div>
-    
-    <div class="layui-row wrap">
-    
-    <div class="layui-col-xs6 borderl">
-    <a href="__CONTROLLER__/yjmx">
-    <p><i class="layui-icon" style="font-size:48px; color: #66F;">&#xe63c;</i>  </p>
-      <p>佣金明细</p>
-      <p class="g12">佣金提现明细</p>
-      </a>
-    </div>
-    <div class="layui-col-xs6">
-       <p><i class="layui-icon" style="font-size:48px; color: #0CF">&#xe641;</i>  </p>
-      <p class="mytghb">推广海报</p>
-      <p class="g12">推广二维码</p>
-    </div>
+    <div class="layui-row" style="margin-top:0">
+    	
+			<table class="layui-table" lay-skin="line">
+			  <colgroup>
+			    <col width="40%">
+			    <col width="30%">
+                <col width="30%">
+			  </colgroup>
+			  <thead>
+			    <tr>
+			      <th>详情</th>
+			      <th>金额</th>
+			      <th>时间</th>
+			    </tr> 
+			  </thead>
+			  <tbody>
+			  	<empty name="logs">
+					<tr><td colspan="3">暂无记录</td></tr>
+				<else/>
+				  	<foreach name="logs" item="vo" >			  
+					  	<tr>
+					      <td>{$vo.desc}</td>
+					      <td>{$vo.fee}</td>
+					      <td>{$vo.time|date="y-m-d H:i",###}</td>
+					    </tr>
+				  	</foreach>
+				</empty>
+			   
+			    
+			  </tbody>
+			</table>
     
     </div>
     
