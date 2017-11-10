@@ -686,18 +686,33 @@ class ShopController extends HomeController {
 		$_type = I('post.type');
 		$ptmoney = I('post.ptmoney');
 		$psqmoney1 = I('post.psqmoney1');
+		$psqmoney2 = I('post.psqmoney2');
 		$_ptmoney = M('Config')->where('id=41')->getField('value');
 		$_psqmoney1 = M('Config')->where('id=42')->getField('value');
+		$everymoney = I('post.everymoney');
 		if($_type == '普通'){
 			$type = 0; 
 			if($ptmoney < $_ptmoney){
 				$this->error('发布失败,普通最低金额不满足条件');die;
+			}
+			//单个被抢红包 最低金额不可低于0.1元
+			$onemoney = $everymoney / $ptmoney;
+			if($onemoney < 0.1){
+				$this->error('单个被抢红包,最低金额不可低于0.1元');die;
 			}
 		}
 		if($_type == '拼手气'){
 			$type = 1; 
 			if($psqmoney1 < $_psqmoney1){
 				$this->error('发布失败,区间最低金额不满足条件');die;
+			}
+			if($psqmoney1 > $psqmoney2){
+				$this->error('区间最低金额不能大于最高金额');die;
+			}
+			//单个被抢红包 最低金额不可低于0.1元
+			$onemoney = $everymoney / $psqmoney2;
+			if($onemoney < 0.1){
+				$this->error('单个被抢红包,最低金额不可低于0.1元');die;
 			}
 		}
 				
@@ -713,13 +728,13 @@ class ShopController extends HomeController {
 			'shopid' => I('post.shopid'),
 			'money' => I('post.money'),
 			'sxf' => I('post.sxf'),
-			'everymoney' => I('post.everymoney'),
+			'everymoney' => $everymoney,
 			'num' => I('post.num'),
 			'yue' => I('post.money') - I('post.sxf'), 
 			'type' => $type,
 			'ptmoney' => $ptmoney,
 			'psqmoney1' => $psqmoney1,
-			'psqmoney2' => I('post.psqmoney2'),
+			'psqmoney2' => $psqmoney2,
 			'iskl' => I('post.iskl'),
 			'kl' => I('post.kl'),
 			'createtime' => $time,
