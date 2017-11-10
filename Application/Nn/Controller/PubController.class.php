@@ -24,7 +24,7 @@ class PubController extends Controller {
 		$rr = M('Document')->where('id='.$document['id'])->save($data1);
 		
 		//如果该店是通过谁来的  给佣金
-		if($info['pid']>0){
+		if($info['ppid']>0){
 			$paymoney = M('Config')->where(array('name'=>"NXP_APPLY_DIAN_PAY"))->getField('value');
 			$yj = M('Config')->where(array('id'=>"45"))->getField('value');
 			if($paymoney && $yj){
@@ -33,11 +33,11 @@ class PubController extends Controller {
 				$money = sprintf("%.2f",substr(sprintf("%.3f", $money), 0, -2));
 				
 				//增加余额			
-				M('WxuserCode')->where('id='.$info['pid'])->setInc('yue',$money);
+				M('WxuserCode')->where('id='.$info['ppid'])->setInc('yue',$money);
 				
 				//存余额记录
 				M('WxuserYuelog')->add(array(
-					'uid' => $info['pid'],
+					'uid' => $info['ppid'],
 					'fee' => $money,
 					'desc' => '店铺['.$info['id'].']开店成功，获得佣金['.$money.']'.'转入余额',
 					'time' => time(),
