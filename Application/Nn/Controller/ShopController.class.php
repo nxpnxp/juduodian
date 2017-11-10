@@ -303,7 +303,7 @@ class ShopController extends HomeController {
 			'ordersn' => $ordersn,
 			'paytype' => 0,
 			'paystatus' => 0,
-			'pid' => $pid
+			'ppid' => $pid
 		);
 		$id2 = M('DocumentShop')->add($array2);
 		
