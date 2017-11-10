@@ -1421,5 +1421,26 @@ class ShopController extends HomeController {
 
 		return $back;
 	}
+
+	//删除店铺
+	public function delshop(){
+		$shopid = I('id');
+		
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		
+		$wxhb = M('Wxhb')->where('shopid='.$shopid.' and yue>0 and ispay=1')->count();
+		$wxhbson = M('WxhbSon')->where('shopid='.$shopid.' and yue>0')->count();
+		
+		if( ($wxhb > 0) || ($wxhbson > 0) ){
+			$this->error('该店铺还有红包未领完，不可删除！');die;
+		}else{
+			M('Document')->delete($shopid);
+			M('DocumentShop')->delete($shopid);
+			$this->success('删除店铺成功！',U('dians'));die;
+		}
+		
+		
+	}
 	
 }
