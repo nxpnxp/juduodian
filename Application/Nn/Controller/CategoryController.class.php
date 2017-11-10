@@ -64,7 +64,7 @@ class CategoryController extends HomeController {
 			->join('left join onethink_document_shop ds on ds.id=d.id')
 			->where('d.status=1 and d.category_id='.$cateid)
 			->select();
-		
+
 		foreach($morens as $k=>$v){
 			$morens[$k]['juli'] = $this->getDistance($v['longitude'], $v['latitude'],$visit['lon'], $visit['lat']);
 		}
@@ -78,10 +78,18 @@ class CategoryController extends HomeController {
 		array_multisort($volume, SORT_ASC, $edition, SORT_ASC, $morens);
 	    
 		$morens1 = array_slice($morens,0,10);
+		$daybegin=strtotime(date("Ymd")); 
+		$dayend=$daybegin+86400;
 		foreach($morens1 as $k=>$v){
 			$morens1[$k]['collection'] = M("Collection")->where(array('sid'=>$v['id']))->count();
 			$morens1[$k]['zan'] = M("Zan")->where(array('sid'=>$v['id']))->count();
 			$morens1[$k]['juli'] = sprintf("%.2f", $v['juli']); 
+			$flag = 0;
+			$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			if($flag <=0){
+				$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			}
+			$morens[$k]['hb'] = $flag;
 		}
 		$this->assign('morens',$morens1);
 		

@@ -21,29 +21,37 @@
      		width: 100%;
      		text-align: center;
      		padding: 10px 0;
-     		background-color: #009688;
+     		background-color: #09F;
      		color: #fff;
-     		font-size: 20px;
+     		font-size: 15px;
      	}	  
      	.title i{
      		text-align: left;
      	}   	
      	.layui-colla-title span{color:red;margin-left: 10px;}
      	
-     	.morendian{width: 90%;margin: 0 auto;margin-top: 10px;}
-     	.morendian img{width: 94%;height: 85px; border-radius:5px;}
-     	.morendian .layui-row{
-     		height: 85px;
+     	.morendian,
+     	.hongbaodian{width: 96%;margin: 0 auto;}
+     	.morendian img,
+     	.hongbaodian img{width: 95px;height: 95px; border-radius:5px;}
+     	.morendian .layui-row,
+     	.hongbaodian .layui-row{
+     		
+     		height: 95px;
      		margin-bottom: 10px;
      		padding-bottom: 10px;
-     		border-bottom: 1px dashed #F0F0F0;
+     		border-bottom: 1px solid #F0F0F0;
      	}
-     	.mt5{ margin-top:5px;}
-     	.text-right{text-align:right;padding-right: 10px;}
-     	.addr{ font-size:12px;  padding:0; margin:0; color:#09F;}
-		.desp{font-size:12px; color:#999;}
-		.stitle{ font-size:15px;}
-		.orange{ color:#F90; font-size:12px;}
+		.mt5{ margin-top:7px;}
+     	.text-right{text-align:right;}
+     	.addr{ font-size:14px; color:#999;}
+		.desp{font-size:14px; color:#999;}
+		.stitle{ font-size:15px; color:#000; font-weight:bold;}
+		.orange{ color: #3CC; font-size:12px;}
+		.jl{ color:#666; font-size:12px;}
+		.hb{ font-size:8px; color: #fff; background-color: #F33; padding:2px;  display:inline-block; border-radius:3px;}
+		.gline{ width:100%; height:5px; background-color:#eaeaea;}
+		.layui-this{ color:#F60;}
      </style>
 </head>
 <body>
@@ -57,16 +65,16 @@
 		<div class="layui-col-xs2"></div>
 	</div>
 	
-	<div class="morendian">
+	<div class="morendian"  style="margin-top:10px;">
   		<foreach name="morens" item="vo" >
 		<div class="layui-row open" data-id="{$vo.id}">
 		    <div class="layui-col-xs4"><img src="{$vo.path}" /></div>
 	    	<div class="layui-col-xs8">
-            <p class="layui-col-xs8 stitle">{$vo.title}</p>
-            <p class="layui-col-xs4 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}">{$vo.juli}km</p>
-            <p class="layui-col-xs12 desp mt5">{$vo.description|mb_substr=###,0,36,utf8}</p>
-            <p class="layui-col-xs12 addr mt5">地址：{$vo.showaddress|mb_substr=###,0,12,utf8}</p>
-            <p class="layui-col-xs12 orange">收藏：{$vo.collection} 赞：{$vo.zan}</p>
+            <p class="layui-col-xs8 stitle">{$vo.title|mb_substr=###,0,10,utf8}<if condition="$vo.hb gt 0"><span class="hb">红包</span></if></p>
+            <p class="layui-col-xs4 text-right jl" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}">{$vo.juli}km</p>
+                    <p class="layui-col-xs12 desp mt5">{$vo.description|mb_substr=###,0,12,utf8}</p>
+                    <p class="layui-col-xs12 addr mt5"><i class="layui-icon">&#xe715;</i> {$vo.showaddress|mb_substr=###,0,12,utf8}</p>
+                    <p class="layui-col-xs12 orange mt5"><i class="layui-icon">&#xe600;</i> {$vo.collection} &nbsp;&nbsp;&nbsp;<i class="layui-icon">&#xe6c6;</i> {$vo.zan} &nbsp;&nbsp;&nbsp;<i class="layui-icon">&#xe60c;</i> 998</p>
             </div>
 	    	<!--<div class="layui-col-xs3 text-right" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}"> </div>-->
 		</div>
