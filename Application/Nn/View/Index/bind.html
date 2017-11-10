@@ -21,16 +21,16 @@
      		width: 100%;
      		text-align: center;
      		padding: 10px 0;
-     		background-color: #009688;
+     		background-color: #09F;
      		color: #fff;
-     		font-size: 20px;
-     	}	  
+     		font-size: 15px;
+     	}  
      	.title i{
      		text-align: left;
      	}   	
      	.layui-colla-title span{color:red;margin-left: 10px;}
      	
-     	form{width: 90%;margin: 0 auto;margin-top: 20px;}
+     	form.layui-form{width:96%; margin: 0 auto;margin-top: 20px; }
      </style>
 </head>
 <body>
@@ -44,21 +44,21 @@
 		<div class="layui-col-xs2"></div>
 	</div>
 	
-	<form class="layui-form" method="post" action="{:U('Index/dobind')}">
+	<form class="layui-form  layui-form-pane" method="post" action="{:U('Index/dobind')}">
 		
 	  	
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">手机号</label>
 	    <div class="layui-input-block">
 	    	<div class="layui-col-xs9"><input type="text" name="mobile" required  lay-verify="required" placeholder="您的手机号" autocomplete="off" class="layui-input"></div>
-	    	<div class="layui-col-xs3"><input type="button" class="layui-btn" id="btn" value="发送"/></div>
+	    	<div class="layui-col-xs3"><input type="button" class="layui-btn layui-btn-normal" id="btn" value="发送"/></div>
 	    </div>
 	  </div>
 	  
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">验证码</label>
 	    <div class="layui-input-block">
-    		<div class="layui-col-xs6">
+    		<div class="layui-col-xs12">
 		      <input type="text" name="yzm" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
 		    </div>
 	    </div>
@@ -66,11 +66,11 @@
 	  
 	  <div class="layui-form-item">
 	    <div class="layui-input-block">
-	      <button class="layui-btn" lay-submit lay-filter="formDemo">绑定</button>
+	      <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">绑定</button>
 	    </div>
 	  </div>
 	</form>
-	
+	<include file="Public/footer" />
 </body>
  
 <script type="text/javascript" src="__NN__/layui.js"></script> 
@@ -150,6 +150,21 @@
 				layer.msg('验证码不正确！');
 				return false;
 			}
+		});
+			$('.footer').click(function(){
+	  		$(this).addClass('footer-on').siblings().removeClass('footer-on');
+			var nid = $(this).attr('nid');
+			if(nid=='1'){
+				var url = "{:U('Index/index')}";
+			}
+			if(nid=='2'){
+				var url = "{:U('Shop/index')}";
+			}
+			if(nid=='3'){
+				var url = "{:U('Member/index')}";
+			}
+			
+			window.location.href = url;
 		});
 		
 	});

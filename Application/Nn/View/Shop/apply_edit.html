@@ -18,13 +18,13 @@
      		margin: 0 auto;
      	}     
      	.title{
-     		padding: 30px 0;
-     		color: #fff;
-     		background-color: #FD482C;
-     		font-size: 25px;
-     		text-align: center;
      		width: 100%;
-     	}	
+     		text-align: center;
+     		padding: 10px 0;
+     		background-color: #09F;
+     		color: #fff;
+     		font-size: 15px;
+     	}
      	form{margin-top: 10px;}   
      	.layui-input-block{margin-right: 20px;}	
      	
@@ -47,10 +47,10 @@
         	  <div class="layui-form-item">
 	    <label class="layui-form-label">店铺LOGO</label>
 	    <div class="layui-input-block">
-	     	<button type="button" class="layui-btn" id="img4">
+	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img4">
 			  <i class="layui-icon">&#xe67c;</i>上传图片
 			</button>
-			<img src="" id="img4res" style="display:none;width:80px;height:80px;"/>
+			<img src="" id="img4res" style="display:none;width:50px;height:50px;"/>
 			<input type="hidden" required name="newid2" value="" />
 	    </div>
 	  </div>
@@ -59,20 +59,20 @@
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">封面1</label>
 	    <div class="layui-input-block">
-	     	<button type="button" class="layui-btn" id="img1">
+	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img1">
 			  <i class="layui-icon">&#xe67c;</i>上传图片
 			</button>
-			<img src="" id="img1res" style="display:none;width:80px;height:80px;"/>
+			<img src="" id="img1res" style="display:none;width:50px;height:50px;"/>
 			<input type="hidden" required name="img1" value="" />
 	    </div>
 	  </div>
   <div class="layui-form-item">
 	    <label class="layui-form-label">封面2</label>
 	    <div class="layui-input-block">
-	     	<button type="button" class="layui-btn" id="img2">
+	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img2">
 			  <i class="layui-icon">&#xe67c;</i>上传图片
 			</button>
-			<img src="" id="img2res" style="display:none;width:80px;height:80px;"/>
+			<img src="" id="img2res" style="display:none;width:50px;height:50px;"/>
 			<input type="hidden" required name="img2" value="" />
 	    </div>
 	  </div>
@@ -80,10 +80,10 @@
       <div class="layui-form-item">
 	    <label class="layui-form-label">封面3</label>
 	    <div class="layui-input-block">
-	     	<button type="button" class="layui-btn" id="img3">
+	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img3">
 			  <i class="layui-icon">&#xe67c;</i>上传图片
 			</button>
-			<img src="" id="img3res" style="display:none;width:80px;height:80px;"/>
+			<img src="" id="img3res" style="display:none;width:50px;height:50px;"/>
 			<input type="hidden" required name="img3" value="" />
 	    </div>
 	  </div>
@@ -91,10 +91,10 @@
     	  <div class="layui-form-item">
 	    <label class="layui-form-label">二维码</label>
 	    <div class="layui-input-block">
-	     	<button type="button" class="layui-btn" id="img7">
+	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img7">
 			  <i class="layui-icon">&#xe67c;</i>上传图片
 			</button>
-			<img src="" id="img7res" style="display:none;width:80px;height:80px;"/>
+			<img src="" id="img7res" style="display:none;width:50px;height:50px;"/>
 			<input type="hidden" required name="img7" value="" />
 	    </div>
 	  </div>
@@ -122,10 +122,10 @@
  <div class="layui-form-item">
 	    <label class="layui-form-label">详情图片1</label>
 	    <div class="layui-input-block">
-	     	<button type="button" class="layui-btn" id="img5">
+	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img5">
 			  <i class="layui-icon">&#xe67c;</i>上传图片
 			</button>
-			<img src="" id="img5res" style="display:none;width:80px;height:80px;"/>
+			<img src="" id="img5res" style="display:none;width:50px;height:50px;"/>
 			<input type="hidden" required name="img5" value="" />
 	    </div>
 	  </div>
@@ -133,10 +133,10 @@
       <div class="layui-form-item">
 	    <label class="layui-form-label">详情图片2</label>
 	    <div class="layui-input-block">
-	     	<button type="button" class="layui-btn" id="img6">
+	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img6">
 			  <i class="layui-icon">&#xe67c;</i>上传图片
 			</button>
-			<img src="" id="img6res" style="display:none;width:80px;height:80px;"/>
+			<img src="" id="img6res" style="display:none;width:80px;height:50px;"/>
 			<input type="hidden" required name="img6" value="" />
 	    </div>
 	  </div>
@@ -172,7 +172,7 @@
 	    	<input type="hidden" id="lnglat" required name="lnglat" value=""/>
 	    	<input type="hidden" id="addr" required name="address" value=""/>
 	    
-	     	<button type="button" class="layui-btn" id="seladdr">
+	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="seladdr">
 			  <i class="layui-icon">&#xe756;</i><span>选择地址</span>
 			</button>
 	    </div>
@@ -190,7 +190,7 @@
 	  
 	  <div class="layui-form-item">
 	    <div class="layui-input-block">
-	      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+	      <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">立即提交</button>
 	    </div>
 	  </div>
 	</form>
