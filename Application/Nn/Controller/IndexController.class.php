@@ -60,7 +60,8 @@ class IndexController extends HomeController {
 	
 		array_multisort($volume, SORT_ASC, $edition, SORT_ASC, $dianpu);
 	    
-		$dianpu1 = array_slice($dianpu,0,10);
+		//$dianpu1 = array_slice($dianpu,0,10);
+		$dianpu1 = $dianpu;
 		foreach($dianpu1 as $k=>$v){
 			$dianpu1[$k]['collection'] = M("Collection")->where(array('sid'=>$v['id']))->count();
 			$dianpu1[$k]['zan'] = M("Zan")->where(array('sid'=>$v['id']))->count();
