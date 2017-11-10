@@ -488,6 +488,7 @@ class ShopController extends HomeController {
 			}
 			$collections[$k]['hb'] = $flag;
 		}
+		//print_r($dians);
 		$this->assign('dians',$dians);
     	$this->display('index');
     }
