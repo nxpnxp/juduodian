@@ -401,6 +401,30 @@ class ShopController extends HomeController {
 
 		}elseif($type == '2'){
 			//余额支付
+			$useryue = $user['yue'];
+			$waitpay = $price;
+			if($useryue < $waitpay){
+				$this->error('抱歉，您的余额不足！');
+			}
+			
+			//扣除余额
+			M('WxuserCode')->where('id='.$user['id'])->setDec('yue',$waitpay);
+			//存余额记录
+			M('WxuserYuelog')->add(array(
+				'uid' => $user['id'],
+				'fee' => '-'.$waitpay,
+				'desc' => '开店成功，支付余额['.$waitpay.']',
+				'time' => time(),
+				'oid' => '0-0'
+			));
+			//完成支付后逻辑		
+			$data = array(
+				'openid' => $openid,
+				'ordersn' => $ordersn
+			);
+			$url = 'http://'.$_SERVER['HTTP_HOST'].'/nn.php?s=/Pub/pay_success.html';
+			$this->_request($url,false,'post',$data);
+			$this->success('恭喜您，开店成功！',U('dians'));
 		}
 
 	}
@@ -821,6 +845,31 @@ class ShopController extends HomeController {
 
 		}elseif($type == '2'){
 			//余额支付
+			$useryue = $user['yue'];
+			$waitpay = $price;
+			if($useryue < $waitpay){
+				$this->error('抱歉，您的余额不足！');
+			}
+			
+			//扣除余额
+			M('WxuserCode')->where('id='.$user['id'])->setDec('yue',$waitpay);
+			//存余额记录
+			M('WxuserYuelog')->add(array(
+				'uid' => $user['id'],
+				'fee' => '-'.$waitpay,
+				'desc' => '发放店铺红包，支付余额['.$waitpay.']',
+				'time' => time(),
+				'oid' => '0-0'
+			));
+			//完成支付后逻辑		
+			$data = array(
+				'openid' => $openid,
+				'ordersn' => $ordersn,
+				'total_fee' => $total_fee
+			);
+			$url = 'http://'.$_SERVER['HTTP_HOST'].'/nn.php?s=/Pub/hbpay_success.html';
+			$this->_request($url,false,'post',$data);
+			$this->success('恭喜您，发放店铺红包成功！',U('dians'));
 		}
 
 	}
