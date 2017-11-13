@@ -83,7 +83,7 @@
                     	<i class="layui-icon">&#xe65e;</i> <a class="sendhb" data-shopid="{$vo.id}">发红包</a>  <br />
                     </p>
                     <p class="layui-col-xs12 orange mt5">
-                    	<i class="layui-icon">&#xe640;</i> <a href="__CONTROLLER__/delshop/id/{$vo.id}">删除店铺</a> 
+                    	<i class="layui-icon">&#xe640;</i> <a class="deldian" data-shopid="{$vo.id}">删除店铺</a> 
                     </p>
                     </div>
 				</div></div>
@@ -125,9 +125,17 @@
 	  		if(status != '[正常]'){
 	  			layer.msg('您的店铺状态此时不可发红包！');
 	  		}else{
-	  			window.location.href = "{:U('Shop/sendhb')}"+'&shopid='+shopid;
+	  			window.location.href = "{:U('Shop/delshop')}"+'&id='+shopid;
 	  		}
 	  		
+	  	});
+	  	
+	  	$('.deldian').click(function(){
+	  		var shopid = $(this).attr('data-shopid');
+	  		var r=confirm("确认删除该店铺吗？")
+			if (r==true){
+			   window.location.href = "{:U('Shop/sendhb')}"+'&shopid='+shopid;
+			}
 	  	});
 		
 		$('.footer').click(function(){
