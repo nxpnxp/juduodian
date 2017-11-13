@@ -180,19 +180,19 @@ class IndexController extends HomeController {
 						array(
 							'type' => 'view',
 							'name' => '申请开店',
-							'url' => 'http://www.sohu.com/'
+							'url' => $_url.'nn.php?s=/Shop/index.html'
 						),
 						array(
 							'type' => 'view',
 							'name' => '我的店铺',
-							'url' => 'http://www.qq.com/'
+							'url' => $_url.'nn.php?s=/Shop/dians.html'
 						),
 					)
 				),
 				array(
 					'type' => 'view',
 					'name' => '会员中心',
-					'url' => 'https://www.baidu.com'
+					'url' => $_url.'nn.php?s=/Member/index.html'
 				)
 			)
 		);
