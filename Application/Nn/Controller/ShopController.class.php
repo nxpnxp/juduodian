@@ -13,6 +13,7 @@ class ShopController extends HomeController {
 		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
 		$this->assign('user',$user);
 		
+		
 		if($user['isbind'] == '0'){
 			$this->redirect('Index/bind', array(), 0, '页面跳转中...');die();
 		}
@@ -23,6 +24,8 @@ class ShopController extends HomeController {
 		$dian = M('Document')->alias('d')
 				->join('left join onethink_document_shop ds on d.id=ds.id')
 				->where('d.uid='.$user['id'].' and ds.paystatus=0')->find();
+				
+				
 		if($dian){
 			//申请过
 			$dian_shop = M('DocumentShop')->find($dian['id']);
@@ -1425,7 +1428,7 @@ class ShopController extends HomeController {
 			$wxhbid = $model2->where('id='.$wxhbsonid)->getField('hbid');
 			
 			//判断距离
-			$_jvli_type = $model->where('id='.$wxhbsonid)->getField('area');
+			$_jvli_type = $model2->where('id='.$wxhbsonid)->getField('area');
 			switch ($_jvli_type) {
 				case '1':
 					//3km 
