@@ -7,7 +7,7 @@ class IndexController extends HomeController {
 	
 	//首页   nn.php?s=/index/index.html
     public function index(){
-    	
+	
 		$openid = $this->openid;
 		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
 		$this->assign('user',$user);

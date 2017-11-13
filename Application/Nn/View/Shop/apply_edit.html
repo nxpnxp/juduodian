@@ -45,6 +45,21 @@
 		<input type="hidden" name="id" value="{$dian.id}" />
 		
         	  <div class="layui-form-item">
+	    <label class="layui-form-label">小店名称</label>
+	    <div class="layui-input-block">
+	      <input type="text" name="title" value="{$dian.title}" required  lay-verify="required" placeholder="您的小店名称" autocomplete="off" class="layui-input">
+	    </div>
+	  </div>
+        
+         <div class="layui-form-item">
+	    <label class="layui-form-label">联系电话</label>
+	    <div class="layui-input-block">
+	      <input type="text" name="mobile" value="{$dian_shop.mobile}" required placeholder="170xxxx0000" lay-verify="phone" autocomplete="off" class="layui-input">
+	    </div>
+	  </div>
+        
+        
+        	  <div class="layui-form-item">
 	    <label class="layui-form-label">店铺LOGO</label>
 	    <div class="layui-input-block">
 	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img4">
@@ -57,7 +72,7 @@
         
         
 	  <div class="layui-form-item">
-	    <label class="layui-form-label">封面1</label>
+	    <label class="layui-form-label">店铺封面1</label>
 	    <div class="layui-input-block">
 	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img1">
 			  <i class="layui-icon">&#xe67c;</i>上传图片
@@ -67,7 +82,7 @@
 	    </div>
 	  </div>
   <div class="layui-form-item">
-	    <label class="layui-form-label">封面2</label>
+	    <label class="layui-form-label">店铺封面2</label>
 	    <div class="layui-input-block">
 	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img2">
 			  <i class="layui-icon">&#xe67c;</i>上传图片
@@ -77,7 +92,7 @@
 	    </div>
 	  </div>
       
-      <div class="layui-form-item">
+    <!--  <div class="layui-form-item">
 	    <label class="layui-form-label">封面3</label>
 	    <div class="layui-input-block">
 	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img3">
@@ -86,7 +101,7 @@
 			<img src="" id="img3res" style="display:none;width:50px;height:50px;"/>
 			<input type="hidden" required name="img3" value="" />
 	    </div>
-	  </div>
+	  </div>-->
 
     	  <div class="layui-form-item">
 	    <label class="layui-form-label">二维码</label>
@@ -99,12 +114,7 @@
 	    </div>
 	  </div>
 	
-	  <div class="layui-form-item">
-	    <label class="layui-form-label">小店名称</label>
-	    <div class="layui-input-block">
-	      <input type="text" name="title" value="{$dian.title}" required  lay-verify="required" placeholder="您的小店名称" autocomplete="off" class="layui-input">
-	    </div>
-	  </div>
+
 	  
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">描述</label>
@@ -181,12 +191,7 @@
       <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.0&key=2d91c93f3322cc37c798dc6f9d806f38"></script>
       <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
 	  
-	  <div class="layui-form-item">
-	    <label class="layui-form-label">联系电话</label>
-	    <div class="layui-input-block">
-	      <input type="text" name="mobile" value="{$dian_shop.mobile}" required placeholder="170xxxx0000" lay-verify="phone" autocomplete="off" class="layui-input">
-	    </div>
-	  </div>
+	 
 	  
 	  <div class="layui-form-item">
 	    <div class="layui-input-block">
