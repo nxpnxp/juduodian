@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title> 申请店铺</title>    
+    <title></title>    
     <meta name="renderer" content="webkit">
   	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -39,12 +39,37 @@
 		<div class="subscribe">您未关注，请点击关注</div>
 	</if>
 	
-	<div class="title">申请您的专属小店</div>
+	<div class="title">登记店铺</div>
 	
 	<form class="layui-form" method="post" action="{:U('Shop/doapply')}">
 		
+        
+      <div class="layui-form-item">
+	    <label class="layui-form-label">店铺名称</label>
+	    <div class="layui-input-block">
+	      <input type="text" name="title" required  lay-verify="required" placeholder="您的小店名称" autocomplete="off" class="layui-input">
+	    </div>
+	  </div>
+	  	  <div class="layui-form-item">
+	    <label class="layui-form-label">联系电话</label>
+	    <div class="layui-input-block">
+	      <input type="text" name="mobile" required placeholder="170xxxx0000" lay-verify="phone" autocomplete="off" class="layui-input">
+	    </div>
+	  </div>    
+        
+      	  <div class="layui-form-item">
+	    <label class="layui-form-label">店铺LOGO</label>
+	    <div class="layui-input-block">
+	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img4">
+			  <i class="layui-icon">&#xe67c;</i>上传图片
+			</button>
+			<img src="" id="img4res" style="display:none;width:50px;height:50px;"/>
+			<input type="hidden" required name="newid2" value="" />
+	    </div>
+	  </div>  
+        
 	  <div class="layui-form-item">
-	    <label class="layui-form-label">封面1</label>
+	    <label class="layui-form-label">店铺封面1</label>
 	    <div class="layui-input-block">
 	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img1">
 			  <i class="layui-icon">&#xe67c;</i>上传图片
@@ -55,7 +80,7 @@
 	  </div>
       
       	  <div class="layui-form-item">
-	    <label class="layui-form-label">封面2</label>
+	    <label class="layui-form-label">店铺封面2</label>
 	    <div class="layui-input-block">
 	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img2">
 			  <i class="layui-icon">&#xe67c;</i>上传图片
@@ -65,7 +90,7 @@
 	    </div>
 	  </div>
       
-      <div class="layui-form-item">
+<!--      <div class="layui-form-item">
 	    <label class="layui-form-label">封面3</label>
 	    <div class="layui-input-block">
 	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img3">
@@ -74,18 +99,9 @@
 			<img src="" id="img3res" style="display:none;width:50px;height:50px;"/>
 			<input type="hidden" required name="img3" value="" />
 	    </div>
-	  </div>
+	  </div>-->
 	  
-	  <div class="layui-form-item">
-	    <label class="layui-form-label">店铺LOGO</label>
-	    <div class="layui-input-block">
-	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img4">
-			  <i class="layui-icon">&#xe67c;</i>上传图片
-			</button>
-			<img src="" id="img4res" style="display:none;width:50px;height:50px;"/>
-			<input type="hidden" required name="newid2" value="" />
-	    </div>
-	  </div>
+
 	
     	  <div class="layui-form-item">
 	    <label class="layui-form-label">二维码</label>
@@ -99,13 +115,7 @@
 	  </div>
     
     
-	  <div class="layui-form-item">
-	    <label class="layui-form-label">小店名称</label>
-	    <div class="layui-input-block">
-	      <input type="text" name="title" required  lay-verify="required" placeholder="您的小店名称" autocomplete="off" class="layui-input">
-	    </div>
-	  </div>
-	  
+	
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">描述</label>
 	    <div class="layui-input-block">
@@ -158,21 +168,20 @@
 		  </div>
 	  
 	  <div class="layui-form-item">
-	    <label class="layui-form-label">显示地址</label>
+	    <label class="layui-form-label">店铺地址</label>
 	    <div class="layui-input-block">
-	      <textarea name="showaddress" required lay-verify="required" placeholder="请输入显示的地址" class="layui-textarea"></textarea>
+	      <textarea name="showaddress" rows="2" required class="layui-textarea" placeholder="请输入显示的地址" lay-verify="required" style="height:50px;"></textarea>
 	    </div>
 	  </div>
 	  
 	  <div class="layui-form-item">
-	    <label class="layui-form-label">地址</label>
 	    <div class="layui-input-block">
-	    	<textarea name="" id="address" disabled="disabled" class="layui-textarea"></textarea>
+	    	<textarea name="" id="address" disabled="disabled" class="layui-textarea" style="display:none"></textarea>
 	    	<input type="hidden" id="lnglat" required name="lnglat" value=""/>
 	    	<input type="hidden" id="addr" required name="address" value=""/>
 	    
 	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="seladdr">
-			  <i class="layui-icon">&#xe756;</i><span>选择地址</span>
+			  <i class="layui-icon">&#xe756;</i><span>点击定位店铺</span>
 			</button>
 	    </div>
 	  </div>
@@ -180,12 +189,7 @@
       <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.0&key=2d91c93f3322cc37c798dc6f9d806f38"></script>
       <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
 	  
-	  <div class="layui-form-item">
-	    <label class="layui-form-label">联系电话</label>
-	    <div class="layui-input-block">
-	      <input type="text" name="mobile" required placeholder="170xxxx0000" lay-verify="phone" autocomplete="off" class="layui-input">
-	    </div>
-	  </div>
+
 	  
 	  <div class="layui-form-item">
 	    <div class="layui-input-block">
@@ -518,5 +522,21 @@
 		
 	});
 	
+	
+layui.use('util', function(){
+  var util = layui.util;
+  
+  //执行
+  util.fixbar({
+	css:{right:0, bottom: 60},
+    bar1: true
+    ,click: function(type){
+      console.log(type);
+      if(type === 'bar1'){
+       window.location.href="__MODULE__/member/kfcenter"
+      }
+    }
+  });
+});
 </script>
 </html>

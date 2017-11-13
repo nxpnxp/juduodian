@@ -139,7 +139,7 @@
 	    
 	  </div>
 	</div>
-	
+
 	<include file="Public/footer" />
 	
 </body>
@@ -291,5 +291,21 @@
 	  	
 	});
 	
+layui.use('util', function(){
+  var util = layui.util;
+  
+  //执行
+  util.fixbar({
+	css:{right:0, bottom: 60},
+    bar1: true
+    ,click: function(type){
+      console.log(type);
+      if(type === 'bar1'){
+       window.location.href="__MODULE__/member/kfcenter"
+      }
+    }
+  });
+});
+      
 </script>
 </html>

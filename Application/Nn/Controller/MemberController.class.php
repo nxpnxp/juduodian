@@ -268,4 +268,12 @@ class MemberController extends HomeController {
 	
 	}
 	
+	//客服中心
+	public function kfcenter(){
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$this->assign('user',$user);
+		$this->display();
+	}
+	
 }
