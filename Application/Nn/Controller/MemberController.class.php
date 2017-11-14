@@ -131,7 +131,8 @@ class MemberController extends HomeController {
 		
 		//判断是否关注
 		if($user['subscribe'] != '1'){
-			$this->error('未关注，请关注后继续！');
+			//$this->error('未关注，请关注后继续！',U('Index/needgz'));
+			$this->redirect('Index/needgz', array(), 0, '未关注，请关注后继续！');
 		}
 		//判断是否绑手机号
 		if($user['isbind'] != '1'){

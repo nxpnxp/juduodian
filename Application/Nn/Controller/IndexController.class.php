@@ -16,6 +16,7 @@ class IndexController extends HomeController {
 			->field('c.id,c.title,p.path')
 			->join('left join onethink_picture p on c.icon=p.id')
 			->where('c.pid=0')
+			->limit(9)
 			->select();
 		$this->assign('cates',$cates);
 		
@@ -338,6 +339,11 @@ class IndexController extends HomeController {
 			$this->error('绑定失败，Err: B003');
 		}
 		
+	}
+	
+	//需要关注
+	public function needgz(){
+		$this->display();
 	}
 	
 	

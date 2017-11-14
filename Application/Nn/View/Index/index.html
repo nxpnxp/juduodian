@@ -18,7 +18,7 @@
      		width: 90%;
      		margin: 0 auto;
      	}
-		.layui-col-xs25{ width:20%; display:inline-block;}
+		.xs25{ width:19.8%; display:inline-block;}
      	.cate{
      		padding: 10px 0;
      		font-size: 13px;     		
@@ -65,11 +65,16 @@
 	
 	<div class="layui-row">
 		<foreach name="cates" item="vo" >
-			<div class="cate layui-col-xs25" cateid="{$vo.id}" >
+			<div class="cate xs25" cateid="{$vo.id}" >
 				<div><img src="{$vo.path}" /></div>
 		    	<div>{$vo.title}</div>
 		    </div>
 		</foreach>
+		<div class="cate xs25" cateid="1" >
+			<div><img src="/Uploads/Picture/2017-11-10/5a05465fe5725.jpg" /></div>
+	    	<div>更多</div>
+	    </div>
+		
   	</div>
 	
     <div class="gline"></div>
