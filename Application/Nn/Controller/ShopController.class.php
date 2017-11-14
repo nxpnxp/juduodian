@@ -1451,7 +1451,7 @@ class ShopController extends HomeController {
 						
 					}else{
 						$back['i'] = 0;
-						$back['msg'] = '抱歉，您超过3km区域不可抢红包，赶快靠近抢吧！';
+						$back['msg'] = '抱歉，此红包针对商家周边用户，再靠近我一些！分享到朋友圈，大家一块抢吧！';
 					}
 					break;
 				case '2':
@@ -1460,7 +1460,7 @@ class ShopController extends HomeController {
 						
 					}else{
 						$back['i'] = 0;
-						$back['msg'] = '抱歉，您超过5km区域不可抢红包，赶快靠近抢吧！';
+						$back['msg'] = '抱歉，此红包针对商家周边用户，再靠近我一些！分享到朋友圈，大家一块抢吧！';
 					}
 					break;
 				case '3':
@@ -1469,7 +1469,7 @@ class ShopController extends HomeController {
 						
 					}else{
 						$back['i'] = 0;
-						$back['msg'] = '抱歉，您超过20km区域不可抢红包，赶快靠近抢吧！';
+						$back['msg'] = '抱歉，此红包针对商家周边用户，再靠近我一些！分享到朋友圈，大家一块抢吧！';
 					}
 					break;
 				case '4':

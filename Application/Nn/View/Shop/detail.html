@@ -142,11 +142,11 @@
         <div class="layui-col-xs6 layui-bg-red"><a href="#" id="footcenter" class="white">
         	<eq name="flag" value="0">
         		<p>&nbsp;</p>
-        		<p>店铺主还没发红包呢<p>
+        		<p>老板还没发红包<p>
         	</eq>
         	<eq name="flag" value="1">
         		<p>{$gettime}</p>
-        		<p>未到红包发放时间<p>
+        		<p>您来早了，待会再来<p>
         	</eq>
         	<eq name="flag" value="2">
         		<p>{$wait}</p>
@@ -154,7 +154,7 @@
         	</eq>
         	<eq name="flag" value="3">
         		<p>&nbsp;</p>
-        		<p>红包发放时间已结束<p>
+        		<p>不好意思 已抢光<p>
         	</eq>
         	<eq name="flag" value="4">
         		<p>&nbsp;</p>
@@ -172,6 +172,7 @@
     	<div class="opacity"></div>
 		<div class="red"><img src="__IMG__/hb/hbimg.png"></div>		
     </div>
+	<include file="Public/share" />
     
 </body>
  
@@ -450,7 +451,7 @@
 				settime();
 				function settime() { 
 				    if (daojishi == 0) { 
-				    	$('#footcenter').html('<p>&nbsp;</p><p>暂不可抢</p>');	
+				    	$('#footcenter').html('<p>&nbsp;</p><p>快分享到朋友圈！</p>');	
 				    	layer.msg('{$flag2_msg}');
 				    	$("#footcenter").click(function(){			        	
 							layer.msg('{$flag2_msg}');
