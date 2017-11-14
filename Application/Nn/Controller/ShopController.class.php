@@ -1511,9 +1511,50 @@ class ShopController extends HomeController {
 			M('Document')->delete($shopid);
 			M('DocumentShop')->delete($shopid);
 			$this->success('删除店铺成功！',U('dians'));die;
+		}		
+	}
+	
+	//店铺红包记录
+	public function shophblogs(){
+		$shopid = I('id');		
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$this->assign('user',$user);
+		
+		$wxhb = M('Wxhb')->where('shopid='.$shopid.' and ispay=1')->order('id desc')->select();
+		$this->assign('wxhb',$wxhb);
+		
+		$this->display();
+	}
+	
+	public function showhbinfo(){
+		$time = time();
+		$hbid = I('get.id');
+		
+    	$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$this->assign('user',$user);
+		
+		//查找店铺红包
+		$hb = M('Wxhb')->find($hbid);
+		if($hb){
+			$shopid = $hb['shopid'];
+			$this->assign('shopid',$shopid);
+				
+			$shop_title = M('Document')->where('id='.$shopid)->getField('title');
+			$this->assign('shop_title',$shop_title);
+							
+			$this->assign('hb',$hb);
+			
+			if($hb['isson'] && ($hb['num']>1)){
+				$hbsons = M('WxhbSon')->where('hbid='.$hb['id'])->order('gettime asc')->select();
+				$this->assign('hbsons',$hbsons);
+			}
+			
+			$this->display('hbdetail');
+		}else{
+			$this->error('无该红包');
 		}
-		
-		
 	}
 	
 }
