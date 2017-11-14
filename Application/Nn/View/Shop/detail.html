@@ -317,7 +317,8 @@
 						layer.prompt({
 							formType: 2,
 							value: '',
-							title: '请输入口令:{$kl}'
+							title: '请输入口令: {$kl}',
+							area: ['auto', '100px'],
 						}, function(value, index, elem){
 							var url = "{:U('Shop/qianghb',array('shopid'=>$dian['id']))}";
 							url += '&kl='+value;					  
