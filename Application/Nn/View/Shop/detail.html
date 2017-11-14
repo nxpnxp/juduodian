@@ -162,7 +162,7 @@
     
     <div class="hb" style="display: none;">
     	<div class="opacity"></div>
-		<div class="red"><img src="__IMG__/hb/asd23.png"></div>		
+		<div class="red"><img src="__IMG__/hb/hbimg.png"></div>		
     </div>
     
 </body>
@@ -310,13 +310,15 @@
 				});
 				
 				function calchb(){
-					var iskl = {$iskl};		        
+					var iskl = {$iskl};		
+					layer.msg(iskl);
 			        if(iskl){
 			        	    	
 						layer.prompt({
 							formType: 2,
 							value: '',
-							title: '请输入口令:{$kl}'
+							title: '请输入口令: {$kl}',
+							area: ['auto', '100px'],
 						}, function(value, index, elem){
 							var url = "{:U('Shop/qianghb',array('shopid'=>$dian['id']))}";
 							url += '&kl='+value;					  
