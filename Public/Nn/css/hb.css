@@ -58,11 +58,13 @@
 	overflow: hidden;
 	margin-left: -150px;
 	margin-top: -172px;
-	
+	text-align:center;
 }
 .red img{
-	width:100%;
+	width:60%;
 	height: auto;
+	margin: 0 auto;
+	text-align:center;
 }
 .red.shake{
 	animation:shake .2s infinite linear;
