@@ -38,6 +38,7 @@
      		margin: 0 auto;
      		line-height:25px;padding:10px 0;
       	}
+      	.nrow img{width: 100%;height: auto;}
 		a.white{ color:#fff;}
 		.wrap{ width:100%;border-bottom:1px solid #eaeaea;}
 		#lunbo{ position:relative;}
@@ -70,7 +71,7 @@
 	<div class="title layui-row">
 		<div class="layui-col-xs3 back"><span class="goback"><i class="layui-icon">&#xe65c;</i></span></div>
 		<div class="layui-col-xs6">&nbsp;</div>
-		<div class="layui-col-xs3"><span class="view"><i class="layui-icon">&#xe650;</i> 999</span></div>
+		<div class="layui-col-xs3 view"><i class="layui-icon">&#xe650;</i> <span id="views">{$dian.views}</span></div>
 	</div>
 	
 	<div class="layui-carousel" id="lunbo" lay-filter="lunbo">
@@ -110,8 +111,10 @@
    </div>
    <div id="map"></div>
     
-	<div class="layui-row nrow" style="margin-bottom:80px;">
+	<div class="layui-row nrow" style="margin-bottom:80px;">		
 		{$dian.content}
+		<notempty name="dian.imgs4p"><div><img src="{$dian.imgs4p}"></div></notempty>
+		<notempty name="dian.imgs5p"><div><img src="{$dian.imgs5p}"></div></notempty>
 	</div>
     
     	<div class="footbar layui-row">

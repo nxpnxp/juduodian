@@ -120,6 +120,15 @@ class ShopController extends HomeController {
 	
 	//编辑店铺
 	public function editshop(){
+		
+		$id = I('id');
+		$one = M("Document")->where(array('id'=>$id))->find();
+		$dian = M('DocumentShop')->where(array('id'=>$id))->find();
+		if($dian['paystatus']==0){
+			$this->error("您的店铺已创建，请去支付",U('apply_success',array('ordersn'=>$dian['ordersn'])));
+			exit;
+		}
+		
 		$script = &  load_wechat('Script');
 		$thisurl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
 		$options = $script->getJsSign($thisurl);
@@ -133,10 +142,9 @@ class ShopController extends HomeController {
 		$openid = $this->openid;
 		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
 		$this->assign('user',$user);
-		$id = I('id');
-		$one = M("Document")->where(array('id'=>$id))->find();
+		
 		$one['logo'] = M("Picture")->where(array('id'=>$one['cover_id']))->getField('path');
-		$dian = M('DocumentShop')->where(array('id'=>$id))->find();
+		
 		$this->assign('dian',$dian);
 		
 		$cate1 = M('Category')->field('id,title')->where(array('pid'=>'0'))->order('sort asc')->select();
@@ -203,7 +211,7 @@ class ShopController extends HomeController {
 			'deadline' => 0,//截止时间
 			'create_time' => $time,
 			'update_time' => $time,
-			'status' => 2//状态 -1回收站 0禁用 1可用 2待审核
+			'status' => 1//状态 -1回收站 0禁用 1可用 2待审核
  		);
 		M('Document')->where('id='.$id)->save($array1);
 		
@@ -225,8 +233,6 @@ class ShopController extends HomeController {
 			'longitude' => $lnglat[0], 
 			'latitude' => $lnglat[1],
 			'ordersn' => $ordersn,
-			'paytype' => 0,
-			'paystatus' => 0
 		);
 		$id2 = M('DocumentShop')->where('id='.$id)->save($array2);
 		
@@ -543,6 +549,10 @@ class ShopController extends HomeController {
 				->join('left join onethink_picture p4 on ds.imgs4=p4.id')
 				->join('left join onethink_picture p5 on ds.imgs5=p5.id')
 				->where('d.id='.$id)->find();
+				
+				
+		$dian['zan'] = M("Zan")->where(array('sid'=>$dian['id']))->count();
+		
 		$this->assign('dian',$dian);
 		
 		$wait = M('Config')->where(array('id'=>"44"))->getField('value');
@@ -894,7 +904,13 @@ class ShopController extends HomeController {
 			exit;
 		}
 	}
-	
+	//浏览量
+	public function ajaxViews(){
+		$id = I('get.id');
+		M("Document")->where(array('id'=>$id))->setInc("views");
+		$views = M("Document")->where(array('id'=>$id))->getField("views");
+		echo $views;
+	}
 	//收藏
 	public function ajaxCollection(){
 		$id = I('get.id');

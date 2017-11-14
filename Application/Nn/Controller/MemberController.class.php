@@ -65,6 +65,7 @@ class MemberController extends HomeController {
 		$openid = $this->openid;
 		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
 		$this->assign('user',$user);
+		
 		$visit = M("WxuserLatlon")->where(array('uid'=>$user['id']))->order("time desc")->find();
 		$data = M('Collection')->where(array('uid'=>$user['id']))->select();
 		$ids = '';
@@ -72,23 +73,26 @@ class MemberController extends HomeController {
 			$ids .= $v['sid'].',';
 		}
 		$ids = trim($ids,',');
-		$collections = M('Document')->where("id in ($ids)")->select();
-		$daybegin=strtotime(date("Ymd")); 
-		$dayend=$daybegin+86400;
-		foreach($collections as $k=>$v){
-			$collections[$k]['logo'] = M('Picture')->where(array('id'=>$v['cover_id']))->getField('path');
-			$collections[$k]['collection'] = M("Collection")->where(array('sid'=>$v['id']))->count();
-			$collections[$k]['zan'] = M("Zan")->where(array('sid'=>$v['id']))->count();
-			$collections[$k]['showaddress'] = M('DocumentShop')->where(array('id'=>$v['id']))->getField('showaddress');
-			$_lon = M('DocumentShop')->where(array('id'=>$v['id']))->getField('longitude');
-			$_lat = M('DocumentShop')->where(array('id'=>$v['id']))->getField('latitude');
-			$collections[$k]['juli'] = $this->getDistance($_lon, $_lat,$visit['lon'], $visit['lat']);
-			$flag = 0;
-			$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
-			if($flag <=0){
+		$collections = array();	
+		if($ids){
+			$collections = M('Document')->where("id in ($ids)")->select();
+			$daybegin=strtotime(date("Ymd")); 
+			$dayend=$daybegin+86400;
+			foreach($collections as $k=>$v){
+				$collections[$k]['logo'] = M('Picture')->where(array('id'=>$v['cover_id']))->getField('path');
+				$collections[$k]['collection'] = M("Collection")->where(array('sid'=>$v['id']))->count();
+				$collections[$k]['zan'] = M("Zan")->where(array('sid'=>$v['id']))->count();
+				$collections[$k]['showaddress'] = M('DocumentShop')->where(array('id'=>$v['id']))->getField('showaddress');
+				$_lon = M('DocumentShop')->where(array('id'=>$v['id']))->getField('longitude');
+				$_lat = M('DocumentShop')->where(array('id'=>$v['id']))->getField('latitude');
+				$collections[$k]['juli'] = $this->getDistance($_lon, $_lat,$visit['lon'], $visit['lat']);
+				$flag = 0;
 				$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+				if($flag <=0){
+					$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+				}
+				$collections[$k]['hb'] = $flag;
 			}
-			$collections[$k]['hb'] = $flag;
 		}
 		$this->assign('collections',$collections);
 		$this->display();
