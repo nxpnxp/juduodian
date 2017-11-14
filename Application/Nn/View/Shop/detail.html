@@ -70,12 +70,12 @@
 </head>
 <body>
 	<if condition="$user.subscribe != 1">
-		<div class="subscribe"><i class="layui-icon">&#xe608;</i> 您未关注，请点击关注</div>
+		<div class="subscribe">为方便后续操作，请点击关注</div>
 	</if>
 	
 
 	
-	<div class="layui-carousel" id="lunbo" lay-filter="lunbo" style="margin-top:30px;">
+	<div class="layui-carousel" id="lunbo" lay-filter="lunbo"  <if condition="$user.subscribe neq 1">style="margin-top:30px;"</if>>
     
     	<div class="title layui-row">
 		<div class="layui-col-xs3 back"><span class="goback"><i class="layui-icon">&#xe65c;</i></span></div>
@@ -87,7 +87,7 @@
        	<div class="bar layui-col-xs12">
 			<div class="layui-col-xs3"><a href="#" class="white" id="collection"><i class="layui-icon">&#xe600;</i> 收藏</a></div>
 			<div class="layui-col-xs3"><a href="#" id="zan" class="white"><i class="layui-icon">&#xe6c6;</i> <span id="zanum" style="padding-bottom:5px;">{$dian.zan}</span></a></div>
-	 		<div class="layui-col-xs3"><a href="#" id="erweima" class="white"><i class="layui-icon">&#xe64c;</i> 商家二维码</a></div> 
+	 		<div class="layui-col-xs3"><a href="#" id="erweima" class="white"><i class="layui-icon">&#xe64c;</i> 商家微信</a></div> 
 	        <div class="layui-col-xs3"><a href="tel:{$dian.mobile}" class="white"><i class="layui-icon">&#xe63b;</i> 电话</a></div>
 		</div>
     
