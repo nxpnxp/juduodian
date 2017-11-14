@@ -76,8 +76,7 @@ class MemberController extends HomeController {
 		$collections = array();	
 		if($ids){
 			$collections = M('Document')->where("id in ($ids)")->select();
-			$daybegin=strtotime(date("Ymd")); 
-			$dayend=$daybegin+86400;
+			$_time = time();
 			foreach($collections as $k=>$v){
 				$collections[$k]['logo'] = M('Picture')->where(array('id'=>$v['cover_id']))->getField('path');
 				$collections[$k]['collection'] = M("Collection")->where(array('sid'=>$v['id']))->count();
@@ -87,9 +86,9 @@ class MemberController extends HomeController {
 				$_lat = M('DocumentShop')->where(array('id'=>$v['id']))->getField('latitude');
 				$collections[$k]['juli'] = $this->getDistance($_lon, $_lat,$visit['lon'], $visit['lat']);
 				$flag = 0;
-				$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+				$flag = M("Wxhb")->where("shopid={$v['id']} and $_time>=gettime and $_time <= endtime")->count();
 				if($flag <=0){
-					$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+					$flag = M("Wxhb")->where("shopid={$v['id']} and $_time>=gettime and $_time <= endtime")->count();
 				}
 				$collections[$k]['hb'] = $flag;
 			}

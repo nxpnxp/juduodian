@@ -26,15 +26,14 @@ class IndexController extends HomeController {
 			->where('d.status=1')
 			->limit(10)
 			->select();
-		$daybegin=strtotime(date("Ymd")); 
-		$dayend=$daybegin+86400;
+		$_time = time();
 		foreach($morens as $k=>$v){
 			$morens[$k]['collection'] = M("Collection")->where(array('sid'=>$v['id']))->count();
 			$morens[$k]['zan'] = M("Zan")->where(array('sid'=>$v['id']))->count();
 			$flag = 0;
-			$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			$flag = M("Wxhb")->where("shopid={$v['id']} and $_time>=gettime and $_time <= endtime")->count();
 			if($flag <=0){
-				$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+				$flag = M("Wxhb")->where("shopid={$v['id']} and $_time>=gettime and $_time <= endtime")->count();
 			}
 			$morens[$k]['hb'] = $flag;
 		}
@@ -53,9 +52,9 @@ class IndexController extends HomeController {
 			$tjs[$k]['collection'] = M("Collection")->where(array('sid'=>$v['id']))->count();
 			$tjs[$k]['zan'] = M("Zan")->where(array('sid'=>$v['id']))->count();
 			$flag = 0;
-			$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			$flag = M("Wxhb")->where("shopid={$v['id']} and $_time>=gettime and $_time<= endtime")->count();
 			if($flag <=0){
-				$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+				$flag = M("Wxhb")->where("shopid={$v['id']} and $_time>=gettime and $_time<= endtime")->count();
 			}
 			$tjs[$k]['hb'] = $flag;
 		}
@@ -87,9 +86,9 @@ class IndexController extends HomeController {
 			$dianpu1[$k]['collection'] = M("Collection")->where(array('sid'=>$v['id']))->count();
 			$dianpu1[$k]['zan'] = M("Zan")->where(array('sid'=>$v['id']))->count();
 			$flag = 0;
-			$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			$flag = M("Wxhb")->where("shopid={$v['id']} and $_time>=gettime and $_time <= endtime")->count();
 			if($flag <=0){
-				$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+				$flag = M("Wxhb")->where("shopid={$v['id']} and $_time>=gettime and $_time <= endtime")->count();
 			}
 			$dianpu1[$k]['hb'] = $flag;
 			
