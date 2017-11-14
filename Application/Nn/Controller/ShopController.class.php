@@ -518,9 +518,9 @@ class ShopController extends HomeController {
 			if($flag <=0){
 				$flag = M("Wxhb")->where("shopid={$v['id']} and $_time>=gettime and $_time <= endtime")->count();
 			}
-			$collections[$k]['hb'] = $flag;
+			$dians[$k]['hb'] = $flag;
 		}
-		//print_r($dians);
+		//print_r($dians);exit;
 		$this->assign('dians',$dians);
     	$this->display('index');
     }

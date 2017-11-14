@@ -236,7 +236,19 @@
 		    indicator: 'none',
 		    interval: '3000'
 		});
-	  	
+	  	//浏览量
+		var did = {$dian.id};
+			$.ajax({
+			type:"GET",
+			data:{'id':did},
+			url:"{:U('Shop/ajaxViews')}",
+			success:function(data){
+				//alert(data)
+					$("#views").html(data);
+
+			}
+				
+			})
 		//点赞
 		$("#zan").click(function(){
 			var id = {$dian.id};
