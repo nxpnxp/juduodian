@@ -21,9 +21,9 @@
      		width: 100%;
      		text-align: center;
      		padding: 10px 0;
-     		background-color: #009688;
+     		background-color: #09F;
      		color: #fff;
-     		font-size: 20px;
+     		font-size: 15px;
      	}	  
      	.title i{
      		text-align: left;
@@ -134,7 +134,7 @@
 			<div class="layui-collapse" lay-accordion>		
 				<foreach name="hbsons" item="vo" >
 				  <div class="layui-colla-item">
-				    <h2 class="layui-colla-title">{$vo.gettime|date="Y-m-d H:i:s",###} ~ {$vo.endtime|date="Y-m-d H:i:s",###}</h2>
+				    <h2 class="layui-colla-title">{$vo.gettime|date="Y-m-d",###} ~ {$vo.endtime|date="Y-m-d",###}</h2>
 				    <div class="layui-colla-content layui-show">
 				    	<div class="layui-row">
 						    <div class="layui-col-xs6">
