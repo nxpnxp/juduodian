@@ -24,6 +24,9 @@
      		background-color: #09F;
      		color: #fff;
      		font-size: 15px;
+			position:fixed;
+			top:0;
+			z-index:999;
      	}
      	form{margin-top: 10px;}   
      	.layui-input-block{margin-right: 20px;}	
@@ -33,6 +36,7 @@
      	.hide{display: none;}
 		.bgg{ background-color:#eaeaea;}
 		.red { color:#FF5722;}
+		.white{ color:#FFF;}
      </style>
 </head>
 <body>
@@ -40,8 +44,8 @@
 		<div class="subscribe">您未关注，请点击关注</div>
 	</if>
 	
-	<div class="title">登记店铺</div>
-	<div class="layui-row">
+	<div class="title">登记店铺 <a href="#" class="white">【查看创建说明】</a></div>
+	<div class="layui-row" style="margin-top:50px;">
     <div class="layui-col-md12" style="text-align:center; padding:10px 0;"><p class="red">* 号标志的为必填，其他选填</p></div>
     </div>
 	<form class="layui-form" method="post" action="{:U('Shop/doapply')}">
@@ -558,7 +562,7 @@ layui.use('util', function(){
   //执行
   util.fixbar({
 	css:{right:0, bottom: 60},
-    bar1: true
+    bar1: '&#xe63a;'
     ,click: function(type){
       console.log(type);
       if(type === 'bar1'){
