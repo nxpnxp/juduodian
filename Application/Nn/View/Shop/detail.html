@@ -38,6 +38,7 @@
      		margin: 0 auto;
      		line-height:25px;padding:10px 0;
       	}
+      	.nrow img{width: 100%;height: auto;}
 		a.white{ color:#fff;}
 		.wrap{ width:100%;border-bottom:1px solid #eaeaea;}
 		#lunbo{ position:relative;}
@@ -110,8 +111,10 @@
    </div>
    <div id="map"></div>
     
-	<div class="layui-row nrow" style="margin-bottom:80px;">
+	<div class="layui-row nrow" style="margin-bottom:80px;">		
 		{$dian.content}
+		<notempty name="dian.imgs4p"><div><img src="{$dian.imgs4p}"></div></notempty>
+		<notempty name="dian.imgs5p"><div><img src="{$dian.imgs5p}"></div></notempty>
 	</div>
     
     	<div class="footbar layui-row">
@@ -159,7 +162,7 @@
     
     <div class="hb" style="display: none;">
     	<div class="opacity"></div>
-		<div class="red"><img src="__IMG__/hb/asd23.png"></div>		
+		<div class="red"><img src="__IMG__/hb/hbimg.png"></div>		
     </div>
     
 </body>
@@ -307,7 +310,8 @@
 				});
 				
 				function calchb(){
-					var iskl = {$iskl};		        
+					var iskl = {$iskl};		
+					layer.msg(iskl);
 			        if(iskl){
 			        	    	
 						layer.prompt({

@@ -586,7 +586,7 @@ class ShopController extends HomeController {
 				}
 				if( ($time >= $wxhb['gettime']) && ($time <= $wxhb['endtime']) ){
 					$this->assign('iskl',$wxhb['iskl']);
-					$this->assign('iskl',$wxhb['kl']);
+					$this->assign('kl',$wxhb['kl']);
 					$flag = 2;//2疯抢中
 				}
 				if($time > $wxhb['endtime']){
