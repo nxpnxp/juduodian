@@ -56,8 +56,20 @@
 	    </div>
 	  </div>
 	  
-	  <input type="hidden" name="num" value="1" />
-	  <input type="hidden" name="type" value="普通" />
+	   <div class="layui-form-item">
+	    <label class="layui-form-label">发放天数</label>
+	    <div class="layui-input-block">
+	      <input type="text" name="num" required  lay-verify="required|number" class="layui-input" >
+	    </div>
+	  </div>
+	  
+	  <div class="layui-form-item">
+	    <label class="layui-form-label">类型</label>
+	    <div class="layui-input-block">
+	      	<input type="radio" name="type" value="普通" title="普通" lay-filter="type" checked>
+      		<input type="radio" name="type" value="拼手气" title="拼手气" lay-filter="type">
+	    </div>
+	  </div>
 	  
 	  <div class="layui-form-item pt">
 	    <label class="layui-form-label">单个金额</label>
@@ -71,10 +83,26 @@
 	    	约 <span class="show1"></span> 人领取
 	    </label>
 	  </div>
-	  	 
-	  <input type="hidden" name="psqmoney1" value="0" />
-	  <input type="hidden" name="psqmoney2" value="0" />
-	  	 
+	  
+	  <div class="layui-form-item psq">
+	    <label class="layui-form-label">最低金额</label>
+	    <div class="layui-input-block">
+	      <input type="text" name="psqmoney1" required  lay-verify="required" placeholder="单位：元" autocomplete="off" class="layui-input">
+	    </div>
+	  </div>
+	  <div class="layui-form-item psq">
+	    <label class="layui-form-label">最高金额</label>
+	    <div class="layui-input-block">
+	      <input type="text" name="psqmoney2" required  lay-verify="required" placeholder="单位：元" autocomplete="off" class="layui-input">
+	    </div>
+	  </div>
+	  <div class="layui-form-item psq">
+	    <label class="layui-form-label"></label>
+	    <label class="layui-form-label text-left">
+	    	约 <span class="show3"></span> ~ <span class="show2"></span> 人领取
+	    </label>
+	  </div>
+	  
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">是否口令</label>
 	    <div class="layui-input-block">
@@ -101,7 +129,12 @@
 	    </div>
 	  </div>
 	  
-	  <input type="hidden" name="gettime" value="<?php echo time(); ?>" />
+	  <div class="layui-form-item">
+	    <label class="layui-form-label">起始时间</label>
+	    <div class="layui-input-block">
+	      <input type="text" name="gettime" required  lay-verify="required" class="layui-input" id="gettime" readonly placeholder="请点击选择时间">
+	    </div>
+	  </div>
 	  
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">手续费</label>
