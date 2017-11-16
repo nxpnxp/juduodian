@@ -25,8 +25,8 @@ class FileController extends \Think\Controller {
 	    $info   =   $upload->upload();
 	    if(!$info) {// 上传错误提示错误信息
 	    	$return = array(
-				'code' => 0,
-				'msg' => $upload->getError()
+				'result'=>'failed',  
+				'message' => $upload->getError()
 			);
 	    }else{// 上传成功
 	    	
@@ -51,9 +51,10 @@ class FileController extends \Think\Controller {
 			$newid = M('Picture')->add($array);
 	    
 	        $return = array(
-				'code' => 1,
-				'msg' => $path,
-				'newid' => $newid
+				'result' => 'ok',
+				'id' => $newid,
+				'url' => $path
+				
 			);
 			
 	    }
