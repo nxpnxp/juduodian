@@ -107,7 +107,7 @@
 	</div></div>
     
      <div class="wrap" style="background-color:#F0F0F0"><div class="layui-row nrow"> 
-    <div class="layui-col-xs12 shopdesc logo"><img src="{$logo}">{$dian.description}</div>
+    <div class="layui-col-xs12 shopdesc logo"><img src="{$logo}">{$dian.content|mb_substr=###,0,12,utf8}</div>
     </div> </div>
 
    <div class="wrap">
@@ -123,6 +123,11 @@
 		{$dian.content}
 		<notempty name="dian.imgs4p"><div><img src="{$dian.imgs4p}"></div></notempty>
 		<notempty name="dian.imgs5p"><div><img src="{$dian.imgs5p}"></div></notempty>
+		
+		<foreach name="dian['imgs6s']" item="vo" >
+		    <div><img src="{$vo}"></div>
+		</foreach>
+		
 	</div>
     
     	<div class="footbar layui-row">

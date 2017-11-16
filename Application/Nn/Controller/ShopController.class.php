@@ -276,6 +276,9 @@ class ShopController extends HomeController {
 		$openid = $this->openid;
 		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
 		
+		$uploads_imgs = I('post.uploads_imgs');
+		$uploads_imgs = unserialize($uploads_imgs);
+		
 		$array1 = array(
 			'uid' => $user['id'],
 			'title' => I('post.title'),
@@ -283,7 +286,7 @@ class ShopController extends HomeController {
 			'description' => I('post.brief'),
 			'model_id' => 4, //模型id
 			'type' => 1, //1目录   （2主题 3段落）
-			'cover_id' => I('post.newid2'), //店铺logo
+			'cover_id' => $uploads_imgs[0], //店铺logo
 			'display' => 1,//所有人可见
 			'deadline' => 0,//截止时间
 			'create_time' => $time,
@@ -301,12 +304,13 @@ class ShopController extends HomeController {
 		
 		$array2 = array(
 			'id' => $id,
-			'imgs' => I('post.img1'),  //店铺形象图1
+			'imgs' => $uploads_imgs[0],//店铺形象图1
 			'imgs1' => I('post.img2'), //店铺形象图2
 			'imgs2' => I('post.img3'), //店铺形象图3
 			'imgs3' => I('post.img5'), //详情图1
 			'imgs4' => I('post.img6'), //详情图2
 			'imgs5' => I('post.img7'), //二维码
+			'imgs6' => I('post.uploads_imgs'), //多图上传
 			'address' => I('post.address'),
 			'showaddress' => I('post.showaddress'),
 			'mobile' => I('post.mobile'),
@@ -363,14 +367,14 @@ class ShopController extends HomeController {
 		//验证 （订单号 + 金额）
 		$pay_price = $this->getpaymoney();
 		if($pay_price != $price){
-			die('支付金额有误！');
+			$this->error('支付金额有误！');
 		}
 		$info = M('DocumentShop')->where('ordersn="'.$ordersn.'"')->find();
 		if(!$info){
-			die('请重新申请！');
+			$this->error('请重新申请！');
 		}else{
-			if( empty($info['imgs']) || empty($info['address']) || empty($info['mobile']) || empty($info['longitude']) || empty($info['latitude']) ){
-				die('请重新申请！');
+			if( empty($info['imgs6']) || empty($info['address']) || empty($info['mobile']) || empty($info['longitude']) || empty($info['latitude']) ){
+				$this->error('请重新申请！');
 			}
 		}
 		
@@ -555,6 +559,15 @@ class ShopController extends HomeController {
 				
 				
 		$dian['zan'] = M("Zan")->where(array('sid'=>$dian['id']))->count();
+		
+		$imgs6 = unserialize($dian['imgs6']);
+		$imgs6_arr = array();
+		unset($imgs6[0]);
+		foreach ($imgs6 as $key => $value) {
+			$path = M('Picture')->where(array('id'=>$value))->getField('path');
+			$imgs6_arr[] = $path;
+		}
+		$dian['imgs6s'] = $imgs6_arr;
 		
 		$this->assign('dian',$dian);
 		
@@ -1560,5 +1573,63 @@ class ShopController extends HomeController {
 			$this->error('无该红包');
 		}
 	}
+
+	public function doapply_bak(){
+    	$time = time();
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		
+		$array1 = array(
+			'uid' => $user['id'],
+			'title' => I('post.title'),
+			'category_id' => I('post.cate2'),
+			'description' => I('post.brief'),
+			'model_id' => 4, //模型id
+			'type' => 1, //1目录   （2主题 3段落）
+			'cover_id' => I('post.newid2'), //店铺logo
+			'display' => 1,//所有人可见
+			'deadline' => 0,//截止时间
+			'create_time' => $time,
+			'update_time' => $time,
+			'status' => 2//状态 -1回收站 0禁用 1可用 2待审核
+ 		);
+		$id = M('Document')->add($array1);
+		
+		$lnglat = I('post.lnglat');
+		$lnglat = explode(',', $lnglat);
+		$ordersn = 'WXAPPLY'.substr( md5('NNN'.time()) , 4,12);
+		
+		$pid = cookie('pid');
+		if(!$pid){ $pid=0; }
+		
+		$array2 = array(
+			'id' => $id,
+			'imgs' => I('post.img1'),  //店铺形象图1
+			'imgs1' => I('post.img2'), //店铺形象图2
+			'imgs2' => I('post.img3'), //店铺形象图3
+			'imgs3' => I('post.img5'), //详情图1
+			'imgs4' => I('post.img6'), //详情图2
+			'imgs5' => I('post.img7'), //二维码
+			'address' => I('post.address'),
+			'showaddress' => I('post.showaddress'),
+			'mobile' => I('post.mobile'),
+			'content' => I('post.content'),
+			'longitude' => $lnglat[0], 
+			'latitude' => $lnglat[1],
+			'ordersn' => $ordersn,
+			'paytype' => 0,
+			'paystatus' => 0,
+			'ppid' => $pid
+		);
+		$id2 = M('DocumentShop')->add($array2);
+		
+		if($id && $id2){
+			$this->success('申请成功', U('apply_success',array('ordersn'=>$ordersn)) );
+		}else{
+			$this->error('申请失败');
+		}
+		
+	}
+	
 	
 }
