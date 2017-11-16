@@ -100,6 +100,15 @@ class ShopController extends HomeController {
 					$this->assign('cate1_id',$cate1_id);
 					$cate2 = M('Category')->field('id,title')->where(array('pid'=>$cate1_id))->order('sort asc')->select();
 					$this->assign('cate2',$cate2);
+					//---
+					$imgs6 = $dian_shop['imgs6'];
+					$imgs6 = unserialize($imgs6);
+					$imgs6_arr = array();
+					foreach ($imgs6 as $key => $value) {
+						$path = M('Picture')->where(array('id'=>$value))->getField('path');
+						$imgs6_arr[] = $path;
+					}	
+					$this->assign('imgs6',$imgs6_arr);
 					
 					$this->display('apply_edit');
 				}
@@ -193,6 +202,17 @@ class ShopController extends HomeController {
 		}
 		$this->assign('one',$one);
 		//print_r($one);
+		
+		//---
+		$imgs6 = $dian['imgs6'];
+		$imgs6 = unserialize($imgs6);
+		$imgs6_arr = array();
+		foreach ($imgs6 as $key => $value) {
+			$path = M('Picture')->where(array('id'=>$value))->getField('path');
+			$imgs6_arr[] = $path;
+		}	
+		$this->assign('imgs6',$imgs6_arr);
+		
 		$this->display();
 		
 	}
@@ -203,6 +223,9 @@ class ShopController extends HomeController {
 		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
 		$id = I('post.id');
 		
+		$uploads_imgs = I('post.uploads_imgs');
+		$uploads_imgs = unserialize($uploads_imgs);
+				
 		$array1 = array(
 			'uid' => $user['id'],
 			'title' => I('post.title'),
@@ -210,7 +233,7 @@ class ShopController extends HomeController {
 			'description' => I('post.brief'),
 			'model_id' => 4, //模型id
 			'type' => 1, //1目录   （2主题 3段落）
-			'cover_id' => I('post.newid2'), //店铺logo
+			'cover_id' => $uploads_imgs[0], //店铺logo
 			'display' => 1,//所有人可见
 			'deadline' => 0,//截止时间
 			'create_time' => $time,
@@ -224,12 +247,13 @@ class ShopController extends HomeController {
 		$ordersn = 'WXAPPLY'.substr( md5('NNN'.time()) , 4,12);
 		
 		$array2 = array(
-			'imgs' => I('post.img1'),  //店铺形象图1
+			'imgs' => $uploads_imgs[0],  //店铺形象图1
 			'imgs1' => I('post.img2'), //店铺形象图2
 			'imgs2' => I('post.img3'), //店铺形象图3
 			'imgs3' => I('post.img5'), //详情图1
 			'imgs4' => I('post.img6'), //详情图2
 			'imgs5' => I('post.img7'), //二维码
+			'imgs6' => I('post.uploads_imgs'), //多图上传
 			'address' => I('post.address'),
 			'showaddress' => I('post.showaddress'),
 			'mobile' => I('post.mobile'),
@@ -458,6 +482,9 @@ class ShopController extends HomeController {
 		
 		$id = I('post.id');
 		
+		$uploads_imgs = I('post.uploads_imgs');
+		$uploads_imgs = unserialize($uploads_imgs);
+				
 		$array1 = array(
 			'uid' => $user['id'],
 			'title' => I('post.title'),
@@ -465,7 +492,7 @@ class ShopController extends HomeController {
 			'description' => I('post.brief'),
 			'model_id' => 4, //模型id
 			'type' => 1, //1目录   （2主题 3段落）
-			'cover_id' => I('post.newid2'), //店铺logo
+			'cover_id' => $uploads_imgs[0], //店铺logo
 			'display' => 1,//所有人可见
 			'deadline' => 0,//截止时间
 			'create_time' => $time,
@@ -479,12 +506,13 @@ class ShopController extends HomeController {
 		$ordersn = 'WXAPPLY'.substr( md5('NNN'.time()) , 4,12);
 		
 		$array2 = array(
-			'imgs' => I('post.img1'),  //店铺形象图1
+			'imgs' => $uploads_imgs[0],  //店铺形象图1
 			'imgs1' => I('post.img2'), //店铺形象图2
 			'imgs2' => I('post.img3'), //店铺形象图3
 			'imgs3' => I('post.img5'), //详情图1
 			'imgs4' => I('post.img6'), //详情图2
 			'imgs5' => I('post.img7'), //二维码
+			'imgs6' => I('post.uploads_imgs'), //多图上传
 			'address' => I('post.address'),
 			'showaddress' => I('post.showaddress'),
 			'mobile' => I('post.mobile'),
@@ -1627,6 +1655,110 @@ class ShopController extends HomeController {
 			$this->success('申请成功', U('apply_success',array('ordersn'=>$ordersn)) );
 		}else{
 			$this->error('申请失败');
+		}
+		
+	}
+	public function doapplyedit_bak(){
+    	$time = time();
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		
+		$id = I('post.id');
+		
+		$array1 = array(
+			'uid' => $user['id'],
+			'title' => I('post.title'),
+			'category_id' => I('post.cate2'),
+			'description' => I('post.brief'),
+			'model_id' => 4, //模型id
+			'type' => 1, //1目录   （2主题 3段落）
+			'cover_id' => I('post.newid2'), //店铺logo
+			'display' => 1,//所有人可见
+			'deadline' => 0,//截止时间
+			'create_time' => $time,
+			'update_time' => $time,
+			'status' => 2//状态 -1回收站 0禁用 1可用 2待审核
+ 		);
+		M('Document')->where('id='.$id)->save($array1);
+		
+		$lnglat = I('post.lnglat');
+		$lnglat = explode(',', $lnglat);
+		$ordersn = 'WXAPPLY'.substr( md5('NNN'.time()) , 4,12);
+		
+		$array2 = array(
+			'imgs' => I('post.img1'),  //店铺形象图1
+			'imgs1' => I('post.img2'), //店铺形象图2
+			'imgs2' => I('post.img3'), //店铺形象图3
+			'imgs3' => I('post.img5'), //详情图1
+			'imgs4' => I('post.img6'), //详情图2
+			'imgs5' => I('post.img7'), //二维码
+			'address' => I('post.address'),
+			'showaddress' => I('post.showaddress'),
+			'mobile' => I('post.mobile'),
+			'content' => I('post.content'),
+			'longitude' => $lnglat[0], 
+			'latitude' => $lnglat[1],
+			'ordersn' => $ordersn,
+			'paytype' => 0,
+			'paystatus' => 0
+		);
+		$id2 = M('DocumentShop')->where('id='.$id)->save($array2);
+		
+		if($id && $id2){
+			$this->success('申请成功', U('apply_success',array('ordersn'=>$ordersn)) );
+		}else{
+			$this->error('申请失败');
+		}
+		
+	}
+	
+	public function doapplyedit1_bak(){
+    	$time = time();
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		$id = I('post.id');
+		
+		$array1 = array(
+			'uid' => $user['id'],
+			'title' => I('post.title'),
+			'category_id' => I('post.cate2'),
+			'description' => I('post.brief'),
+			'model_id' => 4, //模型id
+			'type' => 1, //1目录   （2主题 3段落）
+			'cover_id' => I('post.newid2'), //店铺logo
+			'display' => 1,//所有人可见
+			'deadline' => 0,//截止时间
+			'create_time' => $time,
+			'update_time' => $time,
+			'status' => 1//状态 -1回收站 0禁用 1可用 2待审核
+ 		);
+		M('Document')->where('id='.$id)->save($array1);
+		
+		$lnglat = I('post.lnglat');
+		$lnglat = explode(',', $lnglat);
+		$ordersn = 'WXAPPLY'.substr( md5('NNN'.time()) , 4,12);
+		
+		$array2 = array(
+			'imgs' => I('post.img1'),  //店铺形象图1
+			'imgs1' => I('post.img2'), //店铺形象图2
+			'imgs2' => I('post.img3'), //店铺形象图3
+			'imgs3' => I('post.img5'), //详情图1
+			'imgs4' => I('post.img6'), //详情图2
+			'imgs5' => I('post.img7'), //二维码
+			'address' => I('post.address'),
+			'showaddress' => I('post.showaddress'),
+			'mobile' => I('post.mobile'),
+			'content' => I('post.content'),
+			'longitude' => $lnglat[0], 
+			'latitude' => $lnglat[1],
+			'ordersn' => $ordersn,
+		);
+		$id2 = M('DocumentShop')->where('id='.$id)->save($array2);
+		
+		if($id && $id2){
+			$this->success('修改成功', U('shop/dians'));
+		}else{
+			$this->error('修改失败');
 		}
 		
 	}
