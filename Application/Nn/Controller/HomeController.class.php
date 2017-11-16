@@ -59,10 +59,10 @@ class HomeController extends Controller {
 			cookie('openid',$openid,3600); 
 				
 	    	//获取用户信息
+			$this->save_user_avatar($openid);
 	    	$this->get_user_info($openid); 
 			$this->assign('openid',$openid);
 			$this->user_pid($openid);
-			$this->save_user_avatar($openid);
 				
 		}else{
 			$thisurl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];

@@ -37,6 +37,8 @@
 		.bgg{ background-color:#eaeaea;}
 		.red { color:#FF5722;}
 		.white{ color:#FFF;}
+		
+		#uploads_imgs img{width:70px;height:70px;margin: 0 4px 4px 0;}
      </style>
 </head>
 <body>
@@ -63,6 +65,21 @@
 	      <input type="text" name="mobile" required placeholder="170xxxx0000" lay-verify="phone" autocomplete="off" class="layui-input">
 	    </div>
 	  </div>    
+        
+        <div class="layui-form-item">
+		    <label class="layui-form-label"><span class="red">*</span>多图上传</label>
+		    <div class="layui-input-block" id="uploads">		     	
+				<a href="#" class="layui-btn layui-btn-normal layui-btn-small">
+					<i class="layui-icon">&#xe67c;</i>上传图片
+				</a>				
+		    </div>
+	    </div>  
+	    <div class="layui-form-item" id="imgs" style="display: none;">
+		    <label class="layui-form-label"> </label>
+		    <div class="layui-input-block" id="uploads_imgs">		     	
+							
+		    </div>
+	    </div>  
         
       	  <div class="layui-form-item">
 	    <label class="layui-form-label"><span class="red">*</span>店铺LOGO</label>
@@ -108,19 +125,6 @@
          <div class="layui-form-mid layui-word-aux">详情页顶部滚动显示</div>
          </div>
       
-<!--      <div class="layui-form-item">
-	    <label class="layui-form-label">封面3</label>
-	    <div class="layui-input-block">
-	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img3">
-			  <i class="layui-icon">&#xe67c;</i>上传图片
-			</button>
-			<img src="" id="img3res" style="display:none;width:50px;height:50px;"/>
-			<input type="hidden" required name="img3" value="" />
-	    </div>
-	  </div>-->
-	  
-
-	
     	  <div class="layui-form-item" style="margin:0;">
 	    <label class="layui-form-label">二维码</label>
 	    <div class="layui-input-block">
@@ -237,6 +241,7 @@
 </body>
  
 <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript" src="__NN__/layui.js"></script> 
 <script>
 	// 微信JSSDK异常处理
 	wx.error(function(e){
@@ -294,11 +299,33 @@
 				
 		    }
 		});
+       	
+       	document.getElementById('uploads').onclick=function(){
+       		wx.chooseImage({
+			    count: 9, // 默认9
+			    sizeType: ['compressed'], //压缩图
+			    sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+			    success: function (res) {
+			        var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+			    	//layer.msg(JSON.stringify(localIds));
+			    	
+			    	document.getElementById('imgs').style.display="block";
+			    	
+			    	var str = '';
+			    	for (var i=0;i<localIds.length;i++) {
+			    		str += '<img src="'+localIds[i]+'" />';
+			    	}
+			    	
+			    	document.getElementById('uploads_imgs').innerHTML = str;
+			    	
+			    }
+			});
+       	}
+       
         
     });
 </script>
 
-<script type="text/javascript" src="__NN__/layui.js"></script> 
 <script>
 	layui.use(['layer','jquery','form','upload'], function(){
 		
