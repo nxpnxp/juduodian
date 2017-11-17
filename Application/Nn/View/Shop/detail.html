@@ -63,7 +63,7 @@
 		
 		.logo img{width:50px; height:50px;border-radius:50%; float:left; margin-right:10px;}
 		.shoptitle{ color:#2F4056; font-size:16px; font-weight:800}
-		.shopdesc{ color:#c2c2c2; line-height:1.5em;}
+		.shopdesc{ color:#333; line-height:50px;}
 		
 		#map{width: 100%;height: 300px;display: none;}
 	 </style>
@@ -102,12 +102,12 @@
     
    </div>
    
-   <div class="wrap"><div class="layui-row nrow"> 
+<!--   <div class="wrap"><div class="layui-row nrow"> 
 	<div class="layui-col-xs12"><div class="shoptitle">{$dian.title}</div></div>
-	</div></div>
+	</div></div>-->
     
      <div class="wrap" style="background-color:#F0F0F0"><div class="layui-row nrow"> 
-    <div class="layui-col-xs12 shopdesc logo"><img src="{$logo}">{$dian.content|mb_substr=###,0,12,utf8}</div>
+    <div class="layui-col-xs12 shopdesc logo shoptitle"><img src="{$logo}">{$dian.title|mb_substr=###,0,14,utf8}</div>
     </div> </div>
 
    <div class="wrap">
