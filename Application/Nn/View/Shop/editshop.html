@@ -137,9 +137,14 @@
 	    	<input type="hidden" id="lnglat" required name="lnglat" value=""/>
 	    	<input type="hidden" id="addr" required name="address" value=""/>
 	    
-	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="seladdr">
+	     	<!--<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="seladdr">
 			  <i class="layui-icon">&#xe756;</i><span>选择地址</span>
+			</button>-->
+			
+			<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="seladdr1">
+			  <i class="layui-icon">&#xe756;</i><span>查询</span>
 			</button>
+			
 	    </div>
 	  </div>
 	  <div id="map"></div>
@@ -584,6 +589,81 @@
 		  showOrHide = showOrHide == 1 ? 0 : 1;
 		});
 		
+		$('#seladdr1').click(function(){
+			var txt = $('textarea[name=showaddress]').val();
+			
+			if(txt == ''){
+				layer.msg('请输入正确的店铺地址！');
+			}else{
+				AMap.service('AMap.Geocoder',function(){		    
+				    geocoder = new AMap.Geocoder();
+				    geocoder.getLocation(txt, function(status, result) {
+				    	//alert(JSON.stringify(status)+JSON.stringify(result));
+					    if (status === 'complete' && result.info === 'OK') {
+					       //layer.msg(JSON.stringify(result));
+					       var obj = result.geocodes[0].location;
+					       var lng = obj.lng;
+					       var lat = obj.lat;
+					       //layer.msg(lng+'--'+lat);
+				
+							  	layer.open({
+							      type: 1,
+								  title: '拖动地图选择定位',
+								  closeBtn: 1,
+								  area: '100%',
+								  skin: 'layui-layer-nobg', //没有背景色
+								  shadeClose: true,
+								  content: $('#map')
+							   });
+							  showOrHide = 1;
+					       
+					        AMapUI.loadUI(['misc/PositionPicker'], function(PositionPicker) {
+				    
+							    var map = new AMap.Map('map',{
+							        resizeEnable: true,
+							        zoom: 16,
+							        //center: [116.480983, 40.0958]
+							        center: [lng, lat]
+							    });
+							    var positionPicker = new PositionPicker({
+							        mode: 'dragMap',//dragMap dragMarker
+							        map: map
+							    });
+							
+							    positionPicker.on('success', function(positionResult) {
+							        var lnglat = positionResult.position;
+							        var address = positionResult.address;
+							        var nearestJunction = positionResult.nearestJunction;
+							        var nearestRoad = positionResult.nearestRoad;
+							        var nearestPOI = positionResult.nearestPOI;
+							        //alert(lnglat+'-'+address+'-'+nearestJunction+'-'+nearestRoad+'-'+nearestPOI);
+							        document.getElementById('address').value = address;//显示
+							        document.getElementById('addr').value = address;//表单提交
+							        document.getElementById('lnglat').value = lnglat;
+							        
+							        layer.title(address);
+							        
+							    });
+							    positionPicker.on('fail', function(positionResult) {
+							        var lnglat = '';
+							        var address = '';
+							        var nearestJunction = '';
+							        var nearestRoad = '';
+							        var nearestPOI = '';
+							    });
+							    
+							    positionPicker.start();
+							    
+							});
+					       
+					    }else{
+					        layer.msg('获取经纬度失败');
+					    }
+					}); 
+				});
+			}
+		});
+	
 		
 	});
 	

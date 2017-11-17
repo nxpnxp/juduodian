@@ -538,6 +538,9 @@ class ShopController extends HomeController {
 	 */
     public function dians(){
     	$openid = $this->openid;
+		if(!$openid){
+			$this->redirect('Index/index', array(), 0, '页面跳转中...');die();
+		}
 		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
 		$this->assign('user',$user);
 		
