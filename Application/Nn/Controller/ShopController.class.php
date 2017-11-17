@@ -12,7 +12,7 @@ class ShopController extends HomeController {
 		$openid = $this->openid;
 		if(!$openid){
 			$this->redirect('Index/index', array(), 0, '页面跳转中...');die();
-		}		
+		}			
 		
 		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
 		$this->assign('user',$user);
@@ -569,9 +569,9 @@ class ShopController extends HomeController {
 	 */
     public function detail(){
     	$openid = $this->openid;
-//		if(!$openid){
-//			$this->redirect('Index/index', array(), 0, '页面跳转中...');die();
-//		}	
+		if(!$openid){
+			$this->redirect('Index/index', array(), 0, '页面跳转中...');die();
+		}
 		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
 		$this->assign('user',$user);
 		

@@ -24,8 +24,7 @@ class HomeController extends Controller {
 	}
 
 
-    protected function _initialize(){
-    	
+    public function _initialize(){    	
 		include "wechat/include.php";
 		
 		$pid = I('get.pid');
@@ -36,6 +35,14 @@ class HomeController extends Controller {
 		$openid = cookie('openid');
 		if(!$openid){
 			$this->get_user();
+			
+//			$openid = $this->openid;
+//			if(!$openid){
+//				$thisurl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
+//				//echo $thisurl;die;
+//				$this->get_user();
+//			}
+			
 		}else{
 			$this->openid = $openid; 
 			$this->assign('openid',$openid);
@@ -46,11 +53,12 @@ class HomeController extends Controller {
     }
 	
 	//获取用户openid
-	private function get_user(){
+	protected function get_user(){
 		
 		$oauth = & load_wechat('Oauth');
 		$code = I('get.code');
 		if($code){
+			
 			$info = $oauth->getOauthAccessToken();
 			$openid = (string)$info['openid'];			
 			
@@ -61,19 +69,19 @@ class HomeController extends Controller {
 				
 	    	//获取用户信息
 			$this->save_user_avatar($openid);
-	    	$this->get_user_info($openid); 
+	    	$this->get_user_info1($openid); 
 			$this->assign('openid',$openid);
 			$this->user_pid($openid);
 				
 		}else{
 			$thisurl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
-			$url = $oauth->getOauthRedirect($thisurl);
+			$url = $oauth->getOauthRedirect($thisurl);			
 			header('Location:'.$url);
 		}
 	}
-	
+//	
 	//获取用户信息
-	private function get_user_info($openid){
+	public function get_user_info1($openid){
 		
 		$user = & load_wechat('User');
 		$result = $user->getUserInfo($openid);
@@ -87,9 +95,9 @@ class HomeController extends Controller {
 		}
 		
 	}
-	
+//	
 	//保存用户信息
-	private function save_gzh_info($info){
+	protected function save_gzh_info($info){
 		if(!is_array($info)){ die('Error: 0001'); }
 		
 		$openid = $info['openid'];
@@ -132,9 +140,9 @@ class HomeController extends Controller {
 			
 		}
 	}
-
+//
 	//保存用户上下级关系
-	private function user_pid($openid){
+	protected function user_pid($openid){
 		$user = M('WxuserCode')->where('openid="'.$openid.'"')->find();
 		if($user){
 			$pid = I('get.pid');
@@ -145,9 +153,9 @@ class HomeController extends Controller {
 			}
 		}
 	}
-	
+//	
 	//保存用户头像
-	private function save_user_avatar($openid){
+	protected function save_user_avatar($openid){
 		$user = M('WxuserCode')->where('openid="'.$openid.'"')->find();
 		if($user){
 			$avatar = $user['headimgurl'];
