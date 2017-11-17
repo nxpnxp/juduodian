@@ -54,7 +54,7 @@
 		<input type="hidden" name="id" value="{$dian.id}" />
 		
         	  <div class="layui-form-item">
-	    <label class="layui-form-label"><span class="red">*</span>小店名称</label>
+	    <label class="layui-form-label"><span class="red">*</span>店铺名称</label>
 	    <div class="layui-input-block">
 	      <input type="text" name="title" value="{$dian.title}" required  lay-verify="required" placeholder="您的小店名称" autocomplete="off" class="layui-input">
 	    </div>
@@ -67,27 +67,7 @@
 	    </div>
 	  </div>
         
-        
-        <div class="layui-form-item">
-		    <label class="layui-form-label"><span class="red">*</span>多图上传</label>
-		    <div class="layui-input-block" id="uploads">		     	
-				<a href="#" class="layui-btn layui-btn-normal layui-btn-small">
-					<i class="layui-icon">&#xe67c;</i>上传图片
-				</a>				
-		    </div>
-	    </div>  
-	    <div class="layui-form-item" id="imgs">
-		    <label class="layui-form-label"> </label>
-		    <div class="layui-input-block" id="uploads_imgs">		     	
-				<foreach name="imgs6" item="vo" >
-				    <img src="{$vo}" />
-				</foreach>
-		    </div>
-	    </div> 
-	    <input type="hidden" name="uploads_imgs" value="{$dian_shop.imgs6}" />
-	    
-
-    	  <div class="layui-form-item"  style="margin:0;">
+        <div class="layui-form-item"  style="margin:0;">
 	    <label class="layui-form-label">二维码</label>
 	    <div class="layui-input-block">
 	     	<button type="button" class="layui-btn layui-btn-normal layui-btn-small" id="img7">
@@ -102,16 +82,8 @@
 	    <div class="layui-input-block">
          <div class="layui-form-mid layui-word-aux">店铺联系人的微信二维码</div>
          </div>
-	  
-	  	  
-	  <div class="layui-form-item">
-	    <label class="layui-form-label"><span class="red">*</span>详情</label>
-	    <div class="layui-input-block">
-	      <textarea name="content" required lay-verify="required" placeholder="请输入详情" class="layui-textarea">{$dian_shop.content}</textarea>
-	    </div>
-	  </div>
- 
-	   <div class="layui-form-item">
+         
+         <div class="layui-form-item">
 		    <label class="layui-form-label"><span class="red">*</span>选择分类</label>
 		    <div class="layui-input-block">
 		      <select name="cate1" lay-verify="required" lay-filter="cate1">
@@ -129,13 +101,52 @@
 		    </div>
 		  </div>
 		  
+		  <div class="layui-form-item">
+	    <label class="layui-form-label"><span class="red">*</span>文字详情</label>
+	    <div class="layui-input-block">
+	      <textarea name="content" required lay-verify="required" placeholder="请输入详情" class="layui-textarea">{$dian_shop.content}</textarea>
+	    </div>
+	  </div>
+ 
+        
+        <div class="layui-form-item">
+		    <label class="layui-form-label"><span class="red">*</span>图片详情</label>
+		    <div class="layui-input-block" id="uploads">		     	
+				<a href="#" class="layui-btn layui-btn-normal layui-btn-small">
+					<i class="layui-icon">&#xe67c;</i>上传图片
+				</a>				
+		    </div>
+	    </div>  
+		<div class="layui-form-item" style="margin:0;">
+		    <div class="layui-input-block">
+	         <div class="layui-form-mid layui-word-aux">最多可选择9张图片</div>
+	         </div>
+       </div>
+	    <div class="layui-form-item" id="imgs">
+		    <label class="layui-form-label"> </label>
+		    <div class="layui-input-block" id="uploads_imgs">		     	
+				<foreach name="imgs6" item="vo" >
+				    <img src="{$vo}" />
+				</foreach>
+		    </div>
+	    </div> 
+	    <input type="hidden" name="uploads_imgs" value="{$dian_shop.imgs6}" />
+	    
+	  	  
+	  
+	   
+		  
 		<div class="layui-form-item">
 		    <label class="layui-form-label">店铺地址</label>
 		    <div class="layui-input-block">
 		      <textarea name="showaddress" required lay-verify="required" placeholder="请输入显示的地址" class="layui-textarea">{$dian_shop.showaddress}</textarea>
 		    </div>
 		</div>
-	  
+	  <div class="layui-form-item" style="margin:0;">
+		    <div class="layui-input-block">
+	         <div class="layui-form-mid layui-word-aux">填写地址后请点击查询定位</div>
+	         </div>
+       </div>
 	  <div class="layui-form-item">
 	    <label class="layui-form-label">地址</label>
 	    <div class="layui-input-block">

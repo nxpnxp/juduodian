@@ -37,8 +37,8 @@ if($options===FALSE){
         share_friend();
         function share_friend(){
         	wx.onMenuShareAppMessage({
-			    title: '聚多店分享', // 分享标题
-			    desc: '聚多店', // 分享描述
+			    title: '看我8秒有惊喜', // 分享标题
+			    desc: '发现一家好店，看了有惊喜', // 分享描述
 			    link: thisurl,
 			    imgUrl: '{$share_icon}', // 分享图标
 			    type: 'link', // 分享类型,music、video或link，不填默认为link
@@ -55,7 +55,7 @@ if($options===FALSE){
         share_pyq();
         function share_pyq(){
         	wx.onMenuShareTimeline({
-			    title: '聚多店分享', // 分享标题
+			    title: '看我8秒有惊喜', // 分享标题
 			    link: thisurl,
 			    imgUrl: '{$share_icon}', // 分享图标
 			    success: function () { 

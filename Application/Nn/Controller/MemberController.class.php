@@ -82,6 +82,7 @@ class MemberController extends HomeController {
 				$collections[$k]['collection'] = M("Collection")->where(array('sid'=>$v['id']))->count();
 				$collections[$k]['zan'] = M("Zan")->where(array('sid'=>$v['id']))->count();
 				$collections[$k]['showaddress'] = M('DocumentShop')->where(array('id'=>$v['id']))->getField('showaddress');
+				$collections[$k]['content'] = M('DocumentShop')->where(array('id'=>$v['id']))->getField('content');
 				$_lon = M('DocumentShop')->where(array('id'=>$v['id']))->getField('longitude');
 				$_lat = M('DocumentShop')->where(array('id'=>$v['id']))->getField('latitude');
 				$collections[$k]['juli'] = $this->getDistance($_lon, $_lat,$visit['lon'], $visit['lat']);

@@ -59,7 +59,7 @@ class CategoryController extends HomeController {
 		$visit = M("WxuserLatlon")->where(array('uid'=>$user['id']))->order("time desc")->find();
 		
 		$morens = M('Document')->alias('d')
-			->field('d.id,d.title,d.views,d.description,p.path,ds.longitude,ds.latitude,ds.showaddress')
+			->field('d.id,d.title,d.views,d.description,ds.content,p.path,ds.longitude,ds.latitude,ds.showaddress')
 			->join('left join onethink_picture p on d.cover_id=p.id')
 			->join('left join onethink_document_shop ds on ds.id=d.id')
 			->where('d.status=1 and d.category_id='.$cateid)
