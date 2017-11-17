@@ -805,6 +805,7 @@ class ShopController extends HomeController {
 				
 		$_gettime = I('post.gettime');
 		$gettime = strtotime($_gettime);
+		$gettime = time();
 		
 		$deadline = M('Config')->where('id=40')->getField('value');
 		$endtime = $gettime + $deadline * 24*3600;
