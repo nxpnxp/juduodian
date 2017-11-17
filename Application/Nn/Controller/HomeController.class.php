@@ -25,6 +25,7 @@ class HomeController extends Controller {
 
 
     protected function _initialize(){
+    	
 		include "wechat/include.php";
 		
 		$pid = I('get.pid');
