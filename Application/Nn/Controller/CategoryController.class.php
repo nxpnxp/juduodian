@@ -85,7 +85,7 @@ class CategoryController extends HomeController {
 			$morens1[$k]['zan'] = M("Zan")->where(array('sid'=>$v['id']))->count();
 			$morens1[$k]['juli'] = sprintf("%.2f", $v['juli']); 
 			$flag = 0;
-			$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
+			$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime and ispay=1")->count();
 			if($flag <=0){
 				$flag = M("Wxhb")->where("shopid={$v['id']} and $daybegin>gettime and $dayend < endtime")->count();
 			}

@@ -70,7 +70,7 @@
 		<div class="layui-row open" data-id="{$vo.id}">
 		    <div class="layui-col-xs4"><img src="{$vo.path}" /></div>
 	    	<div class="layui-col-xs8">
-            <p class="layui-col-xs8 stitle">{$vo.title|mb_substr=###,0,10,utf8}<if condition="$vo.hb gt 0"><span class="hb">红包</span></if></p>
+            <p class="layui-col-xs8 stitle">{$vo.title|mb_substr=###,0,8,utf8}<if condition="$vo.hb gt 0"><span class="hb">红包</span></if></p>
             <p class="layui-col-xs4 text-right jl" data-lon="{$vo.longitude}" data-lat="{$vo.latitude}">{$vo.juli}km</p>
                     <p class="layui-col-xs12 desp mt5">{$vo.content|mb_substr=###,0,12,utf8}</p>
                     <p class="layui-col-xs12 addr mt5"><i class="layui-icon">&#xe715;</i> {$vo.showaddress|mb_substr=###,0,12,utf8}</p>
