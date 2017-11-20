@@ -476,8 +476,18 @@ class ShopController extends HomeController {
 	}
 
 	//支付完成 等待审核
+	//不审核  直接跳店铺
 	public function waitsh(){
-		$this->display();
+		$openid = $this->openid;
+		$user = M('WxuserCode')->where(array('openid'=>$openid))->find();
+		
+		$shop = M('Document')->where('uid='.$user['id'])->order('id desc')->find();
+		$shopid = $shop['id'];
+		
+		$url = U('Shop/detail',array('id'=>$shopid));
+		header('Location:'.$url);
+		
+		//$this->display();
 	}
 	
 	public function doapplyedit(){
@@ -677,7 +687,20 @@ class ShopController extends HomeController {
 		
 		$logo = M('Picture')->where(array('id'=>$dian['cover_id']))->getField('path');
 		$this->assign('logo',$logo);
-    	$this->display();
+    	
+		$script = &  load_wechat('Script');
+		$thisurl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
+		$options = $script->getJsSign($thisurl);
+		$options = json_encode($options);
+					
+		if($options===FALSE){
+		    echo $script->errMsg;die;
+		}else{
+			$this->assign('options',$options);
+			
+			$this->display();
+		}
+		
     }
 
 	private function update_shophb($id){

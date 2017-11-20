@@ -107,7 +107,9 @@
 	</div></div>-->
     
      <div class="wrap" style="background-color:#F0F0F0"><div class="layui-row nrow"> 
-    <div class="layui-col-xs12 shopdesc logo shoptitle"><img src="{$logo}">{$dian.title|mb_substr=###,0,14,utf8}</div>
+    <div class="layui-col-xs12 shopdesc logo shoptitle"><img src="{$logo}">{$dian.title|mb_substr=###,0,14,utf8}
+    	<span id="jvli" style="font-weight: 100;font-size: 10px;margin-left: 10px;"></span>
+    </div>
     </div> </div>
 
    <div class="wrap">
@@ -181,7 +183,88 @@
     
 </body>
  
+<script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 <script type="text/javascript" src="__NN__/layui.js"></script> 
+<script>
+	// 微信JSSDK异常处理
+	wx.error(function(e){
+    	alert('wxjssdk_error');
+    });
+    // 注入JSSDK配置参数，默认开启所有接口权限
+    wx.config({$options});
+    // 当JSSDK初始化完成后，再执行相关操作
+    wx.ready(function(){
+        // 这里就可以调用 wx 的jssdk的操作了
+        
+        wx.getLocation({
+		    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+		    success: function (res) {
+		        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+		        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+		        var speed = res.speed; // 速度，以米/每秒计
+		        var accuracy = res.accuracy; // 位置精度
+		        //alert(latitude+'--'+longitude);
+		        calc(latitude,longitude);
+		        
+		    }
+		});
+		
+		function calc(latitude,longitude){
+			layui.use(['layer','jquery'], function(){
+				var $ = layui.$ //重点处
+	  			,layer = layui.layer;
+	  			
+	  			var lat1 = latitude;
+	  			var lng1 = longitude;
+	  			
+	  			$.ajax({
+		        	type:"post",
+		        	url:"{:U('Member/savelatlon')}",
+		        	data:{lat:lat1,lon:lng1}
+		        });
+	  			
+	  			var EARTH_RADIUS = 6378137.0;    //单位M
+			    var PI = Math.PI;
+			     
+				
+				var lon = '{$dian.longitude}';
+				var lat = '{$dian.latitude}';
+				//layer.msg(lon+' - '+lat);
+				var res = getGreatCircleDistance(lat1,lng1,lat,lon);
+				res = res/1000;
+				res = res.toFixed(2);
+				$('#jvli').html(res+'km');
+				
+				
+			    function getRad(d){
+			         return d*PI/180.0;
+			    }
+			     
+			     /**
+			      * caculate the great circle distance
+			      * @param {Object} lat1
+			      * @param {Object} lng1
+			      * @param {Object} lat2
+			      * @param {Object} lng2
+			      */
+			     function getGreatCircleDistance(lat1,lng1,lat2,lng2){
+			         var radLat1 = getRad(lat1);
+			         var radLat2 = getRad(lat2);
+			         
+			         var a = radLat1 - radLat2;
+			         var b = getRad(lng1) - getRad(lng2);
+			         
+			         var s = 2*Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) + Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+			         s = s*EARTH_RADIUS;
+			         s = Math.round(s*10000)/10000.0;
+			                
+			         return s;
+			     }
+				
+			});
+		}
+    });
+</script> 
 <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.0&key=2d91c93f3322cc37c798dc6f9d806f38"></script>
 <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
 	  
@@ -398,7 +481,7 @@
 												};
 								        		layer.photos({
 												    photos: json,
-												    area: ['100%', 'auto'],
+												    area: ['80%', 'auto'],
 												    anim: 5
 												    //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
 												});
@@ -428,7 +511,7 @@
 									};
 					        		layer.photos({
 									    photos: json,
-									    area: ['100%', 'auto'],
+									    area: ['80%', 'auto'],
 									    anim: 5
 									    //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
 									});
