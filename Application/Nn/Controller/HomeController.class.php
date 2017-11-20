@@ -20,7 +20,10 @@ class HomeController extends Controller {
 	
 	/* 空操作，用于输出404页面 */
 	public function _empty(){
-		$this->redirect('Index/index');
+		
+		$thisurl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
+		echo $thisurl.'<hr/>empty';
+		//$this->redirect('Index/index');
 	}
 
 
