@@ -108,15 +108,17 @@
     
      <div class="wrap" style="background-color:#F0F0F0"><div class="layui-row nrow"> 
     <div class="layui-col-xs12 shopdesc logo shoptitle"><img src="{$logo}">{$dian.title|mb_substr=###,0,14,utf8}
-    	<span id="jvli" style="font-weight: 100;font-size: 10px;margin-left: 10px;"></span>
-    </div>
+     </div>
     </div> </div>
 
    <div class="wrap">
 	<div class="layui-row nrow">
 	<div class="layui-col-xs1"><i class="layui-icon">&#xe715;</i></div>
     <div class="layui-col-xs11 showaddress" style="text-align:left;" lon="{$dian.longitude}" lat="{$dian.latitude}">
-    	地址：{$dian.showaddress}</div>
+    	地址：{$dian.showaddress}
+    	<span id="jvli" style="font-weight: 100;font-size: 10px;margin-left: 10px;"></span>
+   
+    </div>
 	</div>
    </div>
    <div id="map"></div>

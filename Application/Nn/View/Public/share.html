@@ -9,6 +9,14 @@ if($options===FALSE){
 }else{
 	$uid = M('WxuserCode')->where('openid="'.$openid.'"')->getField('id');
 	$share_icon = 'http://'.$_SERVER['HTTP_HOST'].'/Public/share_icon.png';
+	$share_icon_pyq = 'http://'.$_SERVER['HTTP_HOST'].'/Public/share_icon_pyq.jpg';
+	
+	if($share_title){
+		$title = $share_title.' 看我8秒有惊喜'; 
+	}else{
+		$title = '看我8秒有惊喜'; 
+	}
+	
 ?>
 
 <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
@@ -37,7 +45,7 @@ if($options===FALSE){
         share_friend();
         function share_friend(){
         	wx.onMenuShareAppMessage({
-			    title: '看我8秒有惊喜', // 分享标题
+			    title: '{$title}', // 分享标题
 			    desc: '发现一家好店，看了有惊喜', // 分享描述
 			    link: thisurl,
 			    imgUrl: '{$share_icon}', // 分享图标
@@ -55,9 +63,9 @@ if($options===FALSE){
         share_pyq();
         function share_pyq(){
         	wx.onMenuShareTimeline({
-			    title: '看我8秒有惊喜', // 分享标题
+			    title: '{$title}', // 分享标题
 			    link: thisurl,
-			    imgUrl: '{$share_icon}', // 分享图标
+			    imgUrl: '{$share_icon_pyq}', // 分享图标
 			    success: function () { 
 			        // 用户确认分享后执行的回调函数
 			    },

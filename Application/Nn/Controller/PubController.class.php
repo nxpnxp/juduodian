@@ -39,7 +39,7 @@ class PubController extends Controller {
 				M('WxuserYuelog')->add(array(
 					'uid' => $info['ppid'],
 					'fee' => $money,
-					'desc' => '店铺['.$info['id'].']开店成功，获得佣金['.$money.']'.'转入余额',
+					'desc' => '店铺['.$document['title'].']开店成功，获得佣金['.$money.']'.'转入余额',
 					'time' => time(),
 					'oid' => 'kdyj'
 				));

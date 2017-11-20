@@ -137,7 +137,7 @@ class MemberController extends HomeController {
 		}
 		//判断是否绑手机号
 		if($user['isbind'] != '1'){
-			$this->error('未绑手机号，请绑定后继续！');
+			$this->error('未绑手机号，请绑定后继续！',U('Index/bind'));
 		}
 		
 		$this->display();
@@ -156,13 +156,13 @@ class MemberController extends HomeController {
 					->find();
 		if($search){
 			if($search['type'] == '0'){
-				$this->error('您今日已经申请提现，请耐心等待审核！');
+				$this->success('您今日已经申请提现，请耐心等待审核！');die;
 			}
 			if($search['type'] == '1'){
-				$this->error('您今日申请提现已成功！');
+				$this->success('您今日申请提现已成功！');die;
 			}
 			if($search['type'] == '2'){
-				$this->error('您今日申请提现被拒绝！');
+				$this->error('您今日申请提现被拒绝！');die;
 			}
 		}
 		

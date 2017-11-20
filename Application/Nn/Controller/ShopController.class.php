@@ -605,7 +605,9 @@ class ShopController extends HomeController {
 				->join('left join onethink_picture p4 on ds.imgs4=p4.id')
 				->join('left join onethink_picture p5 on ds.imgs5=p5.id')
 				->where('d.id='.$id)->find();
-				
+		
+		$share_title = $dian['title'];
+		$this->assign('share_title',$share_title);
 				
 		$dian['zan'] = M("Zan")->where(array('sid'=>$dian['id']))->count();
 		

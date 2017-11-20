@@ -140,6 +140,11 @@
 			   window.location.href = "{:U('Shop/delshop')}"+'&id='+shopid;
 			}
 	  	});
+	  	
+	  	$('.open img').click(function(){
+	  		var shopid = $(this).parent().parent().attr('data-id');
+	  		window.location.href = "{:U('Shop/detail')}"+'&id='+shopid;			
+	  	});
 		
 		$('.footer').click(function(){
 	  		$(this).addClass('footer-on').siblings().removeClass('footer-on');
